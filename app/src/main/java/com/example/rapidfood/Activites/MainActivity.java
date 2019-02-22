@@ -1,7 +1,9 @@
-package com.example.rapidfood;
+package com.example.rapidfood.Activites;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.rapidfood.R;
 
 public class MainActivity extends AppCompatActivity {
 
