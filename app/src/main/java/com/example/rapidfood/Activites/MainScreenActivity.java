@@ -2,12 +2,14 @@ package com.example.rapidfood.Activites;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 public class MainScreenActivity extends AppCompatActivity {
     PreferenceManager preferenceManager;
     LinearLayout Layout_bars;
-    TextView[] bottomBars;
+    ImageView[] bottomBars;
     int[] screens;
     Button Skip, Next;
     ViewPager vp;
@@ -93,19 +95,18 @@ public class MainScreenActivity extends AppCompatActivity {
         int[] colorsActive = getResources().getIntArray(R.array.dot_on_page_active);
 
         //creating Array of TextView[]
-        bottomBars = new TextView[screens.length];
+        bottomBars = new ImageView[screens.length];
         // LinearLayout to hold Bottom Bars as Dots
         Layout_bars.removeAllViews();
-
         for (int i = 0; i < bottomBars.length; i++) {
-            bottomBars[i] = new TextView(this);
-            bottomBars[i].setTextSize(100);
-            bottomBars[i].setText(Html.fromHtml("¯"));
+            bottomBars[i] = new ImageView(this);
+            bottomBars[i].setImageResource(R.drawable.inactive_dot);
+            bottomBars[i].setPadding(5,5,5,5);
             Layout_bars.addView(bottomBars[i]);
-            bottomBars[i].setTextColor(colorsInactive[thisScreen]);
         }
         if (bottomBars.length > 0)
-            bottomBars[thisScreen].setTextColor(colorsActive[thisScreen]);
+            bottomBars[thisScreen].setPadding(5,5,5,5);
+            bottomBars[thisScreen].setImageResource(R.drawable.active_dot);
     }
 
     //SAve Preference and Goto MAinActivity
