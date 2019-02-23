@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RapidFood</string>
+    <string name="next">Next</string>
+    <string name="description">All your food at rapid rate</string>
 </resources>

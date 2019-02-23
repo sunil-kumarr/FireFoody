@@ -61,7 +61,7 @@ public class LogoActivity extends AppCompatActivity {
                     launchMain();
                 } else {
                     // call the intro swipe screen : MainScreen Activity from here
-                    Intent myIntent = new Intent(LogoActivity.this, MainActivity.class);
+                    Intent myIntent = new Intent(LogoActivity.this, MainScreenActivity.class);
                     startActivity(myIntent);
                     // finish/kill this activity
                     finish();
@@ -73,7 +73,7 @@ public class LogoActivity extends AppCompatActivity {
 
     private void launchMain() {
         mPreferenceManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(LogoActivity.this, MainActivity.class));
+        startActivity(new Intent(LogoActivity.this, MainScreenActivity.class));
         finish();
     }
 
