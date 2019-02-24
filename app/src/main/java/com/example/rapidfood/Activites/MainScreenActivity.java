@@ -2,16 +2,13 @@ package com.example.rapidfood.Activites;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.rapidfood.R;
 
@@ -85,16 +82,11 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     }
     // Directly Start the Main Activity
-    public void skip(View view) {
-        launchMain();
+    public void Login(View view) {
+        startActivity(new Intent(MainScreenActivity.this, LoginActivity.class));
     }
-    private void ColoredBars(int thisScreen) {
-        //Get the array of Colors for InActive Dot on the screen
-        int[] colorsInactive = getResources().getIntArray(R.array.dot_on_page_not_active);
-        //Get the array of Colors for Active Dot on the screen
-        int[] colorsActive = getResources().getIntArray(R.array.dot_on_page_active);
 
-        //creating Array of TextView[]
+    private void ColoredBars(int thisScreen) {
         bottomBars = new ImageView[screens.length];
         // LinearLayout to hold Bottom Bars as Dots
         Layout_bars.removeAllViews();
@@ -104,9 +96,9 @@ public class MainScreenActivity extends AppCompatActivity {
             bottomBars[i].setPadding(5,5,5,5);
             Layout_bars.addView(bottomBars[i]);
         }
-        if (bottomBars.length > 0)
+        if (bottomBars.length > 0){
             bottomBars[thisScreen].setPadding(5,5,5,5);
-            bottomBars[thisScreen].setImageResource(R.drawable.active_dot);
+            bottomBars[thisScreen].setImageResource(R.drawable.active_dot);}
     }
 
     //SAve Preference and Goto MAinActivity
