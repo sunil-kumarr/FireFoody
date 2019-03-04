@@ -48,4 +48,6 @@
     <string name="otp_prompt">Waiting to automatically detect an SMS sent to</string>
     <string name="login_prompt_desc">RapidFood will send an SMS message (carrier charges may apply) to verify your phone number.</string>
     <string name="otp_promt_full">.</string>
+    <string name="verify_text">Verify your phone number</string>
+    <string name="item_desc">It is very delicious paneer made by outtema odasd sdasdasd asdas dsadas</string>
 </resources>

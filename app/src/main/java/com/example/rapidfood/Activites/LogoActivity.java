@@ -7,10 +7,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.PermissionUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.os.SystemClock.sleep;
 
@@ -18,11 +22,13 @@ public class LogoActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_KEY = 48127;
     private PreferenceManager mPreferenceManager;
-
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
+        mFirebaseAuth=FirebaseAuth.getInstance();
         mPreferenceManager = new PreferenceManager(this);
 
     }
@@ -30,6 +36,7 @@ public class LogoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        mFirebaseUser=mFirebaseAuth.getCurrentUser();
 
     }
 
@@ -53,17 +60,13 @@ public class LogoActivity extends AppCompatActivity {
         Thread splashThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //
-
                 sleep(2000);
-                // if Intro Screen has been already shown then just move to MainActivity From here only
                 if (!mPreferenceManager.FirstLaunch()) {
                     launchMain();
                 } else {
-                    // call the intro swipe screen : MainScreen Activity from here
+
                     Intent myIntent = new Intent(LogoActivity.this, MainScreenActivity.class);
                     startActivity(myIntent);
-                    // finish/kill this activity
                     finish();
                 }
             }
@@ -73,8 +76,17 @@ public class LogoActivity extends AppCompatActivity {
 
     private void launchMain() {
         mPreferenceManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(LogoActivity.this, MainScreenActivity.class));
-        finish();
+
+       if(mFirebaseUser==null){
+           Intent myIntent = new Intent(LogoActivity.this, Authentication.class);
+           startActivity(myIntent);
+           finish();
+       }
+       else {
+
+           startActivity(new Intent(LogoActivity.this, VendorActivity.class));
+           finish();
+       }
     }
 
     @Override

@@ -14,7 +14,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Verify your phone number"
+        app:title="@string/verify_text"
         app:titleTextColor="@color/black" />
 
     <LinearLayout

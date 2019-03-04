@@ -83,7 +83,7 @@ public class MainScreenActivity extends AppCompatActivity {
     }
     // Directly Start the Main Activity
     public void Login(View view) {
-        startActivity(new Intent(MainScreenActivity.this, LoginActivity.class));
+        startActivity(new Intent(MainScreenActivity.this, Authentication.class));
     }
 
     private void ColoredBars(int thisScreen) {
