@@ -15,6 +15,7 @@
         android:weightSum="6">
 
         <ImageView
+            android:id="@+id/item_image"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="2"
@@ -30,6 +31,7 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/item_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Shahi Paneer"
@@ -37,6 +39,7 @@
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/item_Desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
@@ -47,6 +50,7 @@
                 android:textSize="17sp" />
 
             <TextView
+                android:id="@+id/item_Quant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Quantity: 3"

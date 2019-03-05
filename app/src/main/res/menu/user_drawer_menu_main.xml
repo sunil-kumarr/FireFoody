@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_home"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/my_profile"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="My profile" />
+        <item
+            android:id="@+id/my_orders"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="My orders" />
+        <item android:id="@+id/subscriptions"
+            android:title="My subscription"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_attach_money_black_24dp" />
+        <item android:id="@+id/Timings"
+            android:title="Delivery Timing"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_access_time_black_24dp" />
+
+
+    </group>
+    <item android:title="settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/share"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_share_black_24dp"
+                    android:title="Share and Earn" />
+                <item
+                    android:id="@+id/help_feedback"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_help_black_24dp"
+                    android:title="Help and Feedback" />
+                <item
+                    android:id="@+id/settings"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="settings" />
+                <item android:id="@+id/logout"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_logout_new_red_24dp"
+                    android:title="Logout"/>
+            </group>
+        </menu>
+    </item>
+</menu>

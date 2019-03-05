@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.chaos.view.PinView;
 import com.example.rapidfood.R;
+import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -82,7 +83,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseInstances.getFirebaseAuth();
 
         //Get all 3 layouts
         layout1 = findViewById(R.id.layout1);
