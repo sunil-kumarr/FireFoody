@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.rapidfood.Models.VendorMenuItem;
 import com.example.rapidfood.R;
@@ -40,8 +39,11 @@ public class MenuAdapter extends MultiSelectableAdapter<MenuAdapter.MenuViewHold
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
         VendorMenuItem vItem=mItems.get(position);
         holder.name.setText(vItem.getItemname());
+        holder.desc.setText(vItem.getItemdescription());
+        holder.quant.setText(vItem.getS1());
         holder.showImage(vItem.getItemImageid());
-        //Toast.makeText(mContext, "Adapter"+mItems.get(position).getItemname(), Toast.LENGTH_SHORT).show();
+        holder.category.setText("( "+vItem.getItemCategory()+" )");
+
     }
 
     @Override
@@ -50,23 +52,24 @@ public class MenuAdapter extends MultiSelectableAdapter<MenuAdapter.MenuViewHold
     }
 
     class MenuViewHolder extends RecyclerView.ViewHolder{
-        TextView name,desc,quant;
+        TextView name,desc,quant,category;
         ImageView mView;
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.item_Name);
             desc=itemView.findViewById(R.id.item_Desc);
             quant=itemView.findViewById(R.id.item_Quant);
-            mView=itemView.findViewById(R.id.item_image);
+            mView=itemView.findViewById(R.id.item_Image);
+            category=itemView.findViewById(R.id.item_Category);
         }
         public void showImage(String url) {
             if (url != null && !url.isEmpty()) {
-
+                Log.d("URL",url.toString());
                 Picasso.get()
                         .load(url)
+                        .centerCrop()
                         .resize(80,150)
-                        .centerInside()
-                        .placeholder(R.drawable.image)
+                        .placeholder(R.drawable.foodplaceholder)
                         .into(mView);
                 // Glide.with(this).load(url).into(mImageView);
             }

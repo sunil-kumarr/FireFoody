@@ -36,7 +36,7 @@
         </activity>
         <activity android:name=".Activites.MainScreenActivity" />
         <activity android:name=".Activites.Authentication" />
-        <activity android:name=".Activites.ProfileActivity" />
+        <activity android:name=".Activites.ProfileActivity" android:parentActivityName=".Activites.MainActivity"/>
         <activity android:name=".Activites.VendorAddMenu" android:parentActivityName=".Activites.VendorActivity"/>
     </application>
 

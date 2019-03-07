@@ -14,6 +14,7 @@ class PreferenceManager {
     private static final String FIRST_LAUNCH = "firstLaunch";
     int MODE = 0;
     private static final String PREFERENCE = "Javapapers";
+    public static final String USER_TYPE="USER_TYPE";
 
     public PreferenceManager(Context context) {
         this.context = context;

@@ -9,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Utils.IdentityUser;
 import com.example.rapidfood.Utils.PermissionUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +27,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Objects;
 
@@ -36,13 +41,16 @@ public class LogoActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseFirestore mFirebaseFirestore;
+    private IdentityUser mIdentityUser;
+    private static final String TAG = "LogoActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
-        mFirebaseAuth = FirebaseInstances.getFirebaseAuth();
-        FirebaseInstances vFirebaseInstances=new FirebaseInstances();
+        FirebaseInstances vFirebaseInstances = new FirebaseInstances();
+        mIdentityUser = new IdentityUser();
+        mFirebaseAuth = vFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = vFirebaseInstances.getFirebaseFirestore();
         mPreferenceManager = new PreferenceManager(this);
 
@@ -52,7 +60,6 @@ public class LogoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
     }
 
     @Override
@@ -69,23 +76,21 @@ public class LogoActivity extends AppCompatActivity {
     }
 
     private void closeLogoActivity() {
-        //create background thread
-        //put it in sleep for 2seconds to show the splash screen to user
-        Thread splashThread = new Thread(new Runnable() {
+
+        Handler myHandler=new Handler();
+        myHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                sleep(2000);
                 if (!mPreferenceManager.FirstLaunch()) {
                     launchMain();
                 } else {
-
                     Intent myIntent = new Intent(LogoActivity.this, MainScreenActivity.class);
                     startActivity(myIntent);
                     finish();
                 }
             }
-        });
-        splashThread.start();
+        },2000);
+
     }
 
     private void launchMain() {
@@ -96,33 +101,32 @@ public class LogoActivity extends AppCompatActivity {
             startActivity(myIntent);
             finish();
         } else {
-            DocumentReference vUserId = mFirebaseFirestore.collection("vendors").document("sunil_kumar");
-            vUserId.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                    if (pTask.isSuccessful()) {
-                        DocumentSnapshot document = pTask.getResult();
-                        if (document.exists()) {
-                            Log.d("DATAGET","Id: "+document.get("firebase_id"));
-                            String userId = Objects.requireNonNull(document.get("firebase_id")).toString();
-                            if(userId.equals(mFirebaseUser.getUid())) {
-                                startActivity(new Intent(LogoActivity.this, VendorActivity.class));
-                                finish();
+            mFirebaseFirestore.collection("vendors")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                            boolean user=false;
+                            if (e != null) {
+                                Log.d("DownloadData", "Listen failed.", e);
+                                return;
                             }
-                            else{
+                            assert value != null;
+                            for (QueryDocumentSnapshot doc : value) {
+                                String vendorId=doc.getString("firebase_id");
+                                assert vendorId != null;
+                                if(mFirebaseUser.getUid().equals(vendorId)){
+                                   user=true;
+                                    startActivity(new Intent(LogoActivity.this, VendorActivity.class));
+                                    finish();
+                                }
+                            }
+                            if(!user) {
                                 startActivity(new Intent(LogoActivity.this, MainActivity.class));
                                 finish();
                             }
-                            Log.d("DATAGET", "DocumentSnapshot data: " + document.getData());
-                        } else {
-                            Log.d("DATAGET", "No such document");
-                        }
-                    } else {
-                        Log.d("DATAGET", "get failed with ", pTask.getException());
-                    }
-                }
-            });
 
+                        }
+                    });
 
         }
     }

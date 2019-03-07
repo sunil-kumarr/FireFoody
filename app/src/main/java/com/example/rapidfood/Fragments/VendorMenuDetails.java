@@ -85,10 +85,10 @@ public class VendorMenuDetails extends Fragment {
                            // Toast.makeText(mContext, ""+doc.getString("itemname"), Toast.LENGTH_SHORT).show();
                                 VendorMenuItem vItem=new VendorMenuItem();
                                 vItem.setItemname(doc.getString("itemname"));
-                                vItem.setItemquantitiy("Quantity: "+doc.getString("quantity"));
-                                vItem.setItempriority(doc.getString("itempriority"));
+                                vItem.setS1("Quantity: "+doc.getString("s1"));
                                 vItem.setItemdescription(doc.getString("itemdescription"));
                                 vItem.setItemImageid(doc.getString("itemImageid"));
+                                vItem.setItemCategory(doc.getString("itemCategory"));
                                 mItems.add(vItem);
                         }
                         mRecyclerView.setAdapter(new MenuAdapter(mItems));

@@ -2,6 +2,7 @@ package com.example.rapidfood.Activites;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.chaos.view.PinView;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Utils.IdentityUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,12 +31,18 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.shuhart.stepview.StepView;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -62,8 +70,8 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     private static String uniqueIdentifier = null;
     private int currentStep = 0;
     private static final String UNIQUE_ID = "UNIQUE_ID";
-    private static final long ONE_HOUR_MILLI = 60*60*1000;
-    private static final String TAG = "FirebasePhoneNumAuth";
+    private static final long ONE_HOUR_MILLI = 60 * 60 * 1000;
+    private static final String TAG = "Authentication";
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
     private static final int STATE_INITIALIZED = 1;
     private static final int STATE_CODE_SENT = 2;
@@ -71,10 +79,15 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     private static final int STATE_VERIFY_SUCCESS = 4;
     private static final int STATE_SIGNIN_FAILED = 5;
     private static final int STATE_SIGNIN_SUCCESS = 6;
-
+    public static boolean user = false;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+    private IdentityUser mIdentityUser;
+    private FirebaseInstances mFirebaseInstances;
+    private FirebaseFirestore mFirebaseFirestore;
+    private ProgressDialog mProgressDialog;
 
 
     @SuppressLint("SetTextI18n")
@@ -83,7 +96,8 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        mAuth = FirebaseInstances.getFirebaseAuth();
+        FirebaseInstances vFirebaseInstances = new FirebaseInstances();
+        mAuth = vFirebaseInstances.getFirebaseAuth();
 
         //Get all 3 layouts
         layout1 = findViewById(R.id.layout1);
@@ -94,7 +108,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         sendCodeButton = findViewById(R.id.submit1);
         verifyCodeButton = findViewById(R.id.submit2);
         button3 = findViewById(R.id.submit3);
-        resendCodeButton=findViewById(R.id.resendCodeBtn);
+        resendCodeButton = findViewById(R.id.resendCodeBtn);
         phoneNum = findViewById(R.id.phonenumber);
         verifyCodeET = findViewById(R.id.pinView);
         phonenumberText = findViewById(R.id.phonenumberText);
@@ -104,22 +118,27 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         stepView.go(0, true);
 
         layout1.setVisibility(View.VISIBLE);
-
+        mIdentityUser = new IdentityUser();
         resendCodeButton.setOnClickListener(this);
         sendCodeButton.setOnClickListener(this);
         verifyCodeButton.setOnClickListener(this);
         button3.setOnClickListener(this);
-
-        mCallbacks =new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        mFirebaseInstances=new FirebaseInstances();
+        mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 mVerificationInProgress = false;
+                Toast.makeText(Authentication.this, "onVerification Completed", Toast.LENGTH_SHORT).show();
                 showDialogNext();
                 signInWithPhoneAuthCredential(phoneAuthCredential);
             }
+
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 mVerificationInProgress = false;
+                Log.d(TAG, "" + e.getMessage());
+                Toast.makeText(Authentication.this, "verification Failed:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     verifyCodeET.setError("Invalid phone number.");
                 } else if (e instanceof FirebaseTooManyRequestsException) {
@@ -128,10 +147,12 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                             Snackbar.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onCodeSent(String verificationId,
                                    PhoneAuthProvider.ForceResendingToken token) {
                 // Save verification ID and resending token so we can use them later
+                Toast.makeText(Authentication.this, "OnCode Sent", Toast.LENGTH_SHORT).show();
                 mVerificationId = verificationId;
                 mResendToken = token;
                 // ...
@@ -139,30 +160,55 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         };
     }
 
+    private void showDialog(String title) {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle(title);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.show();
+    }
+
     private void goToProfile() {
 
-                if (currentStep < stepView.getStepCount() - 1) {
-                    currentStep++;
-                    stepView.go(currentStep, true);
-                } else {
-                    stepView.done(true);
-                }
-                LayoutInflater inflater = getLayoutInflater();
-                View alertLayout= inflater.inflate(R.layout.profile_create_dialog,null);
-                AlertDialog.Builder show = new AlertDialog.Builder(Authentication.this);
-                show.setView(alertLayout);
-                show.setCancelable(false);
-                profile_dialog = show.create();
-                profile_dialog.show();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        profile_dialog.dismiss();
-                        startActivity(new Intent(Authentication.this, VendorActivity.class));
-                        finish();
-                    }
-                },3000);
+        if (currentStep < stepView.getStepCount() - 1) {
+            currentStep++;
+            stepView.go(currentStep, true);
+        } else {
+            stepView.done(true);
+        }
+        showDialog("Loading user...");
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mProgressDialog.dismiss();
+                mFirebaseFirestore.collection("vendors")
+                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                                boolean user = false;
+                                if (e != null) {
+                                    Log.d("DownloadData", "Listen failed.", e);
+                                    return;
+                                }
+                                assert value != null;
+                                for (QueryDocumentSnapshot doc : value) {
+                                    String vendorId = doc.getString("firebase_id");
+                                    assert vendorId != null;
+                                    if (mFirebaseUser.getUid().equals(vendorId)) {
+                                        user = true;
+                                        startActivity(new Intent(Authentication.this, VendorActivity.class));
+                                        finish();
+                                    }
+                                }
+                                if (!user) {
+                                    startActivity(new Intent(Authentication.this, MainActivity.class));
+                                    finish();
+                                }
+
+                            }
+                        });
+            }
+        }, 3000);
 
     }
 
@@ -174,10 +220,12 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         if (mVerificationInProgress && validatePhoneNumber()) {
             startPhoneNumberVerification(phoneNum.getText().toString());
         }
-        if(currentUser!=null){
-            startActivity(new Intent(this,VendorActivity.class));
+        if (currentUser != null) {
+            startActivity(new Intent(this, VendorActivity.class));
         }
-    } @Override
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_VERIFY_IN_PROGRESS, mVerificationInProgress);
@@ -190,14 +238,9 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     }
 
     private void showDialogNext() {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.processing_dialog, null);
-        AlertDialog.Builder show = new AlertDialog.Builder(Authentication.this);
-        show.setView(alertLayout);
-        show.setCancelable(false);
-        dialog_verifying = show.create();
-        dialog_verifying.show();
+        showDialog("Verifying number...");
     }
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -206,7 +249,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            dialog_verifying.dismiss();
+                            mProgressDialog.dismiss();
                             if (currentStep < stepView.getStepCount() - 1) {
                                 currentStep++;
                                 stepView.go(currentStep, true);
@@ -218,8 +261,8 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                             layout3.setVisibility(View.VISIBLE);
                             // ...
                         } else {
-                            dialog_verifying.dismiss();
-                            Toast.makeText(Authentication.this,"Something wrong", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+                            Toast.makeText(Authentication.this, "Something wrong", Toast.LENGTH_SHORT).show();
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -230,16 +273,19 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                     }
                 });
     }
+
     private boolean validatePhoneNumber() {
         String phoneNumber = phoneNum.getText().toString();
-        if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length()<10) {
+        if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length() < 10) {
             phoneNum.setError("Invalid phone number.");
             return false;
         }
         return true;
     }
+
     private void startPhoneNumberVerification(String phoneNumber) {
         // [START start_phone_auth]
+        Toast.makeText(this, "Start Phone verification", Toast.LENGTH_SHORT).show();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
                 60,                 // Timeout duration
@@ -249,7 +295,9 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         // [END start_phone_auth]
         mVerificationInProgress = true;
     }
+
     private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken token) {
+        Toast.makeText(this, "Request Code Resent", Toast.LENGTH_SHORT).show();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
                 60,                 // Timeout duration
@@ -258,12 +306,13 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                 mCallbacks,         // OnVerificationStateChangedCallbacks
                 token);             // ForceResendingToken from callbacks
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.submit1:
                 if (validatePhoneNumber()) {
-                    String sPhoneNumber="+91"+phoneNum.getText().toString();
+                    String sPhoneNumber = "+91" + phoneNum.getText().toString();
                     if (currentStep < stepView.getStepCount() - 1) {
                         currentStep++;
                         stepView.go(currentStep, true);
@@ -272,16 +321,16 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                     }
                     layout1.setVisibility(View.GONE);
                     layout2.setVisibility(View.VISIBLE);
-                    phoneNumber=sPhoneNumber;
+                    phoneNumber = sPhoneNumber;
                     phonenumberText.setText(phoneNumber);
                     startPhoneNumberVerification(sPhoneNumber);
                 }
                 break;
             case R.id.submit2:
                 String verificationCode = Objects.requireNonNull(verifyCodeET.getText()).toString();
-                if(verificationCode.isEmpty()){
-                    Toast.makeText(Authentication.this,"Enter verification code", Toast.LENGTH_SHORT).show();
-                }else {
+                if (verificationCode.isEmpty()) {
+                    Toast.makeText(Authentication.this, "Enter verification code", Toast.LENGTH_SHORT).show();
+                } else {
                     showDialogNext();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
                     signInWithPhoneAuthCredential(credential);
@@ -290,9 +339,10 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.resendCodeBtn:
                 resendCodeButton.setTextColor(getResources().getColor(R.color.grey_600));
+                resendCodeButton.setEnabled(false);
                 resendVerificationCode(phoneNum.getText().toString(), mResendToken);
                 break;
-            case  R.id.submit3:
+            case R.id.submit3:
                 goToProfile();
                 break;
 

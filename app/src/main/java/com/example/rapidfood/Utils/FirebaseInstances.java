@@ -6,7 +6,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class FirebaseInstances {
-    private static FirebaseAuth mFirebaseAuth;
+    private  FirebaseAuth mFirebaseAuth;
     private  FirebaseFirestore mFirebaseFirestore;
     private FirebaseStorage mFirebaseStorage;
 
@@ -27,7 +27,7 @@ public class FirebaseInstances {
         return mFirebaseStorage;
     }
 
-    static public  FirebaseAuth getFirebaseAuth(){
+     public  FirebaseAuth getFirebaseAuth(){
         if(mFirebaseAuth==null){
             mFirebaseAuth=FirebaseAuth.getInstance();
         }
