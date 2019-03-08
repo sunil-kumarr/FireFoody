@@ -22,9 +22,31 @@
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Delivery Orders" />
-        <item android:id="@+id/logout"
-            app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_logout_new_red_24dp"
-            android:title="Logout"/>
+
     </group>
+    <item android:title="settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/share"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_share_black_24dp"
+                    android:title="Share and Earn" />
+                <item
+                    android:id="@+id/help_feedback"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_help_black_24dp"
+                    android:title="Help and Feedback" />
+                <item
+                    android:id="@+id/settings"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="settings" />
+                <item android:id="@+id/logout"
+                    app:showAsAction="ifRoom"
+                    android:icon="@drawable/ic_logout_new_red_24dp"
+                    android:title="Logout"/>
+            </group>
+        </menu>
+    </item>
 </menu>

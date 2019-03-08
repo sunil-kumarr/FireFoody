@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_menu"
+        style="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Create subscription"
+        app:titleTextColor="@color/white" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/image_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:background="@color/grey_500"
+        android:elevation="5dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/sub_duration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_add_menu"
+        app:layout_constraintStart_toStartOf="parent">
+        <FrameLayout
+            android:id="@+id/container_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_add_to_photos_black_24dp" />
+            <ImageView
+                android:id="@+id/sub_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                />
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <EditText
+        android:id="@+id/sub_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="text"
+        android:layout_marginBottom="8dp"
+        android:hint="Subcription duration"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/sub_create_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/sub_packtype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Subcription type"
+        android:inputType="text"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sub_duration" />
+
+    <EditText
+        android:id="@+id/sub_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Subcription price"
+        android:inputType="text"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sub_packtype" />
+    <EditText
+        android:id="@+id/sub_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Subcription details"
+        android:inputType="textPostalAddress"
+        android:textSize="15sp"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sub_price" />
+
+    <Button
+        android:id="@+id/sub_create_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:background="@drawable/button_main_background"
+        android:text="Save "
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

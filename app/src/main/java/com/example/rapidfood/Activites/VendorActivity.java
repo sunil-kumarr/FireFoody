@@ -71,6 +71,7 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mVendorModel = new VendorModel();
+
         View pUser = mNavigationView.getHeaderView(0);
         userTextName = pUser.findViewById(R.id.name);
         userTextMobile = pUser.findViewById(R.id.mobile);
@@ -98,7 +99,7 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+       mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mNavigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
@@ -115,7 +116,7 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
                 vFragment = new VendorMenuDetails();
                 break;
             case R.id.subscriptions:
-                startActivity(new Intent(VendorActivity.this, SubscriptionActivity.class));
+                startActivity(new Intent(VendorActivity.this,VendorAddSubscription.class));
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
@@ -135,17 +136,13 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
         final String userName = mFirebaseUser.getUid();
 
         mFirebaseFirestore.collection("vendors").document(userName)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                .addSnapshotListener(VendorActivity.this,new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot pDocumentSnapshot, @Nullable FirebaseFirestoreException pE) {
 
-                        mVendorModel.setVendorname(pDocumentSnapshot.getString("name"));
-                        mVendorModel.setMobile(pDocumentSnapshot.getString("mobile"));
-                        mVendorModel.setAddress(pDocumentSnapshot.getString("location"));
-                        mVendorModel.setEmail(pDocumentSnapshot.getString("email"));
-                        userTextName.setText(mVendorModel.getVendorname());
-                        userTextMobile.setText(mVendorModel.getMobile());
-                        userTextEmail.setText(mVendorModel.getEmail());
+                        userTextName.setText(pDocumentSnapshot.getString("name"));
+                        userTextMobile.setText(pDocumentSnapshot.getString("mobile"));
+                        userTextEmail.setText(pDocumentSnapshot.getString("email"));
                         Picasso.get()
                                 .load(pDocumentSnapshot.getString("userimage"))
                                 .resize(80, 80)

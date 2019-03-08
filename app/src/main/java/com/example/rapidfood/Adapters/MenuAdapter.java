@@ -69,7 +69,7 @@ public class MenuAdapter extends MultiSelectableAdapter<MenuAdapter.MenuViewHold
                         .load(url)
                         .centerCrop()
                         .resize(80,150)
-                        .placeholder(R.drawable.foodplaceholder)
+
                         .into(mView);
                 // Glide.with(this).load(url).into(mImageView);
             }

@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,16 +25,27 @@ import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.picasso.Picasso;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar mToolbar;
+    private TextView userTextName, userTextMobile, userTextEmail;
+    private CircleImageView userImage;
     NavigationView mNavigationView;
     private static final String TAG = "MainActivity";
     DrawerLayout mDrawerLayout;
     private FirebaseInstances mFirebaseInstances;
     private FirebaseUser mFirebaseUser;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseFirestore mFirebaseFirestore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView user=findViewById(R.id.userId);
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth=mFirebaseInstances.getFirebaseAuth();
+        mFirebaseFirestore=mFirebaseInstances.getFirebaseFirestore();
+
+
+        View pUser = mNavigationView.getHeaderView(0);
+        userTextName = pUser.findViewById(R.id.name);
+        userTextMobile = pUser.findViewById(R.id.mobile);
+        userImage = pUser.findViewById(R.id.profile_image);
+        userTextEmail = pUser.findViewById(R.id.email_id);
+        getUserDetails();
+
+
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
@@ -63,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         mFirebaseUser=mFirebaseAuth.getCurrentUser();
+        mFirebaseUser=mFirebaseAuth.getCurrentUser();
+
         mNavigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
@@ -96,5 +121,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         mDrawerLayout.closeDrawers();
         return true;
+    }
+
+    private void getUserDetails() {
+        mFirebaseUser=mFirebaseAuth.getCurrentUser();
+        String userName = mFirebaseUser.getUid();
+        mFirebaseFirestore.collection("users").document(userName)
+                .addSnapshotListener(MainActivity.this,new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot pDocumentSnapshot, @Nullable FirebaseFirestoreException pE) {
+                        userTextName.setText(pDocumentSnapshot.getString("username"));
+                        userTextMobile.setText(pDocumentSnapshot.getString("mobile"));
+                        userTextEmail.setText(pDocumentSnapshot.getString("emailAddress"));
+                        Picasso.get()
+                                .load(pDocumentSnapshot.getString("profileimage"))
+                                .resize(80, 80)
+                                .centerCrop()
+                                .placeholder(R.drawable.man)
+                                .into(userImage);
+                    }
+                });
     }
 }

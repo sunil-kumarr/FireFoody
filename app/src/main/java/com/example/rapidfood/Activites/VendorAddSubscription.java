@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +35,7 @@ public class VendorAddSubscription extends AppCompatActivity {
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseUser mFirebaseUser;
     private RecyclerView mRecyclerView;
+    private FloatingActionButton mButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,13 +51,17 @@ public class VendorAddSubscription extends AppCompatActivity {
             vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
         }
-
-
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         setImageSub(vImageView);
-
+       mButton= findViewById(R.id.btn_add_subscription);
+       mButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(VendorAddSubscription.this,VendorCreateSubscription.class));
+           }
+       });
         mRecyclerView = findViewById(R.id.recyclerView);
         SubscriptionAdapter vSubscriptionAdapter = new SubscriptionAdapter();
         mRecyclerView.setLayoutManager(new CenterZoomLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

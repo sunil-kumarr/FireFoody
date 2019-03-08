@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Utils.ImageUtil;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,7 +49,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.rapidfood.Activites.VendorAddMenu.GALLERY_REQUEST_CODE;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private boolean mImageSelected = false;
     private Map<String, Object> getUser;
     private static final String TAG = "ProfileActivity";
+    private ImageUtil mImageUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mImageUtil=new ImageUtil();
         mUpadteProfileBtn.setOnClickListener(this);
         mUserImage.setOnClickListener(this);
         mUserModel = new UserModel();
@@ -105,17 +107,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
-    private void pickFromGallery() {
-        //Create an Intent with action as ACTION_PICK
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        // Sets the type as image/*. This ensures only components of type image are selected
-        intent.setType("image/*");
-        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        // Launching the Intent
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
@@ -125,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     //data.getData returns the content URI for the selected Image
                     imageUri = data.getData();
                     if (imageUri != null)
-                        image = FilePathNameExtractor(imageUri);
+                        image = mImageUtil.FilePathNameExtractor(imageUri);
                     if (image != null) {
                         Picasso.get()
                                 .load(imageUri)
@@ -153,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                    if(pDocumentSnapshot.exists())
                     {
                         mUserModel = pDocumentSnapshot.toObject(UserModel.class);
-                        Toast.makeText(ProfileActivity.this, "Image:" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(ProfileActivity.this, "Image:" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(ProfileActivity.this, "START CALLED", Toast.LENGTH_SHORT).show();
                         Picasso.get()
                                 .load(mUserModel.getProfileimage())
@@ -172,19 +163,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private String FilePathNameExtractor(Uri pImageUri) {
-        String path = pImageUri.getLastPathSegment();
-        String filename = path.substring(path.lastIndexOf("/") + 1);
-        Log.d("DealsPath", filename);
-        return filename;
 
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.profile_image_user:
-                pickFromGallery();
+                mImageUtil.pickFromGallery(this);
                 break;
             case R.id.btn_save_profile:
                 updateToFireStore();
