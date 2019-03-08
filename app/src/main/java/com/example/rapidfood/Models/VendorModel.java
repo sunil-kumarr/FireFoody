@@ -4,6 +4,15 @@ public class VendorModel {
     private String vendorname;
     private String mobile;
     private String address;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String pEmail) {
+        email = pEmail;
+    }
 
     public String getVendorname() {
         return vendorname;

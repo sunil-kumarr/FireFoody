@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Adapters.SubscriptionAdapter;
 import com.example.rapidfood.Fragments.VendorMenuDetails;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String TAG = "MainActivity";
     DrawerLayout mDrawerLayout;
     private FirebaseInstances mFirebaseInstances;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +52,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         TextView user=findViewById(R.id.userId);
         mFirebaseInstances = new FirebaseInstances();
+        mFirebaseAuth=mFirebaseInstances.getFirebaseAuth();
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
         user.setText(mFirebaseInstances.getFirebaseAuth().getCurrentUser().getUid());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mFirebaseUser=mFirebaseAuth.getCurrentUser();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
 
     @Override
@@ -72,12 +85,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.my_profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 break;
+            case  R.id.subscriptions:
+                startActivity(new Intent(MainActivity.this, SubscriptionActivity.class));
+                break;
             case R.id.logout:
-                startActivity(new Intent(MainActivity.this, Authentication.class));
+                mFirebaseAuth.signOut();
+                startActivity(new Intent(MainActivity.this,Authentication.class));
                 finish();
                 break;
         }
-
         mDrawerLayout.closeDrawers();
         return true;
     }

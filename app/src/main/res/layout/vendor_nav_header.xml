@@ -9,10 +9,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:elevation="5dp"
         android:scaleType="centerCrop"
@@ -27,10 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
             android:text="Deepansu Thakur"
             android:textColor="#fff"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/mobile"
@@ -38,11 +37,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:text="+918116242342"
-            android:layout_gravity="center_horizontal"
             android:textColor="#fff"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/email_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:text="No email adrress"
+        android:textColor="#fff"
+        android:textSize="14sp" />
 
 
 </LinearLayout>

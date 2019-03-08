@@ -87,6 +87,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     private IdentityUser mIdentityUser;
     private FirebaseInstances mFirebaseInstances;
     private FirebaseFirestore mFirebaseFirestore;
+    private FirebaseAuth mFirebaseAuth;
     private ProgressDialog mProgressDialog;
 
 
@@ -125,6 +126,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
         button3.setOnClickListener(this);
         mFirebaseInstances=new FirebaseInstances();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
+        mFirebaseAuth=mFirebaseInstances.getFirebaseAuth();
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
@@ -147,7 +149,6 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                             Snackbar.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onCodeSent(String verificationId,
                                    PhoneAuthProvider.ForceResendingToken token) {
@@ -162,8 +163,8 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
 
     private void showDialog(String title) {
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setTitle(title);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setMessage(title);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.show();
     }
 
@@ -194,6 +195,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
                                 for (QueryDocumentSnapshot doc : value) {
                                     String vendorId = doc.getString("firebase_id");
                                     assert vendorId != null;
+                                    mFirebaseUser=mFirebaseAuth.getCurrentUser();
                                     if (mFirebaseUser.getUid().equals(vendorId)) {
                                         user = true;
                                         startActivity(new Intent(Authentication.this, VendorActivity.class));

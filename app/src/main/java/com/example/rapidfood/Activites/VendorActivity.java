@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class VendorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar mToolbar;
-    private TextView userTextName,userTextMobile;
+    private TextView userTextName, userTextMobile, userTextEmail;
     private CircleImageView userImage;
     private FragmentTransaction vFragmentTransaction;
     private NavigationView mNavigationView;
@@ -67,16 +67,17 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
         }
         mFragmentManager = getSupportFragmentManager();
         mFirebaseInstances = new FirebaseInstances();
-        mFirebaseAuth=mFirebaseInstances.getFirebaseAuth();
-        mFirebaseFirestore=mFirebaseInstances.getFirebaseFirestore();
-        mFirebaseUser=mFirebaseAuth.getCurrentUser();
-        mVendorModel=new VendorModel();
-        View pUser=mNavigationView.getHeaderView(0);
-         userTextName= pUser.findViewById(R.id.name);
-         userTextMobile=pUser.findViewById(R.id.mobile);
-         userImage=pUser.findViewById(R.id.profile_image);
+        mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
+        mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mVendorModel = new VendorModel();
+        View pUser = mNavigationView.getHeaderView(0);
+        userTextName = pUser.findViewById(R.id.name);
+        userTextMobile = pUser.findViewById(R.id.mobile);
+        userImage = pUser.findViewById(R.id.profile_image);
+        userTextEmail = pUser.findViewById(R.id.email_id);
         getUserDetails();
-        Toast.makeText(this, ""+mVendorModel.getMobile(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + mVendorModel.getMobile(), Toast.LENGTH_SHORT).show();
 
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setChecked(true);
@@ -97,19 +98,24 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseUser=mFirebaseAuth.getCurrentUser();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem pMenuItem) {
         pMenuItem.setChecked(true);
-        vFragmentTransaction=mFragmentManager.beginTransaction();
+        vFragmentTransaction = mFragmentManager.beginTransaction();
         Fragment vFragment = new VendorMenuDetails();
         Toast.makeText(VendorActivity.this, "" + pMenuItem.getItemId(), Toast.LENGTH_SHORT).show();
         switch (pMenuItem.getItemId()) {
 
             case R.id.menu_details:
                 vFragment = new VendorMenuDetails();
+                break;
+            case R.id.subscriptions:
+                startActivity(new Intent(VendorActivity.this, SubscriptionActivity.class));
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
@@ -124,23 +130,26 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    private void getUserDetails(){
+    private void getUserDetails() {
 
-        final String userName=mFirebaseUser.getUid();
-        Log.d(TAG,userName);
+        final String userName = mFirebaseUser.getUid();
+
         mFirebaseFirestore.collection("vendors").document(userName)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot pDocumentSnapshot, @Nullable FirebaseFirestoreException pE) {
-                        Log.d(TAG,pDocumentSnapshot.getString("mobile"));
-                       mVendorModel.setVendorname(pDocumentSnapshot.getString("name"));
-                       mVendorModel.setMobile(pDocumentSnapshot.getString("mobile"));
-                       mVendorModel.setAddress(pDocumentSnapshot.getString("location"));
 
-                       userTextName.setText(mVendorModel.getVendorname());
+                        mVendorModel.setVendorname(pDocumentSnapshot.getString("name"));
+                        mVendorModel.setMobile(pDocumentSnapshot.getString("mobile"));
+                        mVendorModel.setAddress(pDocumentSnapshot.getString("location"));
+                        mVendorModel.setEmail(pDocumentSnapshot.getString("email"));
+                        userTextName.setText(mVendorModel.getVendorname());
                         userTextMobile.setText(mVendorModel.getMobile());
+                        userTextEmail.setText(mVendorModel.getEmail());
                         Picasso.get()
                                 .load(pDocumentSnapshot.getString("userimage"))
+                                .resize(80, 80)
+                                .centerCrop()
                                 .placeholder(R.drawable.man)
                                 .into(userImage);
                     }

@@ -4,10 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
+    android:background="@color/profile_back"
     android:orientation="vertical"
     tools:context=".Activites.ProfileActivity">
 
+
+    <View
+        android:id="@+id/view_user"
+        android:layout_width="0dp"
+        android:layout_height="222dp"
+
+        android:background="@drawable/nav_menu_header_bg"
+        app:layout_constraintBottom_toTopOf="@+id/edtNameUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"
         style="@style/ThemeOverlay.AppCompat.ActionBar"
@@ -16,19 +29,20 @@
         android:background="@null"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Profile"
         app:titleTextColor="@color/white" />
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
+        android:id="@+id/profile_image_user"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="160dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/man"
         app:civ_border_color="@color/white"
@@ -36,71 +50,72 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_profile" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edtName"
+        android:id="@+id/edtNameUser"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="30dp"
         android:drawableLeft="@drawable/ic_person_white_24dp"
+        android:drawablePadding="2dp"
         android:gravity="start"
         android:hint="Full Name"
         android:inputType="textPersonName"
         android:textAlignment="textStart"
-        android:drawablePadding="2dp"
         android:textColor="@color/white"
         android:textColorHint="#fff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@id/view_user" />
 
     <EditText
-        android:id="@+id/edtEmail"
+        android:id="@+id/edtEmailUser"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
-        android:drawablePadding="2dp"
-        android:textColor="@color/white"
         android:drawableLeft="@drawable/ic_email_white_24dp"
+        android:drawablePadding="2dp"
         android:gravity="start"
         android:hint=" Email address"
         android:inputType="textEmailAddress"
         android:textAlignment="viewStart"
+        android:textColor="@color/white"
         android:textColorHint="#fff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtName" />
+        app:layout_constraintTop_toBottomOf="@id/edtNameUser" />
 
     <EditText
-        android:id="@+id/tpass"
+        android:id="@+id/edtAddressUser"
         android:layout_width="0dp"
-        android:drawablePadding="2dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:drawableLeft="@drawable/ic_add_location_white_24dp"
+        android:drawablePadding="2dp"
         android:gravity="start"
         android:hint="Current Address"
         android:inputType="textPostalAddress"
         android:maxHeight="200dp"
         android:minHeight="50dp"
         android:textAlignment="viewStart"
+        android:textColor="@color/white"
         android:textColorHint="#fff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailUser" />
 
     <Button
-        android:id="@+id/b_login"
+        android:id="@+id/btn_save_profile"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
