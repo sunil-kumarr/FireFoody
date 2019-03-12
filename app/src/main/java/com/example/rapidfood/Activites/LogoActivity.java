@@ -1,6 +1,7 @@
 package com.example.rapidfood.Activites;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class LogoActivity extends AppCompatActivity {
     private FirebaseFirestore mFirebaseFirestore;
     private IdentityUser mIdentityUser;
     private static final String TAG = "LogoActivity";
+    ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +55,9 @@ public class LogoActivity extends AppCompatActivity {
         mFirebaseAuth = vFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = vFirebaseInstances.getFirebaseFirestore();
         mPreferenceManager = new PreferenceManager(this);
+        mProgressDialog=new ProgressDialog(this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
 
     }
 
@@ -60,6 +65,7 @@ public class LogoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mProgressDialog.show();
     }
 
     @Override
@@ -73,6 +79,12 @@ public class LogoActivity extends AppCompatActivity {
         } else {
             closeLogoActivity();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mProgressDialog.dismiss();
     }
 
     private void closeLogoActivity() {
@@ -97,7 +109,7 @@ public class LogoActivity extends AppCompatActivity {
         mPreferenceManager.setFirstTimeLaunch(false);
 
         if (mFirebaseUser == null) {
-            Intent myIntent = new Intent(LogoActivity.this, Authentication.class);
+            Intent myIntent = new Intent(LogoActivity.this, AuthJava.class);
             startActivity(myIntent);
             finish();
         } else {

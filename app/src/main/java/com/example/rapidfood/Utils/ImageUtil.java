@@ -1,19 +1,25 @@
 package com.example.rapidfood.Utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 public class ImageUtil {
+    private Context mContext;
     static final Integer GALLERY_REQUEST_CODE = 2973;
 
     public void pickFromGallery(Activity pActivity) {
+        mContext=pActivity.getApplicationContext();
         //Create an Intent with action as ACTION_PICK
         Intent intent = new Intent(Intent.ACTION_PICK);
         // Sets the type as image/*. This ensures only components of type image are selected
@@ -25,6 +31,14 @@ public class ImageUtil {
         pActivity.startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
+    public int getScreenWidth() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager)mContext .getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        display.getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        return width;
+    }
 
     public void showImage(String url, View pView) {
         if (url != null && !url.isEmpty()) {

@@ -35,16 +35,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <Button
-            android:id="@+id/skip"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/blue_500"
-            android:text="Login"
-            android:onClick="Login"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
 
         <View
             android:layout_width="0.5dp"
@@ -58,7 +48,7 @@
             android:layout_weight="1"
             android:background="@color/blue_500"
             android:onClick="next"
-            android:text="SignUp"
+            android:text="Next"
             android:textColor="@android:color/white"
             android:textSize="18dp" />
     </LinearLayout>

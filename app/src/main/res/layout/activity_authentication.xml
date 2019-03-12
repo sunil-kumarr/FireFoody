@@ -14,7 +14,7 @@
             android:id="@+id/first"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_700">
+            android:background="@color/red_600">
 
             <com.shuhart.stepview.StepView
                 android:id="@+id/step_view"

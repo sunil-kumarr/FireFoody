@@ -13,6 +13,7 @@ public class CenterZoomLinearLayoutManager extends LinearLayoutManager {
     private final float mShrinkDistance = 0.9f;
 
     private Context mContext;
+
     public CenterZoomLinearLayoutManager(Context context) {
         super(context);
     }
@@ -20,6 +21,7 @@ public class CenterZoomLinearLayoutManager extends LinearLayoutManager {
     public CenterZoomLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
         mContext=context;
+
     }
 
     @Override
@@ -68,7 +70,7 @@ public class CenterZoomLinearLayoutManager extends LinearLayoutManager {
         float midpoint = getWidth() / 2.f;
         float d0 = 0.f;
         float d1 = mShrinkDistance * midpoint;
-        float s0 = 1.2f;
+        float s0 = 1.f;
         float s1 = 1.f - mShrinkAmount;
 
         for (int i = 0; i < getChildCount(); i++) {

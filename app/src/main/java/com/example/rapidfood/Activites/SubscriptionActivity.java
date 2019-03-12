@@ -7,7 +7,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 
-import com.example.rapidfood.Adapters.SubscriptionAdapter;
+import com.example.rapidfood.Adapters.CreateSubscriptionAdapter;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -58,10 +58,10 @@ public class SubscriptionActivity extends AppCompatActivity {
         setImageSub(vImageView);
 
         mRecyclerView = findViewById(R.id.recyclerView);
-        SubscriptionAdapter vSubscriptionAdapter = new SubscriptionAdapter();
+        CreateSubscriptionAdapter vCreateSubscriptionAdapter = new CreateSubscriptionAdapter();
         mRecyclerView.setLayoutManager(new CenterZoomLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(vSubscriptionAdapter);
+        mRecyclerView.setAdapter(vCreateSubscriptionAdapter);
         mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -82,7 +82,7 @@ public class SubscriptionActivity extends AppCompatActivity {
     }
 
     private void setImageSub(final View pView) {
-        mFirebaseFirestore.collection("subscriptions").document("image")
+        mFirebaseFirestore.collection("poster_images").document("image")
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot pDocumentSnapshot) {

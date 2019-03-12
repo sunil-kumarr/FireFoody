@@ -4,8 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerMenu"
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/recyclerMenu"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:background="@color/grey_200"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center" />-->
+    <include
+        layout="@layout/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />

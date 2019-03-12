@@ -17,6 +17,11 @@
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_attach_money_black_24dp"
             />
+        <item android:id="@+id/packages"
+            android:title="Create Package"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_shopping_basket_black_24dp" />
+
         <item
             android:id="@+id/orders"
             app:showAsAction="ifRoom"

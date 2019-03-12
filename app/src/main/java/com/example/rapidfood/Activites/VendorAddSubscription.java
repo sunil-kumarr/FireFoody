@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.rapidfood.Adapters.SubscriptionAdapter;
+import com.example.rapidfood.Adapters.CreateSubscriptionAdapter;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -48,7 +48,6 @@ public class VendorAddSubscription extends AppCompatActivity {
         if (vActionBar != null) {
             vActionBar.setDisplayShowTitleEnabled(false);
             vActionBar.setDisplayShowHomeEnabled(true);
-            vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
         }
         mFirebaseInstances = new FirebaseInstances();
@@ -63,14 +62,14 @@ public class VendorAddSubscription extends AppCompatActivity {
            }
        });
         mRecyclerView = findViewById(R.id.recyclerView);
-        SubscriptionAdapter vSubscriptionAdapter = new SubscriptionAdapter();
+        CreateSubscriptionAdapter vCreateSubscriptionAdapter = new CreateSubscriptionAdapter();
         mRecyclerView.setLayoutManager(new CenterZoomLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(vSubscriptionAdapter);
+        mRecyclerView.setAdapter(vCreateSubscriptionAdapter);
     }
 
     private void setImageSub(final View pView) {
-        mFirebaseFirestore.collection("subscriptions").document("image")
+        mFirebaseFirestore.collection("poster_images").document("image")
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot pDocumentSnapshot) {

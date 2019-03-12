@@ -9,8 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.rapidfood.R;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 public class MainScreenActivity extends AppCompatActivity {
+    private static final int RC_SIGN_IN = 452;
     PreferenceManager preferenceManager;
     LinearLayout Layout_bars;
     ImageView[] bottomBars;
@@ -37,7 +46,7 @@ public class MainScreenActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(this);
         // if Intro Screen has been already shown then just move to MainActivity From here only
         if (!preferenceManager.FirstLaunch()) {
-            launchMain();
+            startLoginProcess();
         }
         //Get Array of screens to be shown on the intro swipe screen
         screens = new int[]{
@@ -51,7 +60,6 @@ public class MainScreenActivity extends AppCompatActivity {
         //LinearLayout
         Layout_bars = (LinearLayout) findViewById(R.id.layoutBars);
         // Button to show skip option
-        Skip = (Button) findViewById(R.id.skip);
         //Button to show next option
         Next = (Button) findViewById(R.id.next);
 
@@ -78,12 +86,45 @@ public class MainScreenActivity extends AppCompatActivity {
             vp.setCurrentItem(i);
         } else {
             // Start Option
-            launchMain();
+            startLoginProcess();
         }
     }
-    // Directly Start the Main Activity
-    public void Login(View view) {
-        startActivity(new Intent(MainScreenActivity.this, Authentication.class));
+    public void startLoginProcess() {
+
+       callLoginAPI();
+    }
+    private void callLoginAPI(){
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.PhoneBuilder().build());
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Toast.makeText(this, "Verification Done.."+user.getPhoneNumber(), Toast.LENGTH_SHORT).show();
+                preferenceManager.setFirstTimeLaunch(false);
+                // ...
+            } else {
+                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+            }
+        }
     }
 
     private void ColoredBars(int thisScreen) {
@@ -101,12 +142,7 @@ public class MainScreenActivity extends AppCompatActivity {
             bottomBars[thisScreen].setImageResource(R.drawable.active_dot);}
     }
 
-    //SAve Preference and Goto MAinActivity
-    private void launchMain() {
-        preferenceManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(MainScreenActivity.this, MainActivity.class));
-        finish();
-    }
+
 
 
     //Create PAgeChangeListener Object with settings
@@ -119,12 +155,10 @@ public class MainScreenActivity extends AppCompatActivity {
             // if the Shown Screen is the last one
             // Position =2 and Screen=3
             if (position == screens.length - 1) {
-                Next.setText("start");
-                Skip.setVisibility(View.GONE);
+                Next.setText("Login with Phone number");
             } else {
                 // For Screens from 1 -2
                 Next.setText(getString(R.string.next));
-                Skip.setVisibility(View.VISIBLE);
             }
         }
 
