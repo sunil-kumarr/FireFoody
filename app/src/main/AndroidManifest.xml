@@ -52,9 +52,6 @@
             android:name=".Activites.MainScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.Authentication"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activites.ProfileActivity"
             android:parentActivityName=".Activites.MainActivity"
             android:screenOrientation="portrait" />
@@ -64,7 +61,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Activites.SubscriptionActivity" />
         <activity android:name=".Activites.VendorCreatePackage" />
-        <activity android:name=".Activites.AuthJava" />
+        <activity android:name=".Activites.Authentication" />
+
     </application>
 
 </manifest>

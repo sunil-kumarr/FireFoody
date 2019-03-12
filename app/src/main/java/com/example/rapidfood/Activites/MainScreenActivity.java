@@ -90,42 +90,12 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     }
     public void startLoginProcess() {
+        preferenceManager.setFirstTimeLaunch(false);
+        startActivity(new Intent(MainScreenActivity.this,Authentication.class));
+        finish();
 
-       callLoginAPI();
     }
-    private void callLoginAPI(){
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.PhoneBuilder().build());
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, "Verification Done.."+user.getPhoneNumber(), Toast.LENGTH_SHORT).show();
-                preferenceManager.setFirstTimeLaunch(false);
-                // ...
-            } else {
-                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }
 
     private void ColoredBars(int thisScreen) {
         bottomBars = new ImageView[screens.length];
@@ -155,7 +125,7 @@ public class MainScreenActivity extends AppCompatActivity {
             // if the Shown Screen is the last one
             // Position =2 and Screen=3
             if (position == screens.length - 1) {
-                Next.setText("Login with Phone number");
+                Next.setText("let's get started");
             } else {
                 // For Screens from 1 -2
                 Next.setText(getString(R.string.next));

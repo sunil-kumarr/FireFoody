@@ -6,34 +6,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
-import com.example.rapidfood.Utils.IdentityUser;
 import com.example.rapidfood.Utils.PermissionUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Objects;
-
-import static android.os.SystemClock.sleep;
 
 public class LogoActivity extends AppCompatActivity {
 
@@ -42,7 +30,7 @@ public class LogoActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseFirestore mFirebaseFirestore;
-    private IdentityUser mIdentityUser;
+
     private static final String TAG = "LogoActivity";
     ProgressDialog mProgressDialog;
 
@@ -51,7 +39,7 @@ public class LogoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
         FirebaseInstances vFirebaseInstances = new FirebaseInstances();
-        mIdentityUser = new IdentityUser();
+
         mFirebaseAuth = vFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = vFirebaseInstances.getFirebaseFirestore();
         mPreferenceManager = new PreferenceManager(this);
@@ -65,7 +53,6 @@ public class LogoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mProgressDialog.show();
     }
 
     @Override
@@ -89,6 +76,7 @@ public class LogoActivity extends AppCompatActivity {
 
     private void closeLogoActivity() {
 
+
         Handler myHandler=new Handler();
         myHandler.postDelayed(new Runnable() {
             @Override
@@ -109,38 +97,41 @@ public class LogoActivity extends AppCompatActivity {
         mPreferenceManager.setFirstTimeLaunch(false);
 
         if (mFirebaseUser == null) {
-            Intent myIntent = new Intent(LogoActivity.this, AuthJava.class);
+            Intent myIntent = new Intent(LogoActivity.this, Authentication.class);
             startActivity(myIntent);
             finish();
         } else {
-            mFirebaseFirestore.collection("vendors")
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                            boolean user=false;
-                            if (e != null) {
-                                Log.d("DownloadData", "Listen failed.", e);
-                                return;
-                            }
-                            assert value != null;
-                            for (QueryDocumentSnapshot doc : value) {
-                                String vendorId=doc.getString("firebase_id");
-                                assert vendorId != null;
-                                if(mFirebaseUser.getUid().equals(vendorId)){
-                                   user=true;
-                                    startActivity(new Intent(LogoActivity.this, VendorActivity.class));
-                                    finish();
-                                }
-                            }
-                            if(!user) {
-                                startActivity(new Intent(LogoActivity.this, MainActivity.class));
-                                finish();
-                            }
-
-                        }
-                    });
+            identifyUserTypeMethod();
 
         }
+    }
+
+    private void identifyUserTypeMethod() {
+        mProgressDialog.setMessage("Validating...");
+        mProgressDialog.show();
+        mFirebaseFirestore.collection("vendors")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        boolean user=false;
+
+                        assert value != null;
+                        for (QueryDocumentSnapshot doc : value) {
+                            String vendorId=doc.getString("firebase_id");
+                            assert vendorId != null;
+                            if(mFirebaseUser.getUid().equals(vendorId)){
+                               user=true;
+                                startActivity(new Intent(LogoActivity.this, VendorActivity.class));
+                                finish();
+                            }
+                        }
+                        if(!user) {
+                            startActivity(new Intent(LogoActivity.this, MainActivity.class));
+                            finish();
+                        }
+
+                    }
+                });
     }
 
     @Override
