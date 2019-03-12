@@ -1,6 +1,6 @@
 package com.example.rapidfood.Models;
 
-public class VendorMenuItem {
+public class VendorBreakFastItem {
     private String Itemname;
     private String Itemdescription;
     private String s1, s2, s3, s4;
@@ -15,7 +15,7 @@ public class VendorMenuItem {
         ItemCategory = pItemCategory;
     }
 
-    public VendorMenuItem() {
+    public VendorBreakFastItem() {
     }
 
     public String getS1() {

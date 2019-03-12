@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_people_black_24dp"
             android:title="Subscribers" />
         <item android:id="@+id/subscriptions"
-            android:title="Subscription"
+            android:title="Create Subscription"
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_attach_money_black_24dp"
             />
@@ -21,6 +21,10 @@
             android:title="Create Package"
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_shopping_basket_black_24dp" />
+        <item android:id="@+id/package_item"
+            android:title="Create Package item"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_library_add_black_24dp" />
 
         <item
             android:id="@+id/orders"

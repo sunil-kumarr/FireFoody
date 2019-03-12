@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rapidfood.Activites.VendorAddMenu;
 import com.example.rapidfood.Adapters.ShowMenuAdapter;
@@ -14,7 +13,7 @@ import com.example.rapidfood.Adapters.ShowMenuLunchAdapter;
 import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
 import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.Models.SubscriptionModel;
-import com.example.rapidfood.Models.VendorMenuItem;
+import com.example.rapidfood.Models.VendorBreakFastItem;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -40,12 +39,12 @@ import androidx.recyclerview.widget.SnapHelper;
 public class VendorMenuDetails extends Fragment {
     private FloatingActionButton mAddMenuBtn;
     private RecyclerView mBreakfastRecycler, mLunchRecycler, mSubRecycler;
-    private ArrayList<VendorMenuItem> mItems;
+    private ArrayList<VendorBreakFastItem> mItems;
     private FirebaseFirestore mFirebaseFirestore;
     private Context mContext;
     private FirestoreRecyclerAdapter adapter,mMenuAdapter,mLunchAdapter;
     private FirestoreRecyclerOptions<SubscriptionModel> options;
-    private FirestoreRecyclerOptions<VendorMenuItem> mItemOptions;
+    private FirestoreRecyclerOptions<VendorBreakFastItem> mItemOptions;
     private FirestoreRecyclerOptions<PackageModel> mLunchOptions;
 
 
@@ -100,7 +99,7 @@ public class VendorMenuDetails extends Fragment {
                     @Override
                     public PackageModel parseSnapshot(@NonNull DocumentSnapshot snapshot) {
                         PackageModel vModel = new PackageModel();
-                        vModel.setImagePackage(snapshot.getString("imagePackage"));
+                        vModel.setImage(snapshot.getString("image"));
                        // Toast.makeText(mContext, ""+vModel.getImagePackage(), Toast.LENGTH_SHORT).show();
                         return vModel;
                     }
@@ -174,8 +173,8 @@ public class VendorMenuDetails extends Fragment {
         Query query = mFirebaseFirestore
                 .collection("menus");
 
-        mItemOptions = new FirestoreRecyclerOptions.Builder<VendorMenuItem>()
-                .setQuery(query, VendorMenuItem.class).build();
+        mItemOptions = new FirestoreRecyclerOptions.Builder<VendorBreakFastItem>()
+                .setQuery(query, VendorBreakFastItem.class).build();
 
         mMenuAdapter = new ShowMenuAdapter(mItemOptions,mBreakfastRecycler);
         mBreakfastRecycler.post(new Runnable() {

@@ -1,31 +1,24 @@
 package com.example.rapidfood.Adapters;
 
-import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.rapidfood.Models.VendorMenuItem;
+import com.example.rapidfood.Models.VendorBreakFastItem;
 import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ShowMenuAdapter extends FirestoreRecyclerAdapter<VendorMenuItem, ShowMenuAdapter.MenuViewHolder> {
+public class ShowMenuAdapter extends FirestoreRecyclerAdapter<VendorBreakFastItem, ShowMenuAdapter.MenuViewHolder> {
 
     private RecyclerView mRecyclerView;
-    public ShowMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorMenuItem> options,RecyclerView pRecyclerView) {
+    public ShowMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorBreakFastItem> options, RecyclerView pRecyclerView) {
         super(options);
         mRecyclerView=pRecyclerView;
     }
@@ -43,7 +36,7 @@ public class ShowMenuAdapter extends FirestoreRecyclerAdapter<VendorMenuItem, Sh
 
 
     @Override
-    protected void onBindViewHolder(@NonNull MenuViewHolder holder, int pI, @NonNull VendorMenuItem vItem) {
+    protected void onBindViewHolder(@NonNull MenuViewHolder holder, int pI, @NonNull VendorBreakFastItem vItem) {
         holder.name.setText(vItem.getItemname());
         holder.desc.setText(vItem.getItemdescription());
         holder.quant.setText(vItem.getS1());

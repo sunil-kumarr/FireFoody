@@ -35,6 +35,7 @@
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="center"
                 android:padding="10dp"
+                android:textStyle="bold"
                 android:text="Breakfast"
                 android:textColor="@color/red_900"
                 android:textSize="18sp" />

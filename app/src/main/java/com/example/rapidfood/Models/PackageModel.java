@@ -1,25 +1,49 @@
 package com.example.rapidfood.Models;
 
 public class PackageModel {
-    String packageName;
-    String imagePackage;
+    String name;
+    String image;
+    String description;
+   String price;
+   String item_count;
 
-
-
-    public String getPackageName() {
-        return packageName;
+    public String getName() {
+        return name;
     }
 
-    public void setPackageName(String pPackageName) {
-        packageName = pPackageName;
+    public void setName(String pName) {
+        name = pName;
     }
 
-
-    public String getImagePackage() {
-        return imagePackage;
+    public String getImage() {
+        return image;
     }
 
-    public void setImagePackage(String pImagePackage) {
-        imagePackage = pImagePackage;
+    public void setImage(String pImage) {
+        image = pImage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String pDescription) {
+        description = pDescription;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String pPrice) {
+        price = pPrice;
+    }
+
+    public String getItem_count() {
+        return item_count;
+    }
+
+    public void setItem_count(String pItem_count) {
+        item_count = pItem_count;
     }
 }

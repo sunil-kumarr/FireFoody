@@ -121,6 +121,9 @@ public class VendorActivity extends AppCompatActivity implements NavigationView.
             case R.id.packages:
                 startActivity(new Intent(VendorActivity.this,VendorCreatePackage.class));
                 break;
+            case R.id.package_item:
+                startActivity(new Intent(VendorActivity.this,VendorCreateMenuItem.class));
+                break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(VendorActivity.this, Authentication.class));

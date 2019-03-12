@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.rapidfood.Models.VendorMenuItem;
+import com.example.rapidfood.Models.VendorBreakFastItem;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.ImageUtil;
@@ -54,7 +53,7 @@ public class VendorAddMenu extends AppCompatActivity implements View.OnClickList
     private String image;
     private Uri imageUri;
     private ProgressDialog mProgressDialog;
-    private VendorMenuItem mItem;
+    private VendorBreakFastItem mItem;
     private ProgressBar mProgressBar;
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseInstances mFirebaseInstances;
@@ -65,7 +64,7 @@ public class VendorAddMenu extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_add_menu);
+        setContentView(R.layout.activity_vendor_create_breakfast_item);
         Toolbar vToolbar = findViewById(R.id.toolbar_add_menu);
         setSupportActionBar(vToolbar);
         if (getSupportActionBar() != null) {
@@ -76,7 +75,7 @@ public class VendorAddMenu extends AppCompatActivity implements View.OnClickList
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
-        mItem = new VendorMenuItem();
+        mItem = new VendorBreakFastItem();
         mImageUtil=new ImageUtil();
 
         mItemname = findViewById(R.id.item_name);

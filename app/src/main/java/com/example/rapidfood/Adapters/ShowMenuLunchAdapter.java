@@ -36,7 +36,7 @@ public class ShowMenuLunchAdapter extends FirestoreRecyclerAdapter<PackageModel,
     @Override
     protected void onBindViewHolder(@NonNull MenuViewHolder holder, int pI, @NonNull PackageModel vItem) {
         Picasso.get()
-                .load(vItem.getImagePackage())
+                .load(vItem.getImage())
                 .fit()
                 .into(holder.mView);
     }

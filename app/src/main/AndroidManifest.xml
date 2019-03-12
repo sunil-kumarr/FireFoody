@@ -62,6 +62,7 @@
         <activity android:name=".Activites.SubscriptionActivity" />
         <activity android:name=".Activites.VendorCreatePackage" />
         <activity android:name=".Activites.Authentication" />
+        <activity android:name=".Activites.VendorCreateMenuItem" />
 
     </application>
 
