@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.rapidfood.Adapters.PackTypeAdapter;
-import com.example.rapidfood.Models.VendorPackageItem;
+import com.example.rapidfood.Adapters.AddDishPackHelpAdapter;
+import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.ImageUtil;
@@ -59,7 +59,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     private ImageUtil mImageUtil;
     private String image;
     private Uri ImageUri;
-    private VendorPackageItem mVendorPackageItem;
+    private VendorDishModel mVendorDishModel;
     private boolean mImageSelected = false;
 
     @Override
@@ -90,7 +90,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mImageUtil = new ImageUtil();
 
-        mVendorPackageItem = new VendorPackageItem();
+        mVendorDishModel = new VendorDishModel();
         getPackList();
 
 
@@ -109,8 +109,8 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
     private void createPackItem() {
         if (mImageSelected && EmptyString(mName) && EmptyString(mDesc)) {
-            mVendorPackageItem.setName(mName.getText().toString());
-            mVendorPackageItem.setDescription(mDesc.getText().toString());
+            mVendorDishModel.setName(mName.getText().toString());
+            mVendorDishModel.setDescription(mDesc.getText().toString());
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
@@ -197,10 +197,10 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     }
 
     private void addItemToFireStore(String CollectionName, String imageId) {
-        mVendorPackageItem.setImage(imageId);
+        mVendorDishModel.setImage(imageId);
         mFirebaseFirestore.collection(CollectionName)
-                .document(mVendorPackageItem.getName())
-                .set(mVendorPackageItem)
+                .document(mVendorDishModel.getName())
+                .set(mVendorDishModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> pTask) {
@@ -221,9 +221,9 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
                             pack.add(doc.getString("name"));
                             Toast.makeText(VendorAddDish.this, ""+doc.getString("name"), Toast.LENGTH_SHORT).show();
                         }
-                         mListView.setAdapter(new PackTypeAdapter(VendorAddDish.this,
+                         mListView.setAdapter(new AddDishPackHelpAdapter(VendorAddDish.this,
                                  R.layout.list_item_checkbox_style,pack));
-                        mVendorPackageItem.setPacklist(pack);
+                        mVendorDishModel.setPacklist(pack);
                     }
                 });
     }

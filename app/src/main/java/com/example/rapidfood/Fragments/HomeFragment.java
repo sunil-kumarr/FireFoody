@@ -1,14 +1,12 @@
 package com.example.rapidfood.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rapidfood.Vendor_files.VendorAddBreakfast;
-import com.example.rapidfood.Adapters.ShowMenuAdapter;
+import com.example.rapidfood.Adapters.ShowMenuBreakfastAdapter;
 import com.example.rapidfood.Adapters.ShowMenuLunchAdapter;
 import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
 import com.example.rapidfood.Models.PackageModel;
@@ -77,7 +75,7 @@ public class HomeFragment extends Fragment {
 
     private void initLunchRecyclerView() {
         mLunchRecycler.setHasFixedSize(true);
-        final LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+        final LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mLunchRecycler.setLayoutManager(llm);
         final SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(mLunchRecycler);
@@ -156,7 +154,7 @@ public class HomeFragment extends Fragment {
 
     private void initBreakfastRecyclerView() {
         mBreakfastRecycler.setHasFixedSize(true);
-        final LinearLayoutManager llm = new CenterZoomLinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+        final LinearLayoutManager llm = new CenterZoomLinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mBreakfastRecycler.setLayoutManager(llm);
         final SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(mBreakfastRecycler);
@@ -170,7 +168,7 @@ public class HomeFragment extends Fragment {
         mItemOptions = new FirestoreRecyclerOptions.Builder<VendorBreakFastItem>()
                 .setQuery(query, VendorBreakFastItem.class).build();
 
-        mMenuAdapter = new ShowMenuAdapter(mItemOptions,mBreakfastRecycler);
+        mMenuAdapter = new ShowMenuBreakfastAdapter(mItemOptions,mBreakfastRecycler);
         mBreakfastRecycler.post(new Runnable() {
             @Override
             public void run() {

@@ -20,6 +20,7 @@ import com.example.rapidfood.Vendor_files.DashboardActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -75,6 +76,7 @@ public class LogoActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mProgressDialog.dismiss();
+
     }
 
     private void closeLogoActivity() {
@@ -112,8 +114,8 @@ public class LogoActivity extends AppCompatActivity {
     private void identifyUserTypeMethod() {
         mProgressDialog.setMessage("Validating...");
         mProgressDialog.show();
-        mFirebaseFirestore.collection("vendors")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+       CollectionReference vCollectionReference= mFirebaseFirestore.collection("vendors");
+               vCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
                         boolean user=false;
@@ -138,6 +140,7 @@ public class LogoActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissionsG, int[] grantResults) {

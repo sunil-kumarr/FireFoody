@@ -13,12 +13,12 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class PackTypeAdapter extends ArrayAdapter {
+public class AddDishPackHelpAdapter extends ArrayAdapter {
     static class viewHolder {
        CheckBox mCheckBox;
     }
     List<String> packs;
-    public PackTypeAdapter(@NonNull Context context, int resource, List<String> packs) {
+    public AddDishPackHelpAdapter(@NonNull Context context, int resource, List<String> packs) {
         super(context, resource);
         this.packs=packs;
     }

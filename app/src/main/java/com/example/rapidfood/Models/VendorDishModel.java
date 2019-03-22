@@ -2,7 +2,7 @@ package com.example.rapidfood.Models;
 
 import java.util.List;
 
-public class VendorPackageItem {
+public class VendorDishModel {
     String name;
     String description;
     String image;

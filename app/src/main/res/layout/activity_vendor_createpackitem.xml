@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        app:title="Add Menu Item"
+        app:title="Add dishes"
         app:titleTextColor="@color/black" />
 
 
@@ -26,8 +26,7 @@
             android:id="@+id/image_container"
             android:layout_width="150dp"
             android:layout_height="230dp"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
             android:background="@color/grey_500"
             android:elevation="5dp"
             android:maxHeight="200dp"
@@ -60,7 +59,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
+            android:layout_margin="20dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/item_name"

@@ -15,17 +15,19 @@ import com.squareup.picasso.Picasso;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ShowMenuAdapter extends FirestoreRecyclerAdapter<VendorBreakFastItem, ShowMenuAdapter.MenuViewHolder> {
+public class ShowMenuBreakfastAdapter extends FirestoreRecyclerAdapter<VendorBreakFastItem, ShowMenuBreakfastAdapter.MenuViewHolder> {
 
     private RecyclerView mRecyclerView;
-    public ShowMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorBreakFastItem> options, RecyclerView pRecyclerView) {
+    public ShowMenuBreakfastAdapter(@NonNull FirestoreRecyclerOptions<VendorBreakFastItem> options, RecyclerView pRecyclerView) {
         super(options);
         mRecyclerView=pRecyclerView;
+
     }
+
     @NonNull
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.vendor_menu_item,parent,false);
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.vendor_dishitem_layout,parent,false);
         int width = mRecyclerView.getWidth();
         ViewGroup.LayoutParams params = itemView.getLayoutParams();
         params.width = (int) (width * 0.8);
@@ -51,9 +53,8 @@ public class ShowMenuAdapter extends FirestoreRecyclerAdapter<VendorBreakFastIte
             super(itemView);
             name=itemView.findViewById(R.id.item_Name);
             desc=itemView.findViewById(R.id.item_Desc);
-            quant=itemView.findViewById(R.id.item_Quant);
+            quant=itemView.findViewById(R.id.dish_quantity);
             mView=itemView.findViewById(R.id.item_Image);
-            category=itemView.findViewById(R.id.item_Category);
         }
         void showImage(String url) {
             if (url != null && !url.isEmpty()) {
