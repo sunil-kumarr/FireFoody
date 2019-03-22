@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red_500">
+    android:background="@drawable/gradient_logo_screen">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="LOGO"
+        android:text="RapidFood"
         android:textSize="50sp"
         android:textColor="@color/white"
         android:gravity="center"

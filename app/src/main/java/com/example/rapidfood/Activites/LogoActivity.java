@@ -13,8 +13,11 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
+import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.PermissionUtils;
+import com.example.rapidfood.Vendor_files.DashboardActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.EventListener;
@@ -64,7 +67,7 @@ public class LogoActivity extends AppCompatActivity {
         if (PermissionUtils.shouldAskForPermission(LogoActivity.this, permissionsG[0])) {
             PermissionUtils.requestActivityPermissions(LogoActivity.this, permissionsG, REQUEST_PERMISSION_KEY);
         } else {
-            closeLogoActivity();
+           closeLogoActivity();
         }
     }
 
@@ -121,12 +124,14 @@ public class LogoActivity extends AppCompatActivity {
                             assert vendorId != null;
                             if(mFirebaseUser.getUid().equals(vendorId)){
                                user=true;
-                                startActivity(new Intent(LogoActivity.this, VendorActivity.class));
+                                startActivity(new Intent(LogoActivity.this, DashboardActivity.class));
+                                mProgressDialog.dismiss();
                                 finish();
                             }
                         }
                         if(!user) {
                             startActivity(new Intent(LogoActivity.this, MainActivity.class));
+                            mProgressDialog.dismiss();
                             finish();
                         }
 

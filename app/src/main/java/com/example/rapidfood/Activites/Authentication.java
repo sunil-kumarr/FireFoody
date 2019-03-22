@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
+import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Vendor_files.DashboardActivity;
+
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,6 +60,8 @@ public class Authentication extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setLogo(R.drawable.applogo_small)
+                        .setTheme(R.style.AuthTheme)
                         .build(),
                 RC_SIGN_IN);
     }
@@ -104,7 +109,7 @@ public class Authentication extends AppCompatActivity {
                             if(mFirebaseUser.getUid().equals(vendorId)){
                                 user=true;
                                 mProgressDialog.dismiss();
-                                startActivity(new Intent(Authentication.this, VendorActivity.class));
+                                startActivity(new Intent(Authentication.this, DashboardActivity.class));
                                 finish();
                             }
                         }

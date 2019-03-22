@@ -1,4 +1,4 @@
-package com.example.rapidfood.Activites;
+package com.example.rapidfood.User_files;
 
 
 import android.app.Activity;

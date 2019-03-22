@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.rapidfood.Activites.VendorAddMenu;
+import com.example.rapidfood.Vendor_files.VendorAddBreakfast;
 import com.example.rapidfood.Adapters.ShowMenuAdapter;
 import com.example.rapidfood.Adapters.ShowMenuLunchAdapter;
 import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
@@ -36,7 +36,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-public class VendorMenuDetails extends Fragment {
+public class HomeFragment extends Fragment {
     private FloatingActionButton mAddMenuBtn;
     private RecyclerView mBreakfastRecycler, mLunchRecycler, mSubRecycler;
     private ArrayList<VendorBreakFastItem> mItems;
@@ -59,19 +59,13 @@ public class VendorMenuDetails extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.vendor_menu_details, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAddMenuBtn = view.findViewById(R.id.addMenuButton);
-        mAddMenuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), VendorAddMenu.class));
-            }
-        });
+
         mBreakfastRecycler = view.findViewById(R.id.recyclerMenuBreak);
         mSubRecycler = view.findViewById(R.id.subscription_recycler);
         mLunchRecycler=view.findViewById(R.id.recyclerMenuLunch);

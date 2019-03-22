@@ -1,4 +1,4 @@
-package com.example.rapidfood.Activites;
+package com.example.rapidfood.Vendor_files;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -38,7 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class VendorAddMenu extends AppCompatActivity implements View.OnClickListener {
+public class VendorAddBreakfast extends AppCompatActivity implements View.OnClickListener {
 
 
     static final Integer BREAKFAST = 1;
@@ -126,7 +126,7 @@ public class VendorAddMenu extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_container:
-                mImageUtil.pickFromGallery(VendorAddMenu.this);
+                mImageUtil.pickFromGallery(VendorAddBreakfast.this);
                 break;
             case R.id.submitMenu:
                 Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();

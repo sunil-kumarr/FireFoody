@@ -21,18 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activites.VendorCreateSubscription"
-            android:parentActivityName=".Activites.VendorAddSubscription"
+            android:name=".Vendor_files.VendorCreateSubscription"
+            android:parentActivityName=".Vendor_files.VendorAddSubscription"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.VendorAddSubscription"
-            android:parentActivityName=".Activites.VendorActivity"
+            android:name=".Vendor_files.VendorAddSubscription"
+            android:parentActivityName=".Vendor_files.VendorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.VendorActivity"
+            android:name=".Vendor_files.VendorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.MainActivity"
+            android:name=".User_files.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -52,17 +52,19 @@
             android:name=".Activites.MainScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.ProfileActivity"
-            android:parentActivityName=".Activites.MainActivity"
+            android:name=".User_files.ProfileActivity"
+            android:parentActivityName=".User_files.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activites.VendorAddMenu"
-            android:parentActivityName=".Activites.VendorActivity"
+            android:name=".Vendor_files.VendorAddBreakfast"
+            android:parentActivityName=".Vendor_files.VendorActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activites.SubscriptionActivity" />
-        <activity android:name=".Activites.VendorCreatePackage" />
+        <activity android:name=".User_files.SubscriptionActivity" />
+        <activity android:name=".Vendor_files.VendorCreatePackage" />
         <activity android:name=".Activites.Authentication" />
-        <activity android:name=".Activites.VendorCreateMenuItem" />
+        <activity android:name=".Vendor_files.VendorAddDish" />
+        <activity android:name=".Vendor_files.DashboardActivity" />
+        <activity android:name=".Vendor_files.UserPreviewActivity" />
 
     </application>
 

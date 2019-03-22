@@ -1,4 +1,4 @@
-package com.example.rapidfood.Activites;
+package com.example.rapidfood.Vendor_files;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,6 +57,7 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_create_subscription);
+
         Toolbar vToolbar = findViewById(R.id.toolbar_add_menu);
         setSupportActionBar(vToolbar);
         if (getSupportActionBar() != null) {

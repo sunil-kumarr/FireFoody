@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/profile_back"
     android:orientation="vertical"
-    tools:context=".Activites.ProfileActivity">
+    tools:context=".User_files.ProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"

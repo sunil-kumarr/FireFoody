@@ -1,4 +1,4 @@
-package com.example.rapidfood.Models;
+package com.example.rapidfood.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,24 +1,17 @@
-package com.example.rapidfood.Activites;
+package com.example.rapidfood.User_files;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
 
 import com.example.rapidfood.Adapters.CreateSubscriptionAdapter;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,8 +19,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-public class VendorAddSubscription extends AppCompatActivity {
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+public class SubscriptionActivity extends AppCompatActivity {
 
     private FirebaseStorage mFirebaseStorage;
     private FirebaseInstances mFirebaseInstances;
@@ -35,12 +36,12 @@ public class VendorAddSubscription extends AppCompatActivity {
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseUser mFirebaseUser;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton mButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_add_subscription);
+        setContentView(R.layout.subscription_main);
+
         ImageView vImageView = findViewById(R.id.imageView);
         Toolbar mToolbar = findViewById(R.id.toolbar_subscription);
         setSupportActionBar(mToolbar);
@@ -48,24 +49,37 @@ public class VendorAddSubscription extends AppCompatActivity {
         if (vActionBar != null) {
             vActionBar.setDisplayShowTitleEnabled(false);
             vActionBar.setDisplayShowHomeEnabled(true);
+            vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
         }
+
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         setImageSub(vImageView);
-       mButton= findViewById(R.id.btn_add_subscription);
-       mButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               startActivity(new Intent(VendorAddSubscription.this,VendorCreateSubscription.class));
-           }
-       });
+
         mRecyclerView = findViewById(R.id.recyclerView);
         CreateSubscriptionAdapter vCreateSubscriptionAdapter = new CreateSubscriptionAdapter();
         mRecyclerView.setLayoutManager(new CenterZoomLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(vCreateSubscriptionAdapter);
+        mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Animation anim = AnimationUtils.loadAnimation(SubscriptionActivity.this, R.anim.scale_in);
+                    v.startAnimation(anim);
+                    ViewCompat.setElevation(v, 20);
+                    anim.setFillAfter(true);
+
+                } else {
+                    Animation anim = AnimationUtils.loadAnimation(SubscriptionActivity.this, R.anim.scale_out);
+                    v.startAnimation(anim);
+                    ViewCompat.setElevation(v, 4);
+                    anim.setFillAfter(true);
+                }
+            }
+        });
     }
 
     private void setImageSub(final View pView) {
@@ -82,4 +96,5 @@ public class VendorAddSubscription extends AppCompatActivity {
             }
         });
     }
+
 }

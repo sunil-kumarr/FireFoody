@@ -1,4 +1,8 @@
-package com.example.rapidfood.Activites;
+package com.example.rapidfood.Vendor_files;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,12 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.rapidfood.Models.PackTypeAdapter;
 import com.example.rapidfood.Models.PackageModel;
-import com.example.rapidfood.Models.VendorPackageItem;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.ImageUtil;
@@ -24,12 +25,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -37,22 +34,14 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+public class VendorCreatePackage extends AppCompatActivity implements View.OnClickListener {
 
-public class VendorCreateMenuItem extends AppCompatActivity implements View.OnClickListener {
     private ImageView mImageView;
-    private EditText mName, mDesc;
+    private EditText mPackName,mDesc,mItemCount,mPrice;
     private Button mCreateBtn;
-    private ListView mListView;
     private FrameLayout mFrameLayout;
-    private MaterialCardView mMaterialCardView;
     private FirebaseInstances mFirebaseInstances;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
@@ -61,15 +50,14 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
     private ImageUtil mImageUtil;
     private String image;
     private Uri ImageUri;
-    private VendorPackageItem mVendorPackageItem;
-    private boolean mImageSelected = false;
+    private PackageModel mPackageModel;
+    private boolean mImageSelected=false;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_createpackitem);
-
-
+        setContentView(R.layout.activity_vendor_create_package);
+        
         Toolbar vToolbar = findViewById(R.id.toolbar_add_menu);
         setSupportActionBar(vToolbar);
         if (getSupportActionBar() != null) {
@@ -78,24 +66,23 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
         }
-        mCreateBtn = findViewById(R.id.sub_create_btn);
-        mImageView = findViewById(R.id.sub_image);
-        mMaterialCardView = findViewById(R.id.image_container);
-        mListView = findViewById(R.id.pack_type_list);
-        mName = findViewById(R.id.item_name);
-        mDesc = findViewById(R.id.item_desc);
-        mFrameLayout=findViewById(R.id.frame_layout);
-
+        
+        mCreateBtn=findViewById(R.id.sub_create_btn);
+        mImageView=findViewById(R.id.sub_image);
+        mPackName=findViewById(R.id.pack_name);
+        mFrameLayout=findViewById(R.id.container_frame);
+        mDesc=findViewById(R.id.pack_details);
+        mItemCount=findViewById(R.id.pack_item_Count);
+        mPrice=findViewById(R.id.pack_price);
+        
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
-        mImageUtil = new ImageUtil();
-
-        mVendorPackageItem = new VendorPackageItem();
-        getPackList();
-
-
+        mImageUtil=new ImageUtil();
+        mPackageModel=new PackageModel();
+        
+      
         mFrameLayout.setOnClickListener(this);
         mCreateBtn.setOnClickListener(this);
     }
@@ -109,29 +96,33 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
         return true;
     }
 
-    private void createPackItem() {
-        if (mImageSelected && EmptyString(mName) && EmptyString(mDesc)) {
-            mVendorPackageItem.setName(mName.getText().toString());
-            mVendorPackageItem.setDescription(mDesc.getText().toString());
+    private void createPackage() {
+        if (mImageSelected&& EmptyString(mPackName) &&EmptyString(mPrice)&& EmptyString(mItemCount)&& EmptyString(mDesc))
+        {
+            mPackageModel.setName(mPackName.getText().toString());
+            mPackageModel.setItem_count(mItemCount.getText().toString());
+            mPackageModel.setDescription(mDesc.getText().toString());
+            mPackageModel.setPrice(mPrice.getText().toString());
+
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.show();
-            UploadImageToFirebase(ImageUri, "package_menu_item");
+            UploadImageToFirebase(ImageUri, "packages");
         }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.frame_layout:
+            case R.id.container_frame:
                 Toast.makeText(this, "Select image", Toast.LENGTH_SHORT).show();
-                mImageUtil.pickFromGallery(VendorCreateMenuItem.this);
+                mImageUtil.pickFromGallery(VendorCreatePackage.this);
                 break;
             case R.id.sub_create_btn:
-                Toast.makeText(this, "creating item", Toast.LENGTH_SHORT).show();
-                createPackItem();
+                Toast.makeText(this, "creating package", Toast.LENGTH_SHORT).show();
+                createPackage();
                 break;
         }
     }
@@ -159,7 +150,7 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
 
     private void UploadImageToFirebase(Uri pImageUri, final String CollectionName) {
         Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
-        final StorageReference ref = mFirebaseStorage.getReference().child("package_item_image/" + image);
+        final StorageReference ref = mFirebaseStorage.getReference().child("package_image/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -186,8 +177,8 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(@NonNull Uri downloadUri) {
-                        String imageId = downloadUri.toString();
-                        addItemToFireStore(CollectionName, imageId);
+                        String imageId=downloadUri.toString();
+                        addItemToFireStore(CollectionName,imageId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -197,36 +188,17 @@ public class VendorCreateMenuItem extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
-
-    private void addItemToFireStore(String CollectionName, String imageId) {
-        mVendorPackageItem.setImage(imageId);
+    private void addItemToFireStore(String CollectionName,String imageId) {
+        mPackageModel.setImage(imageId);
         mFirebaseFirestore.collection(CollectionName)
-                .document(mVendorPackageItem.getName())
-                .set(mVendorPackageItem)
+                .document(mPackageModel.getName())
+                .set(mPackageModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> pTask) {
                         finish();
-                        mProgressDialog.dismiss();
                     }
                 });
-
-    }
-
-    private void getPackList() {
-        mFirebaseFirestore.collection("packages").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
-                        List<String> pack = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
-                            pack.add(doc.getString("name"));
-                            Toast.makeText(VendorCreateMenuItem.this, ""+doc.getString("name"), Toast.LENGTH_SHORT).show();
-                        }
-                         mListView.setAdapter(new PackTypeAdapter(VendorCreateMenuItem.this,
-                                 R.layout.list_item_checkbox_style,pack));
-                        mVendorPackageItem.setPacklist(pack);
-                    }
-                });
+        mProgressDialog.dismiss();
     }
 }

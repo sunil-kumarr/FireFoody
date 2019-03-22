@@ -3,7 +3,15 @@
     <string name="next">Next</string>
     <string name="description">All your food at rapid rate</string>
     <string name="title_activity_login">Sign in</string>
+
+
+
+    
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
     <!-- Strings related to login -->
+    <string name="login_terms">By logging in you agree to RapidFood Terms of Services,</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
