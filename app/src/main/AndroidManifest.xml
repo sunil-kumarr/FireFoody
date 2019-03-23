@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Vendor_files.VendorTodayMenuActivity"></activity>
         <activity
             android:name=".Vendor_files.VendorCreateSubscription"
             android:parentActivityName=".Vendor_files.VendorAddSubscription"
@@ -65,7 +66,6 @@
         <activity android:name=".Vendor_files.VendorAddDish" />
         <activity android:name=".Vendor_files.DashboardActivity" />
         <activity android:name=".Vendor_files.UserPreviewActivity" />
-
     </application>
 
 </manifest>

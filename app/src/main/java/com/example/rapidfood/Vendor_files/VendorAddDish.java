@@ -46,26 +46,32 @@ import androidx.appcompat.widget.Toolbar;
 
 public class VendorAddDish extends AppCompatActivity implements View.OnClickListener {
     private ImageView mImageView;
-    private EditText mName, mDesc;
+    private EditText mName, mDesc, mPrice;
     private Button mCreateBtn;
     private ListView mListView;
     private FrameLayout mFrameLayout;
     private MaterialCardView mMaterialCardView;
+
+
     private FirebaseInstances mFirebaseInstances;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private FirebaseFirestore mFirebaseFirestore;
+
+
     private ProgressDialog mProgressDialog;
     private ImageUtil mImageUtil;
     private String image;
     private Uri ImageUri;
     private VendorDishModel mVendorDishModel;
     private boolean mImageSelected = false;
+    private AddDishPackHelpAdapter mAddDishPackHelpAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_createpackitem);
+        setContentView(R.layout.activity_vendor_add_dish);
 
 
         Toolbar vToolbar = findViewById(R.id.toolbar_add_menu);
@@ -76,13 +82,14 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
         }
-        mCreateBtn = findViewById(R.id.sub_create_btn);
-        mImageView = findViewById(R.id.sub_image);
+        mCreateBtn = findViewById(R.id.item_create_btn);
+        mImageView = findViewById(R.id.item_image);
         mMaterialCardView = findViewById(R.id.image_container);
         mListView = findViewById(R.id.pack_type_list);
         mName = findViewById(R.id.item_name);
         mDesc = findViewById(R.id.item_desc);
-        mFrameLayout=findViewById(R.id.frame_layout);
+        mFrameLayout = findViewById(R.id.frame_layout);
+        mPrice = findViewById(R.id.item_price);
 
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
@@ -92,7 +99,6 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
         mVendorDishModel = new VendorDishModel();
         getPackList();
-
 
         mFrameLayout.setOnClickListener(this);
         mCreateBtn.setOnClickListener(this);
@@ -108,15 +114,21 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     }
 
     private void createPackItem() {
-        if (mImageSelected && EmptyString(mName) && EmptyString(mDesc)) {
+        if (mImageSelected && EmptyString(mName) && EmptyString(mDesc) && EmptyString(mPrice)) {
             mVendorDishModel.setName(mName.getText().toString());
             mVendorDishModel.setDescription(mDesc.getText().toString());
+            try {
+                mVendorDishModel.setMoney(mPrice.getText().toString());
+            }
+            catch (NumberFormatException e){
+                Toast.makeText(this, "Please Enter Valid number", Toast.LENGTH_SHORT).show();
+            }
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.show();
-            UploadImageToFirebase(ImageUri, "package_menu_item");
+            UploadImageToFirebase(ImageUri, "dishes_main");
         }
     }
 
@@ -127,7 +139,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "Select image", Toast.LENGTH_SHORT).show();
                 mImageUtil.pickFromGallery(VendorAddDish.this);
                 break;
-            case R.id.sub_create_btn:
+            case R.id.item_create_btn:
                 Toast.makeText(this, "creating item", Toast.LENGTH_SHORT).show();
                 createPackItem();
                 break;
@@ -198,14 +210,31 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
     private void addItemToFireStore(String CollectionName, String imageId) {
         mVendorDishModel.setImage(imageId);
+        if(mAddDishPackHelpAdapter!=null) {
+            Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
+            for(String s:mAddDishPackHelpAdapter.getSelectedPacks())
+            {
+                if(s.equals("Breakfast")){
+                    mVendorDishModel.setItemcategory(0);
+                }
+                else{
+                    mVendorDishModel.setItemcategory(1);
+                }
+            }
+            mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
+        }
+        else{
+            Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
+        }
         mFirebaseFirestore.collection(CollectionName)
                 .document(mVendorDishModel.getName())
                 .set(mVendorDishModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> pTask) {
-                        finish();
                         mProgressDialog.dismiss();
+                        finish();
+
                     }
                 });
 
@@ -216,14 +245,14 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
-                        List<String> pack = new ArrayList<>();
+                        final List<String> pack = new ArrayList<>();
+                        pack.add("Breakfast");
                         for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
                             pack.add(doc.getString("name"));
-                            Toast.makeText(VendorAddDish.this, ""+doc.getString("name"), Toast.LENGTH_SHORT).show();
                         }
-                         mListView.setAdapter(new AddDishPackHelpAdapter(VendorAddDish.this,
-                                 R.layout.list_item_checkbox_style,pack));
-                        mVendorDishModel.setPacklist(pack);
+                        mAddDishPackHelpAdapter=new AddDishPackHelpAdapter(VendorAddDish.this,
+                                R.layout.list_item_checkbox_style, pack);
+                        mListView.setAdapter(mAddDishPackHelpAdapter);
                     }
                 });
     }

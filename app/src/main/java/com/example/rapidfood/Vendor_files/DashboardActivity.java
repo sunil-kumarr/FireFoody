@@ -29,6 +29,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private MaterialCardView mAddDishBtn;
     private MaterialCardView mDeliveryOrderBtn;
     private MaterialCardView mUserView;
+    private MaterialCardView mTodayMenu;
     private MaterialCardView mSubsriberBtn;
     FirebaseInstances mFirebaseInstances;
     FirebaseAuth mFirebaseAuth;
@@ -48,11 +49,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCreatePackBtn = findViewById(R.id.vendor_create_packs);
         mAddDishBtn = findViewById(R.id.vendor_add_dish);
         mUserView=findViewById(R.id.vendor_user_view);
+        mTodayMenu=findViewById(R.id.vendor_today_menu);
 
         mCreatePackBtn.setOnClickListener(this);
         mUserView.setOnClickListener(this);
         mAddDishBtn.setOnClickListener(this);
         mCreateSubBtn.setOnClickListener(this);
+        mTodayMenu.setOnClickListener(this);
 
         setSupportActionBar(mToolbar);
         ActionBar vActionBar = getSupportActionBar();
@@ -88,6 +91,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.vendor_add_dish:
                 startActivity(new Intent(DashboardActivity.this, VendorAddDish.class));
+                break;
+            case R.id.vendor_today_menu:
+                startActivity(new Intent(DashboardActivity.this, VendorTodayMenuActivity.class));
                 break;
         }
     }

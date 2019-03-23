@@ -6,14 +6,16 @@ public class VendorDishModel {
     String name;
     String description;
     String image;
+     String money;
+    Integer itemcategory;
     List<String> packlist;
 
-    public List<String> getPacklist() {
-        return packlist;
+    public String getMoney() {
+        return money;
     }
 
-    public void setPacklist(List<String> pPacklist) {
-        packlist = pPacklist;
+    public void setMoney(String pMoney) {
+        money = pMoney;
     }
 
     public String getName() {
@@ -38,5 +40,21 @@ public class VendorDishModel {
 
     public void setImage(String pImage) {
         image = pImage;
+    }
+
+    public Integer getItemcategory() {
+        return itemcategory;
+    }
+
+    public void setItemcategory(Integer pItemcategory) {
+        itemcategory = pItemcategory;
+    }
+
+    public List<String> getPacklist() {
+        return packlist;
+    }
+
+    public void setPacklist(List<String> pPacklist) {
+        packlist = pPacklist;
     }
 }
