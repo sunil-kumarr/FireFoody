@@ -13,6 +13,8 @@ import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +22,7 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
 
     private RecyclerView mRecyclerview;
     private Context mContext;
+    private List<VendorDishModel> mBreakfastList;
 
     public SelectTodayMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorDishModel> options,
                                    RecyclerView pRecylerView,Context pContext) {
@@ -29,7 +32,12 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
         Toast.makeText(pContext, ""+options.getSnapshots().size(), Toast.LENGTH_SHORT).show();
 
     }
-
+    @Override
+    public TodayViewHolder onCreateViewHolder(ViewGroup group, int i) {
+        View view = LayoutInflater.from(group.getContext())
+                .inflate(R.layout.today_menu_item_layout, group, false);
+        return new TodayViewHolder(view);
+    }
 
     @Override
     protected void onBindViewHolder(@NonNull TodayViewHolder pTodayViewHolder,
@@ -39,12 +47,7 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
        //pTodayViewHolder.mCheckBox.getResources().getColor(R.color.black);
     }
 
-    @Override
-    public TodayViewHolder onCreateViewHolder(ViewGroup group, int i) {
-        View view = LayoutInflater.from(group.getContext())
-                .inflate(R.layout.today_menu_item_layout, group, false);
-        return new TodayViewHolder(view);
-    }
+
 
     @Override
     public int getItemCount() {
@@ -56,15 +59,19 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
         return super.getItemViewType(position);
     }
 
-    class TodayViewHolder extends RecyclerView.ViewHolder {
+    class TodayViewHolder extends RecyclerView.ViewHolder  {
         CheckBox mCheckBox;
 
         TodayViewHolder(@NonNull View itemView) {
             super(itemView);
             mCheckBox = itemView.findViewById(R.id.pack_item_type);
-        }
-    }
 
+        }
+
+    }
+    interface  clicklictener {
+        List<VendorDishModel> onSelected();
+    }
 
 }
 

@@ -2,7 +2,7 @@ package com.example.rapidfood.Models;
 
 import java.util.List;
 
-public class VendorDishModel {
+public class VendorDishModel implements Comparable<VendorDishModel>{
     String name;
     String description;
     String image;
@@ -56,5 +56,11 @@ public class VendorDishModel {
 
     public void setPacklist(List<String> pPacklist) {
         packlist = pPacklist;
+    }
+
+    @Override
+    public int compareTo(VendorDishModel dish) {
+        return (this.getItemcategory() < dish.getItemcategory() ? -1 :
+            (this.getItemcategory().equals(dish.getItemcategory())? 0 : 1));
     }
 }

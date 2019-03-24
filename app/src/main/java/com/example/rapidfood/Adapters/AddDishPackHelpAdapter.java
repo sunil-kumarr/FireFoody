@@ -18,14 +18,6 @@ import androidx.annotation.NonNull;
 public class AddDishPackHelpAdapter extends ArrayAdapter {
     static class viewHolder {
        CheckBox mCheckBox;
-
-        public CheckBox getCheckBox() {
-            return mCheckBox;
-        }
-
-        public void setCheckBox(CheckBox pCheckBox) {
-            mCheckBox = pCheckBox;
-        }
     }
     private Context mContext;
     private List<String> mSelected;
