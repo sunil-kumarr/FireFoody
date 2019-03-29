@@ -3,6 +3,9 @@ package com.example.rapidfood.Models;
 import java.util.List;
 
 public class VendorDishModel implements Comparable<VendorDishModel>{
+
+    final static Integer TYPE=2;
+
     String name;
     String description;
     String image;

@@ -13,25 +13,36 @@ import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishModel, SelectTodayMenuAdapter.TodayViewHolder> {
+public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishModel, TodayViewHolder> {
 
     private RecyclerView mRecyclerview;
     private Context mContext;
-    private List<VendorDishModel> mBreakfastList;
+    private List<VendorDishModel> mSelectedItems;
 
     public SelectTodayMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorDishModel> options,
-                                   RecyclerView pRecylerView,Context pContext) {
+                                  RecyclerView pRecylerView, Context pContext) {
         super(options);
-        mContext=pContext;
-        mRecyclerview=pRecylerView;
-        Toast.makeText(pContext, ""+options.getSnapshots().size(), Toast.LENGTH_SHORT).show();
-
+        mContext = pContext;
+        mRecyclerview = pRecylerView;
+        mSelectedItems=new ArrayList<>();
     }
+
+    public List<VendorDishModel> getSelectedItems() {
+        return mSelectedItems;
+    }
+
+    @NonNull
+    @Override
+    public VendorDishModel getItem(int position) {
+        return super.getItem(position);
+    }
+
     @Override
     public TodayViewHolder onCreateViewHolder(ViewGroup group, int i) {
         View view = LayoutInflater.from(group.getContext())
@@ -40,13 +51,33 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull TodayViewHolder pTodayViewHolder,
-                                    int pI, @NonNull VendorDishModel pVendorBreakFastItem) {
-        Toast.makeText(mContext, ""+pVendorBreakFastItem.getName(), Toast.LENGTH_SHORT).show();
-       pTodayViewHolder.mCheckBox.setText(pVendorBreakFastItem.getName());
-       //pTodayViewHolder.mCheckBox.getResources().getColor(R.color.black);
-    }
+    protected void onBindViewHolder(@NonNull final TodayViewHolder pTodayViewHolder,
+                                    final int pI, @NonNull VendorDishModel pVendorDishModel) {
 
+        pTodayViewHolder.mCheckBox.setText(pVendorDishModel.getName());
+        pTodayViewHolder.mTextView.setText(pVendorDishModel.getMoney());
+        String ty=new String();
+        if(pVendorDishModel.getItemcategory()==0)ty="( B )";
+        else ty="( L )";
+        pTodayViewHolder.typeName.setText(ty);
+        pTodayViewHolder.setOnClickListener(new TodayViewHolder.ClickListener(){
+            @Override
+            public void onItemClick(View view, int position) {
+                        if(pTodayViewHolder.mCheckBox.isChecked()){
+                                mSelectedItems.add(getItem(position));
+                        }
+                        else{
+                            mSelectedItems.remove(getItem(position));
+                        }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
+
+    }
 
 
     @Override
@@ -58,20 +89,5 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
-
-    class TodayViewHolder extends RecyclerView.ViewHolder  {
-        CheckBox mCheckBox;
-
-        TodayViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mCheckBox = itemView.findViewById(R.id.pack_item_type);
-
-        }
-
-    }
-    interface  clicklictener {
-        List<VendorDishModel> onSelected();
-    }
-
 }
 

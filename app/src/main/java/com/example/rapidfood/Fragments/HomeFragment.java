@@ -1,49 +1,56 @@
 package com.example.rapidfood.Fragments;
 
+
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.rapidfood.Adapters.ShowMenuBreakfastAdapter;
-import com.example.rapidfood.Adapters.ShowMenuLunchAdapter;
-import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
-import com.example.rapidfood.Models.PackageModel;
-import com.example.rapidfood.Models.SubscriptionModel;
-import com.example.rapidfood.Models.VendorBreakFastItem;
+import com.example.rapidfood.Adapters.HomeAdapter;
+import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
+import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.Utils.CenterZoomLinearLayoutManager;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Vendor_files.VendorTodayMenuActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.firestore.SnapshotParser;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 public class HomeFragment extends Fragment {
-    private FloatingActionButton mAddMenuBtn;
-    private RecyclerView mBreakfastRecycler, mLunchRecycler, mSubRecycler;
-    private ArrayList<VendorBreakFastItem> mItems;
+
+    private RecyclerView mHomeRecycler;
     private FirebaseFirestore mFirebaseFirestore;
     private Context mContext;
-    private FirestoreRecyclerAdapter adapter,mMenuAdapter,mLunchAdapter;
-    private FirestoreRecyclerOptions<SubscriptionModel> options;
-    private FirestoreRecyclerOptions<VendorBreakFastItem> mItemOptions;
-    private FirestoreRecyclerOptions<PackageModel> mLunchOptions;
+    private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private FirestoreRecyclerOptions<VendorDishModel> dishOptions;
+    private FirestoreRecyclerAdapter mAdapter;
+
 
 
     @Override
@@ -57,143 +64,61 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        View v= inflater.inflate(R.layout.fragment_home, container, false);
+
+        return  v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mBreakfastRecycler = view.findViewById(R.id.recyclerMenuBreak);
-        mSubRecycler = view.findViewById(R.id.subscription_recycler);
-        mLunchRecycler=view.findViewById(R.id.recyclerMenuLunch);
-        initSubRecyclerView();
-        initBreakfastRecyclerView();
-        initLunchRecyclerView();
-
+       mToolbar=view.findViewById(R.id.home_toolbar);
+        ActionBar vActionBar= ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
+        if(vActionBar!=null)
+        {
+            vActionBar.setDisplayShowTitleEnabled(false);
+        }
+        mHomeRecycler=view.findViewById(R.id.home_recyclerview);
+        getAllDataFireStore();
     }
 
-    private void initLunchRecyclerView() {
-        mLunchRecycler.setHasFixedSize(true);
-        final LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-        mLunchRecycler.setLayoutManager(llm);
-        final SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(mLunchRecycler);
-        getLunch();
-    }
-    private void getLunch() {
+
+
+    private void getAllDataFireStore() {
+
+
+        mHomeRecycler.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        mHomeRecycler.setLayoutManager(llm);
+
         Query query = mFirebaseFirestore
-                .collection("packages");
+                .collection("dishes_main");
 
-        mLunchOptions = new FirestoreRecyclerOptions.Builder<PackageModel>()
-                .setQuery(query, new SnapshotParser<PackageModel>() {
-                    @NonNull
-                    @Override
-                    public PackageModel parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        PackageModel vModel = new PackageModel();
-                        vModel.setImage(snapshot.getString("image"));
-                       // Toast.makeText(mContext, ""+vModel.getImagePackage(), Toast.LENGTH_SHORT).show();
-                        return vModel;
-                    }
-                }).build();
-
-        mLunchAdapter = new ShowMenuLunchAdapter(mLunchOptions, mLunchRecycler);
-        mLunchRecycler.post(new Runnable() {
+        dishOptions = new FirestoreRecyclerOptions.Builder<VendorDishModel>()
+                .setQuery(query, VendorDishModel.class).build();
+        mAdapter = new HomeAdapter(dishOptions);
+        mHomeRecycler.post(new Runnable() {
             @Override
             public void run() {
-                mLunchRecycler.setAdapter(mLunchAdapter);
-                mLunchRecycler.setItemAnimator(new DefaultItemAnimator());
-
+                mHomeRecycler.setAdapter(mAdapter);
+                mHomeRecycler.setItemAnimator(new DefaultItemAnimator());
             }
         });
     }
-    private void initSubRecyclerView(){
-        mSubRecycler.setHasFixedSize(true);
-        final LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
-        mSubRecycler.setLayoutManager(llm);
-        final SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(mSubRecycler);
-        getSubscription();
-        adapter = new ShowSubscriptionAdapter(options, mSubRecycler,mContext);
-        mSubRecycler.post(new Runnable() {
-            @Override
-            public void run() {
-                mSubRecycler.setAdapter(adapter);
-                mSubRecycler.setItemAnimator(new DefaultItemAnimator());
-
-            }
-        });
-    }
-
-    private void getSubscription(){
-        Query query = mFirebaseFirestore
-                .collection("subscriptions");
-
-        options = new FirestoreRecyclerOptions.Builder<SubscriptionModel>()
-                .setQuery(query, new SnapshotParser<SubscriptionModel>() {
-                    @NonNull
-                    @Override
-                    public SubscriptionModel parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        SubscriptionModel vModel = new SubscriptionModel();
-                        vModel.setImagesub(snapshot.getString("imagesub"));
-                        return vModel;
-                    }
-                }).build();
-
-        adapter = new ShowSubscriptionAdapter(options, mSubRecycler,mContext);
-        mSubRecycler.post(new Runnable() {
-            @Override
-            public void run() {
-                mSubRecycler.setAdapter(adapter);
-                mSubRecycler.setItemAnimator(new DefaultItemAnimator());
-
-            }
-        });
-
-    }
-
-    private void initBreakfastRecyclerView() {
-        mBreakfastRecycler.setHasFixedSize(true);
-        final LinearLayoutManager llm = new CenterZoomLinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-        mBreakfastRecycler.setLayoutManager(llm);
-        final SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(mBreakfastRecycler);
-        getAllMenu();
-    }
-
-    private void getAllMenu() {
-        Query query = mFirebaseFirestore
-                .collection("menus");
-
-        mItemOptions = new FirestoreRecyclerOptions.Builder<VendorBreakFastItem>()
-                .setQuery(query, VendorBreakFastItem.class).build();
-
-        mMenuAdapter = new ShowMenuBreakfastAdapter(mItemOptions,mBreakfastRecycler);
-        mBreakfastRecycler.post(new Runnable() {
-            @Override
-            public void run() {
-                mBreakfastRecycler.setAdapter(mMenuAdapter);
-                mBreakfastRecycler.setItemAnimator(new DefaultItemAnimator());
-
-            }
-        });
-
-    }
-
 
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
-        mMenuAdapter.startListening();
-        mLunchAdapter.startListening();
+        mAdapter.startListening();
     }
 
     @Override
-    public void onStop() {
+    public  void onStop() {
         super.onStop();
-        adapter.stopListening();
-        mMenuAdapter.stopListening();
-        mLunchAdapter.stopListening();
+        mAdapter.stopListening();
     }
+
+
+
 }

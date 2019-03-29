@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
@@ -18,6 +20,8 @@ import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.PermissionUtils;
 import com.example.rapidfood.Vendor_files.DashboardActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Objects;
 
 public class LogoActivity extends AppCompatActivity {
 
@@ -115,30 +121,31 @@ public class LogoActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Validating...");
         mProgressDialog.show();
        CollectionReference vCollectionReference= mFirebaseFirestore.collection("vendors");
-               vCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        boolean user=false;
-
-                        assert value != null;
-                        for (QueryDocumentSnapshot doc : value) {
-                            String vendorId=doc.getString("firebase_id");
-                            assert vendorId != null;
-                            if(mFirebaseUser.getUid().equals(vendorId)){
-                               user=true;
-                                startActivity(new Intent(LogoActivity.this, DashboardActivity.class));
-                                mProgressDialog.dismiss();
-                                finish();
-                            }
-                        }
-                        if(!user) {
-                            startActivity(new Intent(LogoActivity.this, MainActivity.class));
+        vCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> pTask) {
+                if (pTask.isSuccessful()) {
+                    boolean user=false;
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(pTask.getResult())) {
+                        String vendorId=document.getString("firebase_id");
+                        assert vendorId != null;
+                        if(mFirebaseUser.getUid().equals(vendorId)){
+                            user=true;
+                            startActivity(new Intent(LogoActivity.this, DashboardActivity.class));
                             mProgressDialog.dismiss();
                             finish();
                         }
-
                     }
-                });
+                    if(!user) {
+                        startActivity(new Intent(LogoActivity.this, MainActivity.class));
+                        mProgressDialog.dismiss();
+                        finish();
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", pTask.getException());
+                }
+            }
+        });
     }
 
 

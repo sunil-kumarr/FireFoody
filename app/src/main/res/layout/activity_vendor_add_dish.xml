@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/white"
         android:elevation="4dp"
-        app:elevation="4dp">
+        app:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_add_menu"
@@ -25,23 +29,26 @@
             app:titleTextColor="@color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/container_full"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/image_container"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="230dp"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="@color/grey_500"
             android:elevation="5dp"
             android:maxHeight="200dp"
-            android:minHeight="200dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:minHeight="200dp">
 
             <FrameLayout
                 android:id="@+id/frame_layout"
@@ -64,79 +71,78 @@
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
+        <ListView
+            android:id="@+id/pack_type_list"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/item_name"
-            app:layout_constraintLeft_toRightOf="@id/image_container"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="2dp" />
+    </LinearLayout>
 
-            <ListView
-                android:id="@+id/pack_type_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+    <EditText
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Item Name"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container_full" />
 
-        <EditText
-            android:id="@+id/item_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:hint="Item Name"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/image_container" />
+    <EditText
+        android:id="@+id/item_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Item Price"
+        android:inputType="text"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/item_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:hint="Item Price"
-            android:inputType="text"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_name" />
+    <EditText
+        android:id="@+id/item_desc"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_margin="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/grey_200"
+        android:gravity="start"
+        android:hint="Description"
+        android:padding="10dp"
+        android:textAlignment="viewStart"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_create_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/item_desc"
-            android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:layout_margin="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/grey_200"
-            android:gravity="start"
-            android:hint="Description"
-            android:padding="10dp"
-            android:textAlignment="viewStart"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_price"
-            tools:layout_editor_absoluteY="341dp" />
+    <Button
+        android:id="@+id/item_create_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20sp"
+        android:background="@drawable/button_red_background"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Add Item"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/item_create_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/button_red_plain"
-            android:elevation="4dp"
-            android:text="Create menu item"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</LinearLayout>

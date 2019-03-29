@@ -1,9 +1,12 @@
 package com.example.rapidfood.Models;
 
 public class SubscriptionModel {
+
+    final static Integer TYPE=1;
+
     private String duration;
     private String type;
-    private String price;
+    private String mPrice;
     private String details;
     private String imagesub;
 
@@ -24,11 +27,11 @@ public class SubscriptionModel {
     }
 
     public String getPrice() {
-        return price;
+        return mPrice;
     }
 
     public void setPrice(String pPrice) {
-        price = pPrice;
+        mPrice = pPrice;
     }
 
     public String getDetails() {

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
        // pBottomNavigation.setColored(true);
 
         // Set current item programmatically
-        pBottomNavigation.setCurrentItem(1);
+        pBottomNavigation.setCurrentItem(0);
 
         // Customize notification (title, background, typeface)
         pBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));

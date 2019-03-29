@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.R;
 
 import java.util.ArrayList;
@@ -21,11 +22,14 @@ public class AddDishPackHelpAdapter extends ArrayAdapter {
     }
     private Context mContext;
     private List<String> mSelected;
-    private List<String> packs;
-    public AddDishPackHelpAdapter(@NonNull Context context, int resource, List<String> packs) {
+    private List<PackageModel> packs;
+
+
+    public AddDishPackHelpAdapter(@NonNull Context context, int resource, List<PackageModel> packs) {
         super(context, resource);
         this.packs=packs;
         mSelected=new ArrayList<>();
+        mSelected.add("Breakfast");
         mContext=context;
     }
     public List<String> getSelectedPacks(){
@@ -37,7 +41,7 @@ public class AddDishPackHelpAdapter extends ArrayAdapter {
     }
 
     @Override
-    public String getItem(int index) {
+    public PackageModel getItem(int index) {
         return this.packs.get(index);
     }
 
@@ -47,7 +51,7 @@ public class AddDishPackHelpAdapter extends ArrayAdapter {
         viewHolder pViewHolder;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.list_item_checkbox_style, parent, false);
+            row = inflater.inflate(R.layout.packlist_layout, parent, false);
             pViewHolder = new viewHolder();
             pViewHolder.mCheckBox=row.findViewById(R.id.pack_item_type);
             row.setTag(pViewHolder);
@@ -60,7 +64,7 @@ public class AddDishPackHelpAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
                 if(cb.isChecked()){
-                    mSelected.add(getItem(position));
+                    mSelected.add(getItem(position).getName());
                     Toast.makeText(mContext, "Selected", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -69,7 +73,7 @@ public class AddDishPackHelpAdapter extends ArrayAdapter {
                 }
             }
         });
-        String s=getItem(position);
+        String s=getItem(position).getName();
         pViewHolder.mCheckBox.setText(s);
         return row;
     }

@@ -1,11 +1,28 @@
 package com.example.rapidfood.Models;
 
+import java.util.List;
+
 public class PackageModel {
+
+    public static Integer getTYPE() {
+        return TYPE;
+    }
+
+    final static Integer TYPE = 3;
     String name;
     String image;
     String description;
-   String price;
-   String item_count;
+    String price;
+    String item_count;
+    List<VendorDishModel> dishlist;
+
+    public List<VendorDishModel> getDishlist() {
+        return dishlist;
+    }
+
+    public void setDishlist(List<VendorDishModel> pDishlist) {
+        dishlist = pDishlist;
+    }
 
     public String getName() {
         return name;

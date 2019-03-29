@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.AddDishPackHelpAdapter;
+import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -119,8 +120,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
             mVendorDishModel.setDescription(mDesc.getText().toString());
             try {
                 mVendorDishModel.setMoney(mPrice.getText().toString());
-            }
-            catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 Toast.makeText(this, "Please Enter Valid number", Toast.LENGTH_SHORT).show();
             }
             mProgressDialog = new ProgressDialog(this);
@@ -210,20 +210,17 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
     private void addItemToFireStore(String CollectionName, String imageId) {
         mVendorDishModel.setImage(imageId);
-        if(mAddDishPackHelpAdapter!=null) {
+        if (mAddDishPackHelpAdapter != null) {
             Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
-            for(String s:mAddDishPackHelpAdapter.getSelectedPacks())
-            {
-                if(s.equals("Breakfast")){
+            for (String s : mAddDishPackHelpAdapter.getSelectedPacks()) {
+                if (s.equals("Breakfast")) {
                     mVendorDishModel.setItemcategory(0);
-                }
-                else{
+                } else {
                     mVendorDishModel.setItemcategory(1);
                 }
             }
             mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
-        }
-        else{
+        } else {
             Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
         }
         mFirebaseFirestore.collection(CollectionName)
@@ -234,23 +231,20 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<Void> pTask) {
                         mProgressDialog.dismiss();
                         finish();
-
                     }
                 });
-
     }
 
     private void getPackList() {
-        mFirebaseFirestore.collection("packages").get()
+        mFirebaseFirestore.collection("packages").orderBy("name").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
-                        final List<String> pack = new ArrayList<>();
-                        pack.add("Breakfast");
+                        final List<PackageModel> pack = new ArrayList<>();
                         for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
-                            pack.add(doc.getString("name"));
+                            pack.add(doc.toObject(PackageModel.class));
                         }
-                        mAddDishPackHelpAdapter=new AddDishPackHelpAdapter(VendorAddDish.this,
+                        mAddDishPackHelpAdapter = new AddDishPackHelpAdapter(VendorAddDish.this,
                                 R.layout.list_item_checkbox_style, pack);
                         mListView.setAdapter(mAddDishPackHelpAdapter);
                     }

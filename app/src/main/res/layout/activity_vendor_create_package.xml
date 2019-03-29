@@ -100,11 +100,13 @@
         app:layout_constraintTop_toBottomOf="@+id/pack_item_Count" />
     <Button
         android:id="@+id/sub_create_btn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_red_plain"
+        android:background="@drawable/button_red_background"
         android:elevation="4dp"
         android:text="Create Package"
+        android:padding="5dp"
+        android:layout_margin="10dp"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
