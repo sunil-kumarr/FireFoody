@@ -1,6 +1,5 @@
 package com.example.rapidfood.Adapters;
 
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,27 +11,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView mImageView;
-    TextView mName, mDesc, mPrice;
+    ImageView mPackageImage;
+    TextView mPackageName;
 
-    public HomeViewHolder(@NonNull View itemView) {
+    HomeViewHolder(@NonNull View itemView) {
         super(itemView);
-        mImageView = itemView.findViewById(R.id.item_Image);
-        mName = itemView.findViewById(R.id.item_Name);
-        mDesc = itemView.findViewById(R.id.item_Desc);
-        mPrice = itemView.findViewById(R.id.item_Price);
+        mPackageImage = itemView.findViewById(R.id.home_pack_image);
+        mPackageName=itemView.findViewById(R.id.home_pack_name);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(v,getAdapterPosition());
+            }
+        });
     }
 
     HomeViewHolder.ClickListener mClickListener;
 
     public interface ClickListener {
-        void onItemClick(View view, int position);
 
+        void onItemClick(View view, int position);
         void onItemLongClick(View view, int position);
+
     }
 
     public void setOnClickListener(HomeViewHolder.ClickListener clickListener) {
         mClickListener = clickListener;
     }
-
 }

@@ -4,17 +4,31 @@ import java.util.List;
 
 public class PackageModel {
 
-    public static Integer getTYPE() {
-        return TYPE;
+
+    private String name;
+    private String image;
+    private String description;
+    private String price;
+    private String item_count;
+    private String type;
+    private boolean isBreakfast;
+    private List<VendorDishModel> dishlist;
+
+    public boolean isBreakfast() {
+        return isBreakfast;
     }
 
-    final static Integer TYPE = 3;
-    String name;
-    String image;
-    String description;
-    String price;
-    String item_count;
-    List<VendorDishModel> dishlist;
+    public void setBreakfast(boolean pBreakfast) {
+        isBreakfast = pBreakfast;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String pType) {
+        type = pType;
+    }
 
     public List<VendorDishModel> getDishlist() {
         return dishlist;

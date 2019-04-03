@@ -34,7 +34,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
                                     int pI, @NonNull SubscriptionModel pSubscriptionModel) {
         Picasso.get()
                 .load(pSubscriptionModel.getImagesub())
-                .into(pSubscriptionViewHolder.mImageView);
+                .into(pSubscriptionViewHolder.mSubImage);
     }
 
     @Override
@@ -48,17 +48,13 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         return new SubscriptionViewHolder(view);
     }
 
-
-
     class SubscriptionViewHolder extends RecyclerView.ViewHolder {
-        ImageView mImageView;
-
-        SubscriptionViewHolder(@NonNull View itemView) {
+        private ImageView mSubImage;
+        public SubscriptionViewHolder(View itemView) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.sub_image);
+            mSubImage= itemView.findViewById(R.id.sub_image);
         }
     }
-
 
 }
 

@@ -50,7 +50,7 @@ public class SubscriptionActivity extends AppCompatActivity {
             vActionBar.setDisplayShowTitleEnabled(false);
             vActionBar.setDisplayShowHomeEnabled(true);
             vActionBar.setDisplayHomeAsUpEnabled(true);
-            vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
 
         mFirebaseInstances = new FirebaseInstances();

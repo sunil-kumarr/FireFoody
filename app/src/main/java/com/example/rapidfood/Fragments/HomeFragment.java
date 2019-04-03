@@ -11,20 +11,31 @@ import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.HomeAdapter;
 import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
+import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
+import com.example.rapidfood.Models.HomeDataModel;
+import com.example.rapidfood.Models.PackageModel;
+import com.example.rapidfood.Models.SubscriptionContainerModel;
+import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Vendor_files.VendorTodayMenuActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,14 +54,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView mHomeRecycler;
+    private RecyclerView mHomeRecycler, mSubscriptionRecycler;
     private FirebaseFirestore mFirebaseFirestore;
     private Context mContext;
     private Toolbar mToolbar;
+    private ShowSubscriptionAdapter mShowSubscriptionAdapter;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    private FirestoreRecyclerOptions<VendorDishModel> dishOptions;
-    private FirestoreRecyclerAdapter mAdapter;
+    private FirestoreRecyclerOptions<SubscriptionModel> mSubscriptionModelFirestoreRecyclerOptions;
+    private FirestoreRecyclerOptions<PackageModel> mPackageModelFirestoreRecyclerOptions;
+    private FirestoreRecyclerAdapter mSubAdapter,mHomeAadapter;
 
+    private static final String TAG = "HomeFragment";
 
 
     @Override
@@ -65,60 +79,81 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v= inflater.inflate(R.layout.fragment_home, container, false);
-
-        return  v;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       mToolbar=view.findViewById(R.id.home_toolbar);
-        ActionBar vActionBar= ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
-        if(vActionBar!=null)
-        {
+        mToolbar = view.findViewById(R.id.home_toolbar);
+        ActionBar vActionBar = ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
+        if (vActionBar != null) {
             vActionBar.setDisplayShowTitleEnabled(false);
         }
-        mHomeRecycler=view.findViewById(R.id.home_recyclerview);
+        mHomeRecycler = view.findViewById(R.id.home_recyclerview);
+        mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
+//        mHomeRecycler.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        mHomeRecycler.setLayoutManager(llm);
+
+//        mSubscriptionRecycler.setHasFixedSize(true);
+        LinearLayoutManager horiziontal = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+        mSubscriptionRecycler.setLayoutManager(horiziontal);
         getAllDataFireStore();
     }
 
 
-
     private void getAllDataFireStore() {
 
-
-        mHomeRecycler.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-        mHomeRecycler.setLayoutManager(llm);
-
         Query query = mFirebaseFirestore
-                .collection("dishes_main");
+                .collection("subscriptions");
 
-        dishOptions = new FirestoreRecyclerOptions.Builder<VendorDishModel>()
-                .setQuery(query, VendorDishModel.class).build();
-        mAdapter = new HomeAdapter(dishOptions);
+        mSubscriptionModelFirestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<SubscriptionModel>()
+                .setQuery(query, SubscriptionModel.class).build();
+        mSubAdapter = new ShowSubscriptionAdapter(mSubscriptionModelFirestoreRecyclerOptions, mSubscriptionRecycler, mContext);
+        mSubscriptionRecycler.post(new Runnable() {
+            @Override
+            public void run() {
+                mSubscriptionRecycler.setAdapter(mSubAdapter);
+                mSubscriptionRecycler.setItemAnimator(new DefaultItemAnimator());
+            }
+        });
+
+        Query homequery = mFirebaseFirestore
+                .collection("today_menu").orderBy("name");
+
+        mPackageModelFirestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<PackageModel>()
+                .setQuery(homequery, PackageModel.class).build();
+
+        mHomeAadapter = new HomeAdapter(mPackageModelFirestoreRecyclerOptions);
         mHomeRecycler.post(new Runnable() {
             @Override
             public void run() {
-                mHomeRecycler.setAdapter(mAdapter);
+                mHomeRecycler.setAdapter(mHomeAadapter);
                 mHomeRecycler.setItemAnimator(new DefaultItemAnimator());
             }
         });
+
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter.startListening();
+        mSubAdapter.startListening();
+        mHomeAadapter.startListening();
+        Log.d(TAG,"FragmentHome: onStart ");
+        Toast.makeText(mContext, "Subs: "+mSubAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "items: "+mHomeAadapter.getItemCount(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public  void onStop() {
+    public void onStop() {
         super.onStop();
-        mAdapter.stopListening();
+        mSubAdapter.stopListening();
+        mHomeAadapter.stopListening();
+        Log.d(TAG,"FragmentHome: onStop ");
     }
-
 
 
 }

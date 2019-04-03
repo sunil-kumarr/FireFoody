@@ -4,11 +4,13 @@ package com.example.rapidfood.User_files;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.rapidfood.Activites.Authentication;
+import com.example.rapidfood.Adapters.HomeViewHolder;
 import com.example.rapidfood.Fragments.HomeFragment;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -19,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeViewHolder.ClickListener {
 
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
@@ -32,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        mFirebaseInstances=new FirebaseInstances();
+        mFirebaseInstances = new FirebaseInstances();
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         Fragment vFragment = new HomeFragment();
-        mFragmentTransaction.replace(R.id.frame_user_holder, vFragment, "frag_user_home");
+        mFragmentTransaction.add(R.id.frame_user_holder, vFragment, "frag_user_home");
         mFragmentTransaction.commit();
         bottomNavigation = findViewById(R.id.bottom_navigation);
         initBottomBar(bottomNavigation);
@@ -69,13 +71,12 @@ public class MainActivity extends AppCompatActivity {
         pBottomNavigation.setForceTint(true);
 
 
-
         // Manage titles
         pBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 
 
         // Use colored navigation with circle reveal effect
-       // pBottomNavigation.setColored(true);
+        // pBottomNavigation.setColored(true);
 
         // Set current item programmatically
         pBottomNavigation.setCurrentItem(0);
@@ -99,14 +100,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 // Do something cool here...
-                switch (position)
-                {
-                    case 3:if(mFirebaseInstances.getFirebaseAuth().getCurrentUser()!=null){
-                        mFirebaseInstances.getFirebaseAuth().signOut();
-                        startActivity(new Intent(MainActivity.this, Authentication.class));
-                        finish();
-                    }
+                mFragmentTransaction = mFragmentManager.beginTransaction();
+                Fragment vFragment;
+
+                switch (position) {
+                    case 0:
+                        vFragment = new HomeFragment();
+                        break;
+
+                    case 3:
+                        if (mFirebaseInstances.getFirebaseAuth().getCurrentUser() != null) {
+                            mFirebaseInstances.getFirebaseAuth().signOut();
+                            startActivity(new Intent(MainActivity.this, Authentication.class));
+                            finish();
+                        }
+                    default:
+                        vFragment = new HomeFragment();
                 }
+                mFragmentTransaction.replace(R.id.frame_user_holder, vFragment, "frag_user_home");
+                mFragmentTransaction.commit();
                 return true;
             }
         });
@@ -116,5 +128,15 @@ public class MainActivity extends AppCompatActivity {
                 // Manage the new y position
             }
         });
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+
     }
 }

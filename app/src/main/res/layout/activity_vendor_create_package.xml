@@ -24,8 +24,8 @@
         layout="@layout/subscription_image"
         android:layout_width="match_parent"
         android:layout_height="227dp"
-        android:layout_marginTop="8dp"
         android:layout_margin="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,20 +61,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pack_name" />
 
-    <EditText
-        android:id="@+id/pack_item_Count"
+    <LinearLayout
+        android:id="@+id/linear_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Item Count"
-        android:inputType="number"
-        android:textSize="15sp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pack_price" />
+        app:layout_constraintTop_toBottomOf="@+id/pack_price">
+
+        <EditText
+            android:id="@+id/pack_item_Count"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="Item Count"
+            android:inputType="number"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/isBreakfastPackage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Breakfast"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/pack_details"
@@ -97,16 +118,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pack_item_Count" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_container" />
+
     <Button
         android:id="@+id/sub_create_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="@drawable/button_red_background"
         android:elevation="4dp"
-        android:text="Create Package"
         android:padding="5dp"
-        android:layout_margin="10dp"
+        android:text="Create Package"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"

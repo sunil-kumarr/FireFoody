@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
     private String image;
     private Uri ImageUri;
     private PackageModel mPackageModel;
+    private CheckBox mBreakfast;
     private boolean mImageSelected=false;
 
     @Override
@@ -64,9 +66,10 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
-        
+
+        mBreakfast=findViewById(R.id.isBreakfastPackage);
         mCreateBtn=findViewById(R.id.sub_create_btn);
         mImageView=findViewById(R.id.sub_image);
         mPackName=findViewById(R.id.pack_name);
@@ -99,6 +102,12 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
     private void createPackage() {
         if (mImageSelected&& EmptyString(mPackName) &&EmptyString(mPrice)&& EmptyString(mItemCount)&& EmptyString(mDesc))
         {
+            if(mBreakfast.isChecked()){
+                mPackageModel.setBreakfast(true);
+            }
+            else{
+                mPackageModel.setBreakfast(false);
+            }
             mPackageModel.setName(mPackName.getText().toString());
             mPackageModel.setItem_count(mItemCount.getText().toString());
             mPackageModel.setDescription(mDesc.getText().toString());

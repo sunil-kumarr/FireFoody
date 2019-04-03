@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
-import com.example.rapidfood.Models.BreakfastContainerModel;
 import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.Models.SubscriptionContainerModel;
 import com.example.rapidfood.Models.SubscriptionModel;
@@ -60,7 +59,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
         if (vActionBar != null) {
             vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setDisplayShowHomeEnabled(true);
-            vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            vActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
@@ -98,40 +97,24 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
         vProgressDialog.setCancelable(false);
         vProgressDialog.setMessage("Updating menu....");
         vProgressDialog.show();
-        getSubscriptions(new MyDataCallBAckSubs() {
-            @Override
-            public void onCallback(SubscriptionContainerModel pModel) {
-                mFirebaseFirestore.collection("today_menu").document("Subscription")
-                        .set(pModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void pVoid) {
-                        Toast.makeText(VendorTodayMenuActivity.this, "Subscription Uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+
+        // Get subscriptions and upload to today_menu as arraylist
+//        getSubscriptions(new MyDataCallBAckSubs() {
+//            @Override
+//            public void onCallback(SubscriptionContainerModel pModel) {
+//                mFirebaseFirestore.collection("today_menu").document("Subscription")
+//                        .set(pModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void pVoid) {
+//                        Toast.makeText(VendorTodayMenuActivity.this, "Subscription Uploaded", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
+
+        //Get selected dish items to upload
         final List<VendorDishModel> vModels = ((SelectTodayMenuAdapter) TodayAdapter).getSelectedItems();
-        final List<VendorDishModel> vBreakfastItems = new ArrayList<>();
-        CollectionReference vToday_menu = mFirebaseFirestore.collection("today_menu");
-        BreakfastContainerModel vBreakfastModel=new BreakfastContainerModel();
-        for (VendorDishModel x : vModels) {
-            for (int i = 0; i < x.getPacklist().size(); i++) {
-                if (x.getPacklist().get(i).equals("Breakfast")) {
-                    // breakfast items
-                    vBreakfastItems.add(x);
-                }
-            }
-        }
-        vBreakfastModel.setType("2");
-        vBreakfastModel.setBreakfastlist(vBreakfastItems);
-        for (VendorDishModel x : vBreakfastItems) {
-            vToday_menu.document("Breakfast").set(vBreakfastModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void pVoid) {
-                    Toast.makeText(VendorTodayMenuActivity.this, "Menu Updated", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+
         getPackList(new MyDataCallBack() {
             @Override
             public void onCallback(List<PackageModel> pPackageModels) {
@@ -153,7 +136,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
                         }
                     }
                     pPackageModels.get(i).setDishlist(mDishs);
-
+                    pPackageModels.get(i).setType("2");
                     vToday_menu.document(pPackageModels.get(i).getName()).set(pPackageModels.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void pVoid) {

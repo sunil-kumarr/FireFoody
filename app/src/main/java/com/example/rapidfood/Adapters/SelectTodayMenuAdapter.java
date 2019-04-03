@@ -26,10 +26,10 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
     private List<VendorDishModel> mSelectedItems;
 
     public SelectTodayMenuAdapter(@NonNull FirestoreRecyclerOptions<VendorDishModel> options,
-                                  RecyclerView pRecylerView, Context pContext) {
+                                  RecyclerView pRecyclerView, Context pContext) {
         super(options);
         mContext = pContext;
-        mRecyclerview = pRecylerView;
+        mRecyclerview = pRecyclerView;
         mSelectedItems=new ArrayList<>();
     }
 

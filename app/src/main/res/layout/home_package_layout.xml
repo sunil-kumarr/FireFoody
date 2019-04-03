@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/image_container"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="10dp"
+    android:background="@color/grey_500"
+    android:elevation="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:id="@+id/container_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/home_pack_image"
+            android:layout_width="match_parent"
+            android:background="@color/grey_200"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_coffee"
+            android:layout_gravity="end|top"
+            android:layout_margin="10dp"
+            android:padding="2dp"/>
+        <TextView
+            android:id="@+id/home_pack_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:fontFamily="@font/iran_sans_mobile"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:text="Breakfast"/>
+    </FrameLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

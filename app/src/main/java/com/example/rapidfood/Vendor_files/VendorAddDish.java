@@ -81,7 +81,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
         mCreateBtn = findViewById(R.id.item_create_btn);
         mImageView = findViewById(R.id.item_image);

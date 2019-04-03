@@ -69,7 +69,8 @@ public class LogoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String[] permissionsG = {
-                Manifest.permission.READ_SMS};
+                Manifest.permission.READ_SMS,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
 
         if (PermissionUtils.shouldAskForPermission(LogoActivity.this, permissionsG[0])) {
             PermissionUtils.requestActivityPermissions(LogoActivity.this, permissionsG, REQUEST_PERMISSION_KEY);

@@ -84,6 +84,7 @@
                 android:textSize="15sp" />
 
             <Button
+                android:id="@+id/dis_add_button"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end|center_vertical"

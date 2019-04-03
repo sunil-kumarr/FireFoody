@@ -63,7 +63,7 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
         if (getSupportActionBar() != null) {
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
         mSubDuration = findViewById(R.id.sub_duration);
         mSubDetail = findViewById(R.id.sub_details);

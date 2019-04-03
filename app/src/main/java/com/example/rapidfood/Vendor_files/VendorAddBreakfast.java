@@ -70,7 +70,7 @@ public class VendorAddBreakfast extends AppCompatActivity implements View.OnClic
         if (getSupportActionBar() != null) {
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_black_24dp);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black_24dp);
         }
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
