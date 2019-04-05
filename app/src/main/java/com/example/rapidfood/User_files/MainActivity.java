@@ -12,6 +12,9 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.rapidfood.Activites.Authentication;
 import com.example.rapidfood.Adapters.HomeViewHolder;
 import com.example.rapidfood.Fragments.HomeFragment;
+import com.example.rapidfood.Fragments.ProfileFragment;
+import com.example.rapidfood.Fragments.QRFragment;
+import com.example.rapidfood.Fragments.TimingFragment;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 
@@ -87,12 +90,12 @@ public class MainActivity extends AppCompatActivity implements HomeViewHolder.Cl
         // Add or remove notification for each item
         pBottomNavigation.setNotification("1", 2);
         // OR
-        AHNotification notification = new AHNotification.Builder()
-                .setText("1")
-                .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.black))
-                .setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white))
-                .build();
-        pBottomNavigation.setNotification(notification, 1);
+//        AHNotification notification = new AHNotification.Builder()
+//                .setText("1")
+//                .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.black))
+//                .setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white))
+//                .build();
+//        pBottomNavigation.setNotification(notification, 1);
 
 
         // Set listeners
@@ -107,17 +110,26 @@ public class MainActivity extends AppCompatActivity implements HomeViewHolder.Cl
                     case 0:
                         vFragment = new HomeFragment();
                         break;
+                    case 1:
+                        vFragment=new QRFragment();
+                        break;
 
+                    case 2:
+                        vFragment=new TimingFragment();
+                        break;
                     case 3:
-                        if (mFirebaseInstances.getFirebaseAuth().getCurrentUser() != null) {
-                            mFirebaseInstances.getFirebaseAuth().signOut();
-                            startActivity(new Intent(MainActivity.this, Authentication.class));
-                            finish();
-                        }
+                        vFragment = new ProfileFragment();
+//                        if (mFirebaseInstances.getFirebaseAuth().getCurrentUser() != null) {
+//                            mFirebaseInstances.getFirebaseAuth().signOut();
+//                            startActivity(new Intent(MainActivity.this, Authentication.class));
+//                            finish();
+//                        }
+                        break;
                     default:
                         vFragment = new HomeFragment();
                 }
                 mFragmentTransaction.replace(R.id.frame_user_holder, vFragment, "frag_user_home");
+                mFragmentTransaction.addToBackStack(null);
                 mFragmentTransaction.commit();
                 return true;
             }

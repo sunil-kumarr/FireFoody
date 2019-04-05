@@ -14,7 +14,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@color/pink_500" />
+            android:background="@color/blue_500"
+            android:src="@drawable/ic_undraw_deliveries" />
     </androidx.cardview.widget.CardView>
 
     <LinearLayout

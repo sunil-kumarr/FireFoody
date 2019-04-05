@@ -85,11 +85,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mToolbar = view.findViewById(R.id.home_toolbar);
-        ActionBar vActionBar = ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
-        if (vActionBar != null) {
-            vActionBar.setDisplayShowTitleEnabled(false);
-        }
+
         mHomeRecycler = view.findViewById(R.id.home_recyclerview);
         mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
 //        mHomeRecycler.setHasFixedSize(true);
