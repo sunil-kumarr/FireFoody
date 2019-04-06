@@ -2,13 +2,16 @@ package com.example.rapidfood.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Activites.LocationActivity;
 import com.example.rapidfood.Adapters.HomeAdapter;
 import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
 import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
@@ -57,6 +60,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView mHomeRecycler, mSubscriptionRecycler;
     private FirebaseFirestore mFirebaseFirestore;
     private Context mContext;
+    private ImageView mOpenMaps;
     private Toolbar mToolbar;
     private ShowSubscriptionAdapter mShowSubscriptionAdapter;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -86,16 +90,22 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mOpenMaps=view.findViewById(R.id.location_logo);
         mHomeRecycler = view.findViewById(R.id.home_recyclerview);
         mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
 //        mHomeRecycler.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mHomeRecycler.setLayoutManager(llm);
-
 //        mSubscriptionRecycler.setHasFixedSize(true);
         LinearLayoutManager horiziontal = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         mSubscriptionRecycler.setLayoutManager(horiziontal);
         getAllDataFireStore();
+        mOpenMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext,LocationActivity.class));
+            }
+        });
     }
 
 

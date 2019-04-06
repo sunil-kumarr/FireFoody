@@ -21,6 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBbFfrEAU4cZ9-fOPiCLClvNAgvzrBw4R4" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity android:name=".Vendor_files.VendorTodayMenuActivity"></activity>
         <activity
             android:name=".Vendor_files.VendorCreateSubscription"
@@ -88,6 +96,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".User_files.PackageDetailsActivity" />
         <activity android:name=".User_files.AddressActivity" />
+        <activity android:name=".Activites.LocationActivity" />
 
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data
