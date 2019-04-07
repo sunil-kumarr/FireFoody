@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -15,8 +16,10 @@ import com.example.rapidfood.Fragments.HomeFragment;
 import com.example.rapidfood.Fragments.ProfileFragment;
 import com.example.rapidfood.Fragments.QRFragment;
 import com.example.rapidfood.Fragments.TimingFragment;
+import com.example.rapidfood.GooglePay.CheckoutActivity;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.google.android.gms.wallet.PaymentsClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -24,13 +27,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements HomeViewHolder.ClickListener {
+public class MainActivity extends AppCompatActivity  {
 
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
     private AHBottomNavigation bottomNavigation;
     private FirebaseInstances mFirebaseInstances;
 
+    //Google pay ///
+    private PaymentsClient mPaymentsClient;
+    private View mGooglePayButton;
+    private TextView mGooglePayStatusText;
+    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements HomeViewHolder.Cl
             public boolean onTabSelected(int position, boolean wasSelected) {
                 // Do something cool here...
                 mFragmentTransaction = mFragmentManager.beginTransaction();
-                Fragment vFragment;
+                Fragment vFragment = null;
 
                 switch (position) {
                     case 0:
@@ -142,13 +150,4 @@ public class MainActivity extends AppCompatActivity implements HomeViewHolder.Cl
         });
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-
-    }
-
-    @Override
-    public void onItemLongClick(View view, int position) {
-
-    }
 }

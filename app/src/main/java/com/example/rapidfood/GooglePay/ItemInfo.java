@@ -2,26 +2,31 @@ package com.example.rapidfood.GooglePay;
 
 public class ItemInfo {
     private final String name;
-    private final int imageResourceId;
-
     // Micros are used for prices to avoid rounding errors when converting between currencies.
     private final long priceMicros;
+    private final String details;
+    private  final String duration;
 
-    public ItemInfo(String name, long price, int imageResourceId) {
-        this.name = name;
-        this.priceMicros = price;
-        this.imageResourceId = imageResourceId;
+    public ItemInfo(String pName, long pPriceMicros, String pDetails, String pDuration) {
+        name = pName;
+        priceMicros = pPriceMicros;
+        details = pDetails;
+        duration = pDuration;
+    }
+
+    public String getDetails() {
+        return details;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getImageResourceId() {
-        return imageResourceId;
-    }
-
     public long getPriceMicros() {
         return priceMicros;
+    }
+
+    public String getDuration() {
+        return duration;
     }
 }

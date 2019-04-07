@@ -28,6 +28,10 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
 
         <activity android:name=".Vendor_files.VendorTodayMenuActivity"></activity>
         <activity
@@ -97,6 +101,7 @@
         <activity android:name=".User_files.PackageDetailsActivity" />
         <activity android:name=".User_files.AddressActivity" />
         <activity android:name=".Activites.LocationActivity" />
+        <activity android:name=".GooglePay.CheckoutActivity" />
 
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data
