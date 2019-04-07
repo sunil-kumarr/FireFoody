@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.rapidfood.Activites.GooglePayActivity;
 import com.example.rapidfood.GooglePay.CheckoutActivity;
 import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.R;
@@ -43,7 +44,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mContext.startActivity(new Intent(mContext, GooglePayActivity.class));
             }
         });
     }
