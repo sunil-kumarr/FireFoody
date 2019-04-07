@@ -48,14 +48,6 @@ public class Constants {
     public static final String CURRENCY_CODE = "USD";
 
     /**
-     * Supported countries for shipping (use ISO 3166-1 alpha-2 country codes). Relevant only when
-     * requesting a shipping address.
-     *
-     * @value #SHIPPING_SUPPORTED_COUNTRIES
-     */
-    public static final List<String> SHIPPING_SUPPORTED_COUNTRIES = Arrays.asList("US", "GB");
-
-    /**
      * The name of your payment processor/gateway. Please refer to their documentation for more
      * information.
      *

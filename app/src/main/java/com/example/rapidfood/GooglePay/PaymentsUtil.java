@@ -2,6 +2,7 @@ package com.example.rapidfood.GooglePay;
 
 import android.app.Activity;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.wallet.PaymentsClient;
@@ -17,7 +18,9 @@ import java.util.Optional;
 
 import androidx.annotation.RequiresApi;
 
-public class PaymentsUtil {
+class PaymentsUtil {
+
+    private static final String TAG = "PaymentsUtil";
     private static final BigDecimal MICROS = new BigDecimal(1000000d);
 
     private PaymentsUtil() {}
@@ -29,6 +32,7 @@ public class PaymentsUtil {
      * @throws JSONException
      */
     private static JSONObject getBaseRequest() throws JSONException {
+        Log.d(TAG,"getBaseRequest()");
         return new JSONObject().put("apiVersion", 2).put("apiVersionMinor", 0);
     }
 
@@ -39,6 +43,7 @@ public class PaymentsUtil {
      * @param activity is the caller's activity.
      */
     public static PaymentsClient createPaymentsClient(Activity activity) {
+        Log.d(TAG,"createPaymentsClient");
         mActivity=activity;
         Wallet.WalletOptions walletOptions =
                 new Wallet.WalletOptions.Builder().setEnvironment(Constants.PAYMENTS_ENVIRONMENT).build();
@@ -59,7 +64,10 @@ public class PaymentsUtil {
      *     "https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification">PaymentMethodTokenizationSpecification</a>
      */
     private static JSONObject getGatewayTokenizationSpecification() throws JSONException {
+        Log.d(TAG,"getGatewayTokenizationSpecification");
         Toast.makeText(mActivity, "getGatewayTokenizationSpecification", Toast.LENGTH_SHORT).show();
+
+
         return new JSONObject(){{
             put("type", "PAYMENT_GATEWAY");
             put("parameters", new JSONObject(){{
@@ -70,34 +78,35 @@ public class PaymentsUtil {
         }};
     }
 
-    /**
-     * {@code DIRECT} Integration: Decrypt a response directly on your servers. This configuration has
-     * additional data security requirements from Google and additional PCI DSS compliance complexity.
-     *
-     * <p>Please refer to the documentation for more information about {@code DIRECT} integration. The
-     * type of integration you use depends on your payment processor.
-     *
-     * @return Payment data tokenization for the CARD payment method.
-     * @throws JSONException
-     * @see <a
-     *     href="https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification">PaymentMethodTokenizationSpecification</a>
-     */
-    private static JSONObject getDirectTokenizationSpecification()
-            throws JSONException, RuntimeException {
-        if (Constants.DIRECT_TOKENIZATION_PARAMETERS.isEmpty() ||
-                Constants.DIRECT_TOKENIZATION_PUBLIC_KEY == null ||
-                Constants.DIRECT_TOKENIZATION_PUBLIC_KEY == "REPLACE_ME") {
-            throw new RuntimeException(
-                    "Please edit the Constants.java file to add protocol version & public key.");
-        }
-        JSONObject tokenizationSpecification = new JSONObject();
-
-        tokenizationSpecification.put("type", "DIRECT");
-        JSONObject parameters = new JSONObject(Constants.DIRECT_TOKENIZATION_PARAMETERS);
-        tokenizationSpecification.put("parameters", parameters);
-
-        return tokenizationSpecification;
-    }
+//    /**
+//     * {@code DIRECT} Integration: Decrypt a response directly on your servers. This configuration has
+//     * additional data security requirements from Google and additional PCI DSS compliance complexity.
+//     *
+//     * <p>Please refer to the documentation for more information about {@code DIRECT} integration. The
+//     * type of integration you use depends on your payment processor.
+//     *
+//     * @return Payment data tokenization for the CARD payment method.
+//     * @throws JSONException
+//     * @see <a
+//     *     href="https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification">PaymentMethodTokenizationSpecification</a>
+//     */
+//    private static JSONObject getDirectTokenizationSpecification()
+//            throws JSONException, RuntimeException {
+//        Log.d(TAG,"getDirectTokenizationSpecification");
+//        if (Constants.DIRECT_TOKENIZATION_PARAMETERS.isEmpty() ||
+//                Constants.DIRECT_TOKENIZATION_PUBLIC_KEY == null ||
+//                Constants.DIRECT_TOKENIZATION_PUBLIC_KEY == "REPLACE_ME") {
+//            throw new RuntimeException(
+//                    "Please edit the Constants.java file to add protocol version & public key.");
+//        }
+//        JSONObject tokenizationSpecification = new JSONObject();
+//
+//        tokenizationSpecification.put("type", "DIRECT");
+//        JSONObject parameters = new JSONObject(Constants.DIRECT_TOKENIZATION_PARAMETERS);
+//        tokenizationSpecification.put("parameters", parameters);
+//
+//        return tokenizationSpecification;
+//    }
 
     /**
      * Card networks supported by your app and your gateway.
@@ -109,7 +118,9 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#CardParameters">CardParameters</a>
      */
     private static JSONArray getAllowedCardNetworks() {
+        Log.d(TAG,"getAllowedCardNetworks");
         Toast.makeText(mActivity, " getAllowedCardNetworks", Toast.LENGTH_SHORT).show();
+
         return new JSONArray(Constants.SUPPORTED_NETWORKS);
     }
 
@@ -124,7 +135,9 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#CardParameters">CardParameters</a>
      */
     private static JSONArray getAllowedCardAuthMethods() {
+        Log.d(TAG,"getAllowedCardAuthMethods");
         Toast.makeText(mActivity, "getAllowedCardAuthMethods", Toast.LENGTH_SHORT).show();
+
         return new JSONArray(Constants.SUPPORTED_METHODS);
     }
 
@@ -140,23 +153,15 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#PaymentMethod">PaymentMethod</a>
      */
     private static JSONObject getBaseCardPaymentMethod() throws JSONException {
+        Log.d(TAG,"getBaseCardPaymentMethod");
         Toast.makeText(mActivity, "getBaseCardPaymentMethod", Toast.LENGTH_SHORT).show();
+
         JSONObject cardPaymentMethod = new JSONObject();
         cardPaymentMethod.put("type", "CARD");
-
         JSONObject parameters = new JSONObject();
         parameters.put("allowedAuthMethods", getAllowedCardAuthMethods());
         parameters.put("allowedCardNetworks", getAllowedCardNetworks());
-        // Optionally, you can add billing address/phone number associated with a CARD payment method.
-        parameters.put("billingAddressRequired", true);
-
-        JSONObject billingAddressParameters = new JSONObject();
-        billingAddressParameters.put("format", "FULL");
-
-        parameters.put("billingAddressParameters", billingAddressParameters);
-
         cardPaymentMethod.put("parameters", parameters);
-
         return cardPaymentMethod;
     }
 
@@ -169,7 +174,9 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#PaymentMethod">PaymentMethod</a>
      */
     private static JSONObject getCardPaymentMethod() throws JSONException {
+        Log.d(TAG,"getCardPaymentMethod");
         Toast.makeText(mActivity, "getCardPaymentMethod()", Toast.LENGTH_SHORT).show();
+
         JSONObject cardPaymentMethod = getBaseCardPaymentMethod();
         cardPaymentMethod.put("tokenizationSpecification", getGatewayTokenizationSpecification());
 
@@ -186,6 +193,7 @@ public class PaymentsUtil {
      */
     public static Optional<JSONObject> getIsReadyToPayRequest() {
         try {
+            Log.d(TAG,"getIsReadyToPayRequest");
             Toast.makeText(mActivity, "getIsReadyToPayRequest()", Toast.LENGTH_SHORT).show();
             JSONObject isReadyToPayRequest = getBaseRequest();
             isReadyToPayRequest.put(
@@ -211,7 +219,9 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#TransactionInfo">TransactionInfo</a>
      */
     private static JSONObject getTransactionInfo(String price) throws JSONException {
+        Log.d(TAG,"getTransactionInfo");
         Toast.makeText(mActivity, "getTransactionInfo", Toast.LENGTH_SHORT).show();
+
         JSONObject transactionInfo = new JSONObject();
         transactionInfo.put("totalPrice", price);
         transactionInfo.put("totalPriceStatus", "FINAL");
@@ -229,7 +239,9 @@ public class PaymentsUtil {
      *     href="https://developers.google.com/pay/api/android/reference/object#MerchantInfo">MerchantInfo</a>
      */
     private static JSONObject getMerchantInfo() throws JSONException {
+        Log.d(TAG,"getMerchantInfo");
         Toast.makeText(mActivity, "getMerchantInfo()", Toast.LENGTH_SHORT).show();
+
         return new JSONObject().put("merchantName", "Example Merchant");
     }
 
@@ -243,25 +255,15 @@ public class PaymentsUtil {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Optional<JSONObject> getPaymentDataRequest(String price) {
         try {
+            Log.d(TAG,"getPaymentDataRequest");
             Toast.makeText(mActivity, "getPaymentDataRequest", Toast.LENGTH_SHORT).show();
+
             JSONObject paymentDataRequest = PaymentsUtil.getBaseRequest();
-            paymentDataRequest.put(
-                    "allowedPaymentMethods", new JSONArray().put(PaymentsUtil.getCardPaymentMethod()));
+            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(PaymentsUtil.getCardPaymentMethod()));
             paymentDataRequest.put("transactionInfo", PaymentsUtil.getTransactionInfo(price));
             paymentDataRequest.put("merchantInfo", PaymentsUtil.getMerchantInfo());
-
-      /* An optional shipping address requirement is a top-level property of the PaymentDataRequest
-      JSON object. */
-            paymentDataRequest.put("shippingAddressRequired", true);
-
-            JSONObject shippingAddressParameters = new JSONObject();
-            shippingAddressParameters.put("phoneNumberRequired", false);
-
-            JSONArray allowedCountryCodes = new JSONArray(Constants.SHIPPING_SUPPORTED_COUNTRIES);
-
-            shippingAddressParameters.put("allowedCountryCodes", allowedCountryCodes);
-            paymentDataRequest.put("shippingAddressParameters", shippingAddressParameters);
             return Optional.of(paymentDataRequest);
+
         } catch (JSONException e) {
             return Optional.empty();
         }

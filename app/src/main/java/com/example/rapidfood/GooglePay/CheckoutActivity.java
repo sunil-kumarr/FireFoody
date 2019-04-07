@@ -51,6 +51,8 @@ import org.json.JSONObject;
 import androidx.annotation.NonNull;
 
 public class CheckoutActivity extends Activity {
+    private static final String TAG = "CheckoutActivity";
+
     /**
      * A client for interacting with the Google Pay API.
      *
@@ -102,6 +104,7 @@ public class CheckoutActivity extends Activity {
 
         // Initialize a Google Pay API client for an environment suitable for testing.
         // It's recommended to create the PaymentsClient object inside of the onCreate method.
+
         mPaymentsClient = PaymentsUtil.createPaymentsClient(this);
         possiblyShowGooglePayButton();
 
@@ -109,6 +112,7 @@ public class CheckoutActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Log.d(TAG,"mGooglePayButton pressed");
                         requestPayment(view);
                     }
                 });
@@ -122,6 +126,7 @@ public class CheckoutActivity extends Activity {
      * "https://developers.google.com/android/reference/com/google/android/gms/wallet/PaymentsClient.html#isReadyToPay(com.google.android.gms.wallet.IsReadyToPayRequest)">PaymentsClient#IsReadyToPay</a>
      */
     private void possiblyShowGooglePayButton() {
+        Log.d(TAG,"possiblyShowGooglePayButton");
         final Optional<JSONObject> isReadyToPayJson = PaymentsUtil.getIsReadyToPayRequest();
         if (!isReadyToPayJson.isPresent()) {
             return;
@@ -156,6 +161,7 @@ public class CheckoutActivity extends Activity {
      * @param available isReadyToPay API response.
      */
     private void setGooglePayAvailable(boolean available) {
+        Log.d(TAG,"setGooglePayAvailable");
         if (available) {
             mGooglePayStatusText.setVisibility(View.GONE);
             mGooglePayButton.setVisibility(View.VISIBLE);
@@ -175,6 +181,7 @@ public class CheckoutActivity extends Activity {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG,"onActivityResult");
         switch (requestCode) {
             // value passed in AutoResolveHelper
             case LOAD_PAYMENT_DATA_REQUEST_CODE:
@@ -214,6 +221,7 @@ public class CheckoutActivity extends Activity {
      */
     private void handlePaymentSuccess(PaymentData paymentData) {
         String paymentInformation = paymentData.toJson();
+        Log.d(TAG,"handlePaymentSuccess");
 
         // Token will be null if PaymentDataRequest was not constructed using fromJson(String).
         if (paymentInformation == null) {
@@ -276,7 +284,7 @@ public class CheckoutActivity extends Activity {
     public void requestPayment(View view) {
         // Disables the button to prevent multiple clicks.
         mGooglePayButton.setClickable(false);
-
+        Log.d(TAG,"requestPayment");
         // The price provided to the API should include taxes and shipping.
         // This price is not displayed to the user.
         String price = PaymentsUtil.microsToString(mSubItem.getPriceMicros() + mShippingCost);

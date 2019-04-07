@@ -43,15 +43,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(mContext, CheckoutActivity.class);
-                Bundle data=new Bundle();
-                data.putString("sub_detail",pSubscriptionModel.getDetails());
-                data.putString("sub_price",pSubscriptionModel.getPrice());
-                data.putString("sub_name",pSubscriptionModel.getType());
-                data.putString("sub_image_link",pSubscriptionModel.getImagesub());
-                data.putString("sub_duration",pSubscriptionModel.getDuration());
-                i.putExtras(data);
-               mContext.startActivity(i);
+
             }
         });
     }
