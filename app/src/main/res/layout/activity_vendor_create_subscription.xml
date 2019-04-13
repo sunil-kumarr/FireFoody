@@ -1,87 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_add_menu"
-        style="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Create subscription"
-        app:titleTextColor="@color/black" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_add_menu"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Create subscription"
+            app:titleTextColor="@color/black" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/sub_create_btn"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_add_menu">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/sub_create_btn"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_add_menu">
 
-        <include layout="@layout/subscription_image" />
+            <include layout="@layout/subscription_image" />
 
-        <EditText
-            android:id="@+id/sub_duration"
+            <EditText
+                android:id="@+id/sub_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Subcription duration"
+                android:inputType="text"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/sub_packtype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Subcription type"
+                android:inputType="text"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/sub_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Subcription price"
+                android:inputType="text"
+                android:textSize="15sp" />
+            <EditText
+                android:id="@+id/sub_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Subcription coupon price"
+                android:inputType="text"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/sub_details"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/grey_200"
+                android:focusedByDefault="false"
+                android:gravity="start"
+                android:hint="Subscription details..."
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/sub_create_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Subcription duration"
-            android:inputType="text"
-            android:textSize="15sp" />
+            android:background="@drawable/button_red_plain"
+            android:elevation="4dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/sub_packtype"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Subcription type"
-            android:inputType="text"
-            android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/sub_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Subcription price"
-            android:inputType="text"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/sub_details"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/grey_200"
-            android:focusedByDefault="false"
-            android:gravity="start"
-            android:hint="Subscription details..."
-            android:padding="10dp"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/sub_create_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_red_plain"
-        android:elevation="4dp"
-        android:text="Save"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -11,44 +11,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.rapidfood.Activites.LocationActivity;
 import com.example.rapidfood.Adapters.HomeAdapter;
-import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
 import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
-import com.example.rapidfood.Models.HomeDataModel;
 import com.example.rapidfood.Models.PackageModel;
-import com.example.rapidfood.Models.SubscriptionContainerModel;
 import com.example.rapidfood.Models.SubscriptionModel;
-import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
-import com.example.rapidfood.Vendor_files.VendorTodayMenuActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -100,12 +76,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager horiziontal = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
         mSubscriptionRecycler.setLayoutManager(horiziontal);
         getAllDataFireStore();
-        mOpenMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext,LocationActivity.class));
-            }
-        });
+
     }
 
 

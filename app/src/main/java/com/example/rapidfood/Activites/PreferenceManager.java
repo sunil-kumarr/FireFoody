@@ -27,6 +27,15 @@ class PreferenceManager {
         spEditor.putBoolean(FIRST_LAUNCH, isFirstTime);
         spEditor.commit();
     }
+
+    public void setTransIdTemp(String pTransIdTemp){
+        spEditor.putString("t_ID",pTransIdTemp);
+        spEditor.apply();
+    }
+
+    public String getT_ID(){
+        return sharedPreferences.getString("t_ID","null");
+    }
     //Get the Saved value For FirstLaunch checking
     public boolean FirstLaunch() {
         return sharedPreferences.getBoolean(FIRST_LAUNCH, true);

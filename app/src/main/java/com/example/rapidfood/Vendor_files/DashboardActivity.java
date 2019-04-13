@@ -50,9 +50,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mAddDishBtn = findViewById(R.id.vendor_add_dish);
         mUserView=findViewById(R.id.vendor_user_view);
         mTodayMenu=findViewById(R.id.vendor_today_menu);
+        mSubsriberBtn=findViewById(R.id.vendor_sub_customers);
 
         mCreatePackBtn.setOnClickListener(this);
         mUserView.setOnClickListener(this);
+        mSubsriberBtn.setOnClickListener(this);
         mAddDishBtn.setOnClickListener(this);
         mCreateSubBtn.setOnClickListener(this);
         mTodayMenu.setOnClickListener(this);
@@ -74,14 +76,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         MaterialCardView mTapped = (MaterialCardView) v;
         switch (mTapped.getId()) {
             case R.id.vendor_user_view:
-                startActivity(new Intent(DashboardActivity.this, UserPreviewActivity.class));
+                startActivity(new Intent(DashboardActivity.this, UserSubscriberActivity.class));
                 Toast.makeText(this, "Under Construction", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.vendor_orders:
                 Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.vendor_sub_customers:
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DashboardActivity.this,UserSubscriberActivity.class));
                 break;
             case R.id.vendor_create_subs:
                 startActivity(new Intent(DashboardActivity.this,VendorCreateSubscription.class));
@@ -108,7 +110,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==R.id.my_profile){
+        if(item.getItemId()==R.id.shutdown_dashboard){
             if(mFirebaseUser!=null){
                 mFirebaseAuth.signOut();
                 startActivity(new Intent(DashboardActivity.this, Authentication.class));

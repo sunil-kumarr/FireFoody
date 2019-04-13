@@ -39,7 +39,7 @@ import java.util.Objects;
 public class VendorCreateSubscription extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageView;
-    private EditText mSubType, mSubPrice, mSubDuration, mSubDetail;
+    private EditText mSubType, mSubPrice, mSubDuration, mSubDetail,mSubCoupon;
     private Button mCreateBtn;
     private FrameLayout mFrameLayout;
     private SubscriptionModel mSubscriptionModel;
@@ -71,6 +71,9 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
         mSubType = findViewById(R.id.sub_packtype);
         mCreateBtn = findViewById(R.id.sub_create_btn);
         mImageView=findViewById(R.id.sub_image);
+        mSubCoupon=findViewById(R.id.sub_coupon);
+
+
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
@@ -95,12 +98,14 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
     }
 
     private void createSubscription() {
-        String duration = mSubDuration.getText().toString();
-        String packType = mSubType.getText().toString();
-        String price = mSubPrice.getText().toString();
-        String detail = mSubDetail.getText().toString();
+
         if (EmptyString(mSubDuration) && EmptyString(mSubType) && EmptyString(mSubPrice) && EmptyString(mSubDetail) && mImageSelected)
         {
+            String duration = mSubDuration.getText().toString();
+            String packType = mSubType.getText().toString();
+            String price = mSubPrice.getText().toString();
+            String detail = mSubDetail.getText().toString();
+            String Coupon=mSubCoupon.getText().toString();
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
@@ -110,6 +115,7 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
             mSubscriptionModel.setDuration(duration);
             mSubscriptionModel.setPrice(price);
             mSubscriptionModel.setType(packType);
+            mSubscriptionModel.setCoupon(Coupon);
             UploadImageToFirebase(ImageUri, "subscriptions");
         }
     }

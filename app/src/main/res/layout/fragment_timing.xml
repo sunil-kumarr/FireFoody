@@ -18,6 +18,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Delivery History"
         app:titleTextColor="@color/black" />
+
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"/>
     <TextView
         android:id="@+id/delivery_text"
         android:layout_width="match_parent"
@@ -27,42 +33,6 @@
         android:gravity="start"
         android:padding="5dp"
         android:text="Select food delivery timing.Default delivery all time"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/qr_toolbar" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="70dp">
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_calendar"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_coffee"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:src="@drawable/ic_cutlery"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_night"
-            android:padding="5dp"/>
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timing_Recycler_view"
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:textColor="@color/red_500"
+        android:textSize="10sp" />
 </LinearLayout>

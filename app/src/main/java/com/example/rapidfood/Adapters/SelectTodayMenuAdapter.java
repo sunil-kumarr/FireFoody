@@ -4,10 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Toast;
 
-import com.example.rapidfood.Models.VendorBreakFastItem;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -55,11 +52,7 @@ public class SelectTodayMenuAdapter extends FirestoreRecyclerAdapter<VendorDishM
                                     final int pI, @NonNull VendorDishModel pVendorDishModel) {
 
         pTodayViewHolder.mCheckBox.setText(pVendorDishModel.getName());
-        pTodayViewHolder.mTextView.setText(pVendorDishModel.getMoney());
-        String ty=new String();
-        if(pVendorDishModel.getItemcategory()==0)ty="( B )";
-        else ty="( L )";
-        pTodayViewHolder.typeName.setText(ty);
+
         pTodayViewHolder.setOnClickListener(new TodayViewHolder.ClickListener(){
             @Override
             public void onItemClick(View view, int position) {

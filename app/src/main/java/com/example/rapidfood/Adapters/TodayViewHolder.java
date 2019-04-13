@@ -14,9 +14,9 @@ class TodayViewHolder extends RecyclerView.ViewHolder {
     TextView mTextView,typeName;
     TodayViewHolder(@NonNull View itemView) {
         super(itemView);
-        mTextView=itemView.findViewById(R.id.item_price_today);
+
         mCheckBox = itemView.findViewById(R.id.pack_item_type);
-        typeName =itemView.findViewById(R.id.item_type_name);
+
         mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

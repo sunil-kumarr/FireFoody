@@ -2,18 +2,23 @@ package com.example.rapidfood.User_files;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.example.rapidfood.Models.UserModel;
+import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.ImageUtil;
@@ -24,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -52,10 +58,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String image;
     private Uri imageUri;
     private Toolbar mToolbar;
-    private EditText mUserNameEDT, mUserEmailEDt, mUserAddressEDt;
-    private CircleImageView mUserImage;
+    private EditText mUserNameEDT, mUserEmailEDt, mUserMobileEDt;
+    private ImageView mUserImage;
     private Button mUpadteProfileBtn;
-    private UserModel mUserModel;
+    private UserProfileModel mUserModel;
     private boolean mImageSelected = false;
     private Map<String, Object> getUser;
     private static final String TAG = "ProfileActivity";
@@ -73,20 +79,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setDisplayShowHomeEnabled(true);
         }
+
         mUserEmailEDt = findViewById(R.id.edtEmailUser);
         mUserNameEDT = findViewById(R.id.edtNameUser);
-        mUserAddressEDt = findViewById(R.id.edtAddressUser);
         mUpadteProfileBtn = findViewById(R.id.btn_save_profile);
         mUserImage = findViewById(R.id.profile_image_user);
+        mUserMobileEDt = findViewById(R.id.edtMobileUser);
+
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mImageUtil=new ImageUtil();
+
+        mImageUtil = new ImageUtil();
+
         mUpadteProfileBtn.setOnClickListener(this);
+
         mUserImage.setOnClickListener(this);
-        mUserModel = new UserModel();
+
+        mUserModel = new UserProfileModel();
 
     }
 
@@ -100,8 +112,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode) {
                 case 2973:
@@ -110,11 +124,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     if (imageUri != null)
                         image = mImageUtil.FilePathNameExtractor(imageUri);
                     if (image != null) {
+                        mUserImage.setVisibility(View.VISIBLE);
                         Picasso.get()
                                 .load(imageUri)
                                 .centerCrop()
                                 .resize(150, 230)
-                                .placeholder(R.drawable.foodplaceholder)
                                 .into(mUserImage);
                         mImageSelected = true;
                     }
@@ -133,20 +147,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
-                   if(pDocumentSnapshot.exists())
-                    {
-                        mUserModel = pDocumentSnapshot.toObject(UserModel.class);
-                      //  Toast.makeText(ProfileActivity.this, "Image:" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(ProfileActivity.this, "START CALLED", Toast.LENGTH_SHORT).show();
+                    if (pDocumentSnapshot.exists()) {
+                        mUserModel = pDocumentSnapshot.toObject(UserProfileModel.class);
+                        mUserImage.setVisibility(View.VISIBLE);
+                        mUserMobileEDt.setText(mUserModel.getMobile());
+                        mUserMobileEDt.setEnabled(false);
                         Picasso.get()
                                 .load(mUserModel.getProfileimage())
                                 .fit()
-
-                                .placeholder(R.drawable.man)
                                 .into(mUserImage);
-                        Log.d(TAG,""+mUserModel.getProfileimage());
+
+                        Log.d(TAG, "" + mUserModel.getProfileimage());
+
                         mUserNameEDT.setText(pDocumentSnapshot.getString("username"));
-                        mUserAddressEDt.setText(pDocumentSnapshot.getString("address"));
+
                         mUserEmailEDt.setText(pDocumentSnapshot.getString("emailAddress"));
                     }
                 }
@@ -155,13 +169,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.profile_image_user:
-                mImageUtil.pickFromGallery(this);
+                AlertDialog vBuilder = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setMessage("Select image from device and update profile image..")
+                        .setTitle("Select")
+                        .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mImageUtil.pickFromGallery(ProfileActivity.this);
+                            }
+                        }).create();
+                vBuilder.show();
                 break;
             case R.id.btn_save_profile:
                 updateToFireStore();
@@ -176,13 +198,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String name = mUserNameEDT.getText().toString();
         String email = "No email address";
         email = mUserEmailEDt.getText().toString();
-        String address = mUserAddressEDt.getText().toString();
-        if (EmptyString(mUserNameEDT) && EmptyString(mUserAddressEDt)) {
+        if (EmptyString(mUserNameEDT)) {
 
             mProgressDialog = new ProgressDialog(this);
             mUserModel.setUsername(name);
             mUserModel.setEmailAddress(email);
-            mUserModel.setAddress(address);
+
             mUserModel.setMobile(mFirebaseUser.getPhoneNumber());
             if (mImageSelected) {
                 mProgressDialog.setMax(100);
@@ -196,18 +217,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void addItemToFireStore() {
-        Toast.makeText(this, "IMAGE"+mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
-        mFirebaseFirestore.collection("users")
-                .document(mFirebaseUser.getUid())
-                .set(mUserModel)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> pTask) {
-                        finish();
-                    }
-                });
-        mProgressDialog.dismiss();
-        Toast.makeText(this, "Profile updated", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "IMAGE" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
+
+        DocumentReference user = mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid());
+        user.update("user_profile_data",mUserModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void pVoid) {
+                mProgressDialog.dismiss();
+                Toast.makeText(ProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void UploadImageToFirebase(Uri pImageUri) {
@@ -249,5 +268,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return  true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            this.finish();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
     }
 }

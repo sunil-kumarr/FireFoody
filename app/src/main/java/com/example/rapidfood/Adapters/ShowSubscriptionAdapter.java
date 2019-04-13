@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
@@ -40,11 +43,37 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
                                     int pI, @NonNull final SubscriptionModel pSubscriptionModel) {
         Picasso.get()
                 .load(pSubscriptionModel.getImagesub())
-                .into(pSubscriptionViewHolder.mSubImage);
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(pSubscriptionViewHolder.mSubImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        //Try again online if cache failed
+                        Picasso.get()
+                                .load(pSubscriptionModel.getImagesub())
+                                .error(R.drawable.ic_undraw_failure)
+                                .into(pSubscriptionViewHolder.mSubImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
+                    }
+                });
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, GooglePayActivity.class));
+                Intent i=new Intent(mContext, GooglePayActivity.class);
+                i.putExtra("sub_name",pSubscriptionModel.getType());
+                mContext.startActivity(i);
             }
         });
     }

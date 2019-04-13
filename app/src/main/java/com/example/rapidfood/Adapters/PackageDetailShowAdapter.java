@@ -38,7 +38,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     public void onBindViewHolder(@NonNull PackageViewHolder holder, int position) {
         VendorDishModel vModel = dishlist.get(position);
         holder.dishName.setText(vModel.getName());
-        holder.dishPrice.setText(vModel.getMoney());
+//        holder.dishPrice.setText(vModel.getMoney());
         holder.dishDetail.setText(vModel.getDescription());
         Picasso.get().load(vModel.getImage()).fit().into(holder.dishImage);
     }
@@ -59,7 +59,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
             super(itemView);
             dishImage = itemView.findViewById(R.id.item_Image);
             dishDetail = itemView.findViewById(R.id.item_Desc);
-            dishPrice = itemView.findViewById(R.id.item_Price);
+//            dishPrice = itemView.findViewById(R.id.item_Price);
             dishName = itemView.findViewById(R.id.item_Name);
             dishAddButton = itemView.findViewById(R.id.dis_add_button);
         }

@@ -10,25 +10,8 @@ public class PackageModel {
     private String description;
     private String price;
     private String item_count;
-    private String type;
     private boolean isBreakfast;
     private List<VendorDishModel> dishlist;
-
-    public boolean isBreakfast() {
-        return isBreakfast;
-    }
-
-    public void setBreakfast(boolean pBreakfast) {
-        isBreakfast = pBreakfast;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String pType) {
-        type = pType;
-    }
 
     public List<VendorDishModel> getDishlist() {
         return dishlist;
@@ -36,6 +19,14 @@ public class PackageModel {
 
     public void setDishlist(List<VendorDishModel> pDishlist) {
         dishlist = pDishlist;
+    }
+
+    public boolean isBreakfast() {
+        return isBreakfast;
+    }
+
+    public void setBreakfast(boolean pBreakfast) {
+        isBreakfast = pBreakfast;
     }
 
     public String getName() {
@@ -77,4 +68,5 @@ public class PackageModel {
     public void setItem_count(String pItem_count) {
         item_count = pItem_count;
     }
+
 }

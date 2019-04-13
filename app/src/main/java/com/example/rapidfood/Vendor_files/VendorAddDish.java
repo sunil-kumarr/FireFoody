@@ -47,7 +47,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class VendorAddDish extends AppCompatActivity implements View.OnClickListener {
     private ImageView mImageView;
-    private EditText mName, mDesc, mPrice;
+    private EditText mName, mDesc;                   // mPrice;
     private Button mCreateBtn;
     private ListView mListView;
     private FrameLayout mFrameLayout;
@@ -90,7 +90,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
         mName = findViewById(R.id.item_name);
         mDesc = findViewById(R.id.item_desc);
         mFrameLayout = findViewById(R.id.frame_layout);
-        mPrice = findViewById(R.id.item_price);
+//        mPrice = findViewById(R.id.item_price);
 
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
@@ -115,14 +115,9 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     }
 
     private void createPackItem() {
-        if (mImageSelected && EmptyString(mName) && EmptyString(mDesc) && EmptyString(mPrice)) {
+        if (mImageSelected && EmptyString(mName) && EmptyString(mDesc) ) {
             mVendorDishModel.setName(mName.getText().toString());
             mVendorDishModel.setDescription(mDesc.getText().toString());
-            try {
-                mVendorDishModel.setMoney(mPrice.getText().toString());
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Please Enter Valid number", Toast.LENGTH_SHORT).show();
-            }
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
@@ -212,13 +207,13 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
         mVendorDishModel.setImage(imageId);
         if (mAddDishPackHelpAdapter != null) {
             Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
-            for (String s : mAddDishPackHelpAdapter.getSelectedPacks()) {
-                if (s.equals("Breakfast")) {
-                    mVendorDishModel.setItemcategory(0);
-                } else {
-                    mVendorDishModel.setItemcategory(1);
-                }
-            }
+//            for (String s : mAddDishPackHelpAdapter.getSelectedPacks()) {
+//                if (s.equals("Breakfast")) {
+//                    mVendorDishModel.setItemcategory(0);
+//                } else {
+//                    mVendorDishModel.setItemcategory(1);
+//                }
+//            }
             mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
         } else {
             Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();

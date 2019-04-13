@@ -2,13 +2,21 @@ package com.example.rapidfood.Models;
 
 public class SubscriptionModel {
 
-    final static Integer TYPE=1;
 
     private String duration;
     private String type;
     private String mPrice;
     private String details;
     private String imagesub;
+    private String coupon;
+
+    public String getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(String pCoupon) {
+        coupon = pCoupon;
+    }
 
     public String getImagesub() {
         return imagesub;

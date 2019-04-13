@@ -8,6 +8,7 @@
     <string name="googlepay_status_unavailable" translatable="false">Unfortunately, Google Pay is not available on this phone.</string>
     <string name="googlepay_status_checking" translatable="false">Checking if Google Pay is available...</string>
     <string name="payments_show_name" translatable="false">Successfully received payment data for %s!</string>
+    <string name="feedback">Please leave feedback about our features in this application. And it would be very helpful if you could suggest us to improve our features.</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
@@ -60,4 +61,5 @@
     <string name="otp_promt_full">.</string>
     <string name="verify_text">Verify your phone number</string>
     <string name="item_desc">It is very delicious paneer made by outtema odasd sdasdasd asdas dsadas</string>
+    <string name="address_text">please provide exact location where you want us to delier the food.So we can deliver it rapidly.Thank you</string>
 </resources>

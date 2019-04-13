@@ -1,51 +1,33 @@
 package com.example.rapidfood.Models;
 
 public class UserModel {
-    private String username;
-    private String emailAddress;
-    private String address;
-    private String profileimage;
-    private String mobile;
 
-    public String getMobile() {
-        return mobile;
+    private UserAddressModal address_first;
+    private UserProfileModel user_profile;
+    private String balance;
+    private boolean subscribed;
+
+
+    public UserProfileModel getUser_profile() {
+        return user_profile;
     }
 
-    public void setMobile(String pMobile) {
-        mobile = pMobile;
+    public void setUser_profile(UserProfileModel pUser_profile) {
+        user_profile = pUser_profile;
     }
 
-    public String getProfileimage() {
-        return profileimage;
+    public UserAddressModal getAddress_first() {
+        return address_first;
     }
 
-    public void setProfileimage(String pProfileimage) {
-        profileimage = pProfileimage;
+    public void setAddress_first(UserAddressModal pAddress_first) {
+        address_first = pAddress_first;
     }
 
-    public String getUsername() {
-        return username;
+    public String getBalance() {
+        return balance;
     }
-
-    public void setUsername(String pUsername) {
-        username = pUsername;
+    public boolean isSubscribed() {
+        return subscribed;
     }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String pEmailAddress) {
-        emailAddress = pEmailAddress;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String pAddress) {
-        address = pAddress;
-    }
-
-
 }

@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.PackageDetailShowAdapter;
+import com.example.rapidfood.Models.PackageContainerModel;
 import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
@@ -43,7 +44,7 @@ public class PackageDetailsActivity extends AppCompatActivity {
 
         mPackageDetails = findViewById(R.id.package_details_text_view);
         mPackageItemRecyclerView = findViewById(R.id.package_details_recycler_view);
-        LinearLayoutManager vLayoutManager =new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager vLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         vLayoutManager.setAutoMeasureEnabled(false);
         mPackageItemRecyclerView.setLayoutManager(vLayoutManager);
         mPackageItemRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -65,10 +66,11 @@ public class PackageDetailsActivity extends AppCompatActivity {
                 if (pTask.isSuccessful()) {
                     DocumentSnapshot q = pTask.getResult();
                     assert q != null;
-                    PackageModel pack = q.toObject(PackageModel.class);
+                    PackageContainerModel pack = q.toObject(PackageContainerModel.class);
                     Picasso.get().load(q.getString("image")).fit().into(mPackageImage);
-                    List<VendorDishModel> items = pack.getDishlist();
+                    assert pack != null;
                     mPackageDetails.setText(pack.getDescription());
+                    List<VendorDishModel> items=pack.getDishlist();
                     PackageDetailShowAdapter vShowAdapter = new PackageDetailShowAdapter(items, PackageDetailsActivity.this);
                     mPackageItemRecyclerView.setAdapter(vShowAdapter);
                 } else {
@@ -76,6 +78,7 @@ public class PackageDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 }

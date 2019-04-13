@@ -127,11 +127,7 @@ public class MainActivity extends AppCompatActivity  {
                         break;
                     case 3:
                         vFragment = new ProfileFragment();
-//                        if (mFirebaseInstances.getFirebaseAuth().getCurrentUser() != null) {
-//                            mFirebaseInstances.getFirebaseAuth().signOut();
-//                            startActivity(new Intent(MainActivity.this, Authentication.class));
-//                            finish();
-//                        }
+
                         break;
                     default:
                         vFragment = new HomeFragment();

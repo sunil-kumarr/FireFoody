@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import androidx.annotation.RequiresApi;
 
-class PaymentsUtil {
+public class PaymentsUtil {
 
     private static final String TAG = "PaymentsUtil";
     private static final BigDecimal MICROS = new BigDecimal(1000000d);

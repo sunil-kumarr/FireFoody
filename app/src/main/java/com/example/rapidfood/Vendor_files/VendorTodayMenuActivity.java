@@ -1,5 +1,6 @@
 package com.example.rapidfood.Vendor_files;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +19,14 @@ import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.SelectTodayMenuAdapter;
 import com.example.rapidfood.Models.PackageModel;
-import com.example.rapidfood.Models.SubscriptionContainerModel;
-import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -98,19 +99,6 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
         vProgressDialog.setMessage("Updating menu....");
         vProgressDialog.show();
 
-        // Get subscriptions and upload to today_menu as arraylist
-//        getSubscriptions(new MyDataCallBAckSubs() {
-//            @Override
-//            public void onCallback(SubscriptionContainerModel pModel) {
-//                mFirebaseFirestore.collection("today_menu").document("Subscription")
-//                        .set(pModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void pVoid) {
-//                        Toast.makeText(VendorTodayMenuActivity.this, "Subscription Uploaded", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
 
         //Get selected dish items to upload
         final List<VendorDishModel> vModels = ((SelectTodayMenuAdapter) TodayAdapter).getSelectedItems();
@@ -135,23 +123,24 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    pPackageModels.get(i).setDishlist(mDishs);
-                    pPackageModels.get(i).setType("2");
-                    vToday_menu.document(pPackageModels.get(i).getName()).set(pPackageModels.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void pVoid) {
-                            Toast.makeText(VendorTodayMenuActivity.this, "Menu Updated", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    if (mDishs.size() > 0) {
+                        pPackageModels.get(i).setDishlist(mDishs);
+                        vToday_menu.document(pPackageModels.get(i).getName()).set(pPackageModels.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void pVoid) {
+                                Toast.makeText(VendorTodayMenuActivity.this, "Menu Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                     mDishs.clear();
                 }
                 vProgressDialog.dismiss();
             }
         });
-
-
     }
 
+
+    // all dish in today menu section
     private void getAllDataFireStore() {
         Log.d(TAG, "MAKING ");
         //    Toast.makeText(this, "Recycler init adknlsdna", Toast.LENGTH_SHORT).show();
@@ -161,9 +150,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
         mTodayRecycler.setLayoutManager(llm);
 
         Query query = mFirebaseFirestore
-                .collection("dishes_main")
-                .orderBy("itemcategory")
-                .orderBy("packlist");
+                .collection("dishes_main");
 
         options = new FirestoreRecyclerOptions.Builder<VendorDishModel>()
                 .setQuery(query, VendorDishModel.class).build();
@@ -176,6 +163,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void getPackList(final MyDataCallBack pMyDataCallBack) {
         mFirebaseFirestore.collection("packages").orderBy("name").get()
@@ -191,27 +179,6 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
                 });
     }
 
-    private void getSubscriptions(final MyDataCallBAckSubs pMyDataCallBAckSubs)
-    {
-        mFirebaseFirestore.collection("subscriptions").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
-                        final List<SubscriptionModel> pack = new ArrayList<>();
-
-                        for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
-
-                            pack.add(doc.toObject(SubscriptionModel.class));
-                        }
-                        Toast.makeText(VendorTodayMenuActivity.this, "Size: "+pack.size(), Toast.LENGTH_SHORT).show();
-                        SubscriptionContainerModel vContainerModel=new SubscriptionContainerModel();
-                        vContainerModel.setType("1");
-                        vContainerModel.setSubscriptionlist(pack);
-                        pMyDataCallBAckSubs.onCallback(vContainerModel);
-
-                    }
-                });
-    }
 
     @Override
     protected void onStart() {
@@ -228,8 +195,6 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     private interface MyDataCallBack {
         void onCallback(List<PackageModel> pPackageModels);
     }
-    private  interface  MyDataCallBAckSubs{
-        void onCallback(SubscriptionContainerModel pModel);
-    }
+
 
 }
