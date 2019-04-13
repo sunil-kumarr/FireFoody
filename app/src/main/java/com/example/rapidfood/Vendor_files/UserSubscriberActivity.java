@@ -1,6 +1,7 @@
 package com.example.rapidfood.Vendor_files;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,12 +16,18 @@ import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -34,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class UserSubscriberActivity extends AppCompatActivity implements SubscriberListAdapter.SubscriberListener {
 
+    private static final String TAG = "UserSubscriberActivity";
     private FirestoreRecyclerOptions<SubscriptionTransactionModel> mOptions;
     private FirebaseInstances mFirebaseInstances;
     private FirebaseFirestore mFirebaseFirestore;
@@ -52,6 +60,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Query query = mFirebaseFirestore
                 .collection("sub_transaction_data")
                 .orderBy("transaction_time", Query.Direction.DESCENDING);
+               // .whereEqualTo("verified", false);
         mOptions = new FirestoreRecyclerOptions.Builder<SubscriptionTransactionModel>()
                 .setQuery(query, SubscriptionTransactionModel.class).build();
         mSubListAdapter = new SubscriberListAdapter(mOptions, mSubscriberRecycler, this);
@@ -81,9 +90,68 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.subscriber_btn_verify:
+                Toast.makeText(this, "verify clicked", Toast.LENGTH_SHORT).show();
+                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
+                addToVerifiedSubscriber(pSubscriptionTransactionModel);
                 break;
+
+        }
+    }
+
+    @Override
+    public void onClickFailde(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel) {
+        Button vButton = (Button) pView;
+        switch (vButton.getId()){
             case R.id.subscriber_btn_failed:
+                Toast.makeText(this, "fail clicked", Toast.LENGTH_SHORT).show();
+                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
                 break;
         }
+    }
+
+    void addToVerifiedSubscriber(SubscriptionTransactionModel pModel) {
+        Map<String, Object> mp = new HashMap<>();
+        String f_uid = pModel.getUid();
+        Log.d(TAG,f_uid);
+        Toast.makeText(this, ""+f_uid, Toast.LENGTH_SHORT).show();
+        mp.put("start_date", FieldValue.serverTimestamp());
+        String[] days = pModel.getDuration().split(" ", 1);
+        mp.put("duration", days[0]);
+        mp.put("trans_id", pModel.getTransaction_id());
+        mp.put("balance", Integer.parseInt(pModel.getSubcost()));
+        mFirebaseFirestore.collection("subscribed_user").document(f_uid).set(mp).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> pTask) {
+                    if(pTask.isSuccessful()){
+                        Toast.makeText(UserSubscriberActivity.this, "Added Subscriber", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+            }
+        });
+    }
+
+    void changeVerificationStatus(String t_string, boolean token) {
+        Map<String, Object> mp = new HashMap<>();
+        if(token) {
+            mp.put("verification_status", "SUCCESS");
+        }
+        else{
+            mp.put("verification_status","FAILURE");
+        }
+        mp.put("verified",true);
+        mFirebaseFirestore.collection("sub_transaction_data").document(t_string).update(mp).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> pTask) {
+                        if (pTask.isSuccessful()) {
+                            Toast.makeText(UserSubscriberActivity.this, "verified Transaction", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
     }
 }

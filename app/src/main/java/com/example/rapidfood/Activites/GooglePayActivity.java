@@ -144,11 +144,11 @@ public class GooglePayActivity extends AppCompatActivity {
                             DocumentSnapshot vSnapshot = pTask.getResult();
                             SubscriptionModel vModel = vSnapshot.toObject(SubscriptionModel.class);
                             if (vModel != null) {
-                                msubcost.setText(String.format("₹%s.0", vModel.getPrice()));
+                                msubcost.setText(String.format("%s", vModel.getPrice()));
                                 mdetails.setText(String.format("**%s", vModel.getDetails()));
                                 msubval.setText(vModel.getDuration());
                                 msubname.setText(vModel.getType());
-                                msubcoupon_Value.setText(String.format("₹%s.0", vModel.getCoupon()));
+                                msubcoupon_Value.setText(String.format("%s", vModel.getCoupon()));
                                 long total_bill = (Long.parseLong(vModel.getPrice()) - Long.parseLong(vModel.getCoupon()));
                                 // Toast.makeText(GooglePayActivity.this, "" + Long.toString(total_bill), Toast.LENGTH_SHORT).show();
                                 mTotalCost.setText(String.format("%s", Long.toString(total_bill)));
@@ -194,9 +194,11 @@ public class GooglePayActivity extends AppCompatActivity {
             contentValues.put("uid", uid);
             contentValues.put("mobile", mob);
             contentValues.put("transaction_id", tr);
-            contentValues.put("total_paid","₹"+s_total);
+            contentValues.put("total_paid",s_total);
             contentValues.put("transaction_time", FieldValue.serverTimestamp());
             contentValues.put("googlePay_status", data.getStringExtra("Status"));
+            contentValues.put("verification_status","pending");
+            contentValues.put("verified",false);
             Log.d(TAG, contentValues.toString());
             mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(contentValues).addOnCompleteListener(
                     new OnCompleteListener<Void>() {

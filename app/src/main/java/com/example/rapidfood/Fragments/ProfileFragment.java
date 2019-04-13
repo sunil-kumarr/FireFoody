@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mSendFeedback;
     private ImageView mProfilePage;
     private ImageButton mDeleteAddress;
+    private TextView mUserCurrentBal;
     private LinearLayout mAddressContainer;
     private Context mContext;
     private FirebaseInstances mFirebaseInstances;
@@ -80,6 +81,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mSendFeedback = view.findViewById(R.id.send_feedback);
         mSignOut_btn = view.findViewById(R.id.sign_out);
         mDeleteAddress = view.findViewById(R.id.delete_address_btn);
+        mUserCurrentBal=view.findViewById(R.id.user_current_balance);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
@@ -94,6 +96,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (mFirebaseAuth.getCurrentUser() != null) {
             String uid = mFirebaseAuth.getCurrentUser().getUid();
             DocumentReference vUSerData = mFirebaseFirestore.collection("users").document(uid);
+            DocumentReference vSubData=mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
+            vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                  if(pTask.isSuccessful() && pTask.getResult().exists()){
+                      mUserCurrentBal.setText(String.format("₹%s", pTask.getResult().getString("balance")));
+                  }
+                  else{
+                      mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
+                      mUserCurrentBal.setText("Not Subscribed");
+                  }
+                }
+            });
+
             vUSerData.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot pDocumentSnapshot) {

@@ -43,7 +43,7 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         super(options);
         mContext = pContext;
         mRecyclerview = pRecylerView;
-        mSubscriberListener=(UserSubscriberActivity) pContext;
+        mSubscriberListener = (UserSubscriberActivity) pContext;
     }
 
     @Override
@@ -58,34 +58,47 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         pSubscriptionViewHolder.mSubCost.setText(pSubscriptionModel.getSubcost());
         pSubscriptionViewHolder.mSubCoupon.setText(pSubscriptionModel.getSubcoupon());
         pSubscriptionViewHolder.mSubTotalCost.setText(pSubscriptionModel.getTotal_paid());
-      //  Toast.makeText(mContext, ""+pSubscriptionModel.getTransaction_time(), Toast.LENGTH_SHORT).show();
-        pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSubscriberListener.onClickVerify(v,pSubscriptionModel);
+       // Toast.makeText(mContext, ""+pSubscriptionModel.getVerification_status()+" "+pSubscriptionModel.isVerifed(), Toast.LENGTH_SHORT).show();
+
+            if (pSubscriptionModel.getVerification_status().equals("SUCCESS")) {
                 pSubscriptionViewHolder.verifyBTN.setEnabled(false);
                 pSubscriptionViewHolder.verifyBTN.setText("Verified");
                 Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-//                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-//                Drawable img = new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, 30, 30, true));
-                pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+                pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
                 pSubscriptionViewHolder.failedBTN.setVisibility(View.GONE);
-            }
-        });
-        pSubscriptionViewHolder.failedBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            } else if(pSubscriptionModel.getVerification_status().equals("FAILURE")){
                 pSubscriptionViewHolder.failedBTN.setEnabled(false);
-                mSubscriberListener.onClickVerify(v,pSubscriptionModel);
                 Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-//                Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-//                Drawable img = new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(bitmap, 30, 30, true));
-                pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+                pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
                 pSubscriptionViewHolder.verifyBTN.setVisibility(View.GONE);
             }
-        });
+         if(pSubscriptionModel.getVerification_status().equals("pending")){
+            pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSubscriberListener.onClickVerify(v, pSubscriptionModel);
+                    pSubscriptionViewHolder.verifyBTN.setEnabled(false);
+                    pSubscriptionViewHolder.verifyBTN.setText("Verified");
+                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                    pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                    pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+                    pSubscriptionViewHolder.failedBTN.setVisibility(View.GONE);
+                }
+            });
+            pSubscriptionViewHolder.failedBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pSubscriptionViewHolder.failedBTN.setEnabled(false);
+                    mSubscriberListener.onClickFailde(v, pSubscriptionModel);
+                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+                    pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                    pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+                    pSubscriptionViewHolder.verifyBTN.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @NonNull
@@ -110,13 +123,13 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         private TextView transactiontime;
         private TextView userMobile;
         private TextView googleStatus;
-        private Button verifyBTN,failedBTN;
+        private Button verifyBTN, failedBTN;
 
         private SubscriberViewHolder(@NonNull View itemView) {
             super(itemView);
-            verifyBTN=itemView.findViewById(R.id.subscriber_btn_verify);
-            failedBTN=itemView.findViewById(R.id.subscriber_btn_failed);
-            userMobile=itemView.findViewById(R.id.subscriber_mobile);
+            verifyBTN = itemView.findViewById(R.id.subscriber_btn_verify);
+            failedBTN = itemView.findViewById(R.id.subscriber_btn_failed);
+            userMobile = itemView.findViewById(R.id.subscriber_mobile);
             mSubName = itemView.findViewById(R.id.subscriber_type);
             mSubCost = itemView.findViewById(R.id.subscriber_cost);
             mSubCoupon = itemView.findViewById(R.id.subscriber_coupon);
@@ -127,8 +140,11 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         }
 
     }
-   public interface SubscriberListener{
-        void onClickVerify(View pView,SubscriptionTransactionModel pSubscriptionTransactionModel);
+
+    public interface SubscriberListener {
+        void onClickVerify(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel);
+
+        void onClickFailde(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel);
     }
 
 }
