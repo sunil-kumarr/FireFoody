@@ -23,6 +23,7 @@
             android:background="@drawable/gradient"
             />
         <ImageView
+            android:id="@+id/package_type_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_coffee"

@@ -4,18 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.rapidfood.GooglePay.PaymentsUtil;
 import com.example.rapidfood.Models.SubscriptionModel;
-import com.example.rapidfood.Models.SubscriptionTransactionModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -23,11 +18,9 @@ import com.example.rapidfood.Utils.GenerateUUIDClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,8 +74,8 @@ public class GooglePayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(GooglePayActivity.this, "" + tr, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, tr);
+//                Toast.makeText(GooglePayActivity.this, "" + tr, Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, tr);
                 String amountt = mTotalCost.getText().toString();
                 if (amountt != null) {
                     StringBuilder vStringBuilder = new StringBuilder();

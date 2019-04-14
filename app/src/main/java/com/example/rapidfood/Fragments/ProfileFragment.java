@@ -155,8 +155,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(mContext, AddressActivity.class));
                 v.setEnabled(false);
                 break;
-            case R.id.delete_address_btn:
-                deleteUserAddress();
+           case R.id.delete_address_btn:
+                 deleteUserAddress();
                 break;
             case R.id.send_feedback:
                 startActivity(new Intent(mContext, FeedbackActivity.class));
@@ -193,7 +193,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             mAddAddressButton.setVisibility(View.VISIBLE);
                             mAddAddressButton.setEnabled(true);
                             mUserAddress.setText(" ");
-                            mAddressContainer.setVisibility(View.INVISIBLE);
+                            mAddressContainer.setVisibility(View.GONE);
 
                         }
                     });

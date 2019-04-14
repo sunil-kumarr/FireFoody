@@ -35,6 +35,12 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
     protected void onBindViewHolder(@NonNull HomeViewHolder pHomeViewHolder, int pI, @NonNull final PackageModel pPackageModel) {
         pHomeViewHolder.mPackageName.setTypeface(mContext.getResources().getFont(R.font.iran_sans_mobile));
         pHomeViewHolder.mPackageName.setText(pPackageModel.getName());
+         if(pPackageModel.isBreakfast()){
+             pHomeViewHolder.mPackTypeImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_coffee));
+         }
+         else{
+             pHomeViewHolder.mPackTypeImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_lunch));
+         }
         Picasso.get()
                 .load(pPackageModel.getImage())
                 .networkPolicy(NetworkPolicy.OFFLINE)

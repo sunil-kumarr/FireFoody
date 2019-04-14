@@ -1,17 +1,23 @@
 package com.example.rapidfood.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,10 +27,16 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
 
     private List<VendorDishModel> dishlist;
     private Context mContext;
+    private List<String> selectedItems;
+    private String packName;
+    private int itemCount;
 
-    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext) {
+    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext, int itemCount, String pPackName) {
         dishlist = pDishlist;
         mContext = pContext;
+        this.itemCount = itemCount;
+        packName = pPackName;
+        selectedItems = new ArrayList<>();
     }
 
     @NonNull
@@ -34,13 +46,75 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
         return new PackageViewHolder(layout);
     }
 
+    public List<String> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public String getPackName() {
+        return packName;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull PackageViewHolder holder, int position) {
         VendorDishModel vModel = dishlist.get(position);
         holder.dishName.setText(vModel.getName());
-//        holder.dishPrice.setText(vModel.getMoney());
         holder.dishDetail.setText(vModel.getDescription());
-        Picasso.get().load(vModel.getImage()).fit().into(holder.dishImage);
+        Picasso.get()
+                .load(vModel.getImage())
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(holder.dishImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        //Try again online if cache failed
+                        Picasso.get()
+                                .load(vModel.getImage())
+                                .error(R.drawable.ic_undraw_failure)
+                                .into(holder.dishImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Log.v("Picasso", "Could not fetch image");
+                                    }
+                                });
+                    }
+                });
+        holder.dishAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button btn = (Button) v;
+
+                if (btn.getText().equals("Add")) {
+                    if (itemCount > selectedItems.size()) {
+
+                        selectedItems.add(dishlist.get(position).getName());
+                        Toast.makeText(mContext, itemCount+""+selectedItems.size(), Toast.LENGTH_SHORT).show();
+                        btn.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+                        Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                        btn.setText("Added");
+                        btn.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                    }
+                    else{
+                        Toast.makeText(mContext, "Cart is full!!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+
+                    selectedItems.remove(dishlist.get(position).getName());
+                    Drawable back = mContext.getResources().getDrawable(R.drawable.button_red_background);
+                    btn.setBackground(back);
+                    btn.setText("Add");
+                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_add_white_24dp);
+                    btn.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+                }
+            }
+        });
     }
 
     @Override

@@ -15,6 +15,9 @@ public class SubscribedUserModel {
         balance = pBalance;
     }
 
+    public SubscribedUserModel() {
+    }
+
     public String getBalance() {
         return balance;
     }

@@ -67,6 +67,7 @@ public class AddressActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void pVoid) {
                                             Toast.makeText(AddressActivity.this, "Address updated successfully", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         }
                                     });
 

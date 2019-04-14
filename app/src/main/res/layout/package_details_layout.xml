@@ -6,8 +6,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/frame_layout_contaienr"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,22 +21,25 @@
             android:layout_height="250dp"
             android:scaleType="fitXY"
             app:layout_collapseMode="parallax" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient"/>
+            android:background="@drawable/gradient" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
             android:layout_margin="5dp"
             android:padding="5dp"
-            android:src="@drawable/ic_arrow_white_24dp"/>
+            android:src="@drawable/ic_arrow_white_24dp" />
+
         <TextView
             android:id="@+id/package_details_text_view"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -46,25 +50,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/pack_detail_type_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_coffee" />
     </FrameLayout>
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end|top"
-        android:layout_margin="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:padding="2dp"
-        android:src="@drawable/ic_coffee"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.293" />
+
 
     <include
         layout="@layout/package_details_content"
@@ -74,6 +74,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/frame_layout_contaienr" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

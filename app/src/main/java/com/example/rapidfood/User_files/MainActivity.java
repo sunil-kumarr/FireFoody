@@ -1,7 +1,6 @@
 package com.example.rapidfood.User_files;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,20 +8,15 @@ import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
-import com.example.rapidfood.Activites.Authentication;
-import com.example.rapidfood.Adapters.HomeViewHolder;
 import com.example.rapidfood.Fragments.HomeFragment;
 import com.example.rapidfood.Fragments.ProfileFragment;
 import com.example.rapidfood.Fragments.QRFragment;
 import com.example.rapidfood.Fragments.TimingFragment;
-import com.example.rapidfood.GooglePay.CheckoutActivity;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.wallet.PaymentsClient;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
