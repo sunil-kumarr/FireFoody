@@ -27,7 +27,7 @@
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="match_parent"-->
                 <!--android:text="B"-->
-                <!--android:textColor="@color/Red"-->
+                <!--android:textCsolor="@color/Red"-->
                 <!--android:textSize="20sp"-->
                 <!--android:layout_margin="4dp"-->
                 <!--android:padding="5dp"-->

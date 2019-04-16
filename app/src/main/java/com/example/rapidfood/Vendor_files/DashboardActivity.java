@@ -31,6 +31,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private MaterialCardView mUserView;
     private MaterialCardView mTodayMenu;
     private MaterialCardView mSubsriberBtn;
+    private MaterialCardView mCustomOrders;
     FirebaseInstances mFirebaseInstances;
     FirebaseAuth mFirebaseAuth;
     FirebaseUser mFirebaseUser;
@@ -51,8 +52,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mUserView=findViewById(R.id.vendor_user_view);
         mTodayMenu=findViewById(R.id.vendor_today_menu);
         mSubsriberBtn=findViewById(R.id.vendor_sub_customers);
+        mCustomOrders=findViewById(R.id.vendor_orders);
 
         mCreatePackBtn.setOnClickListener(this);
+        mCustomOrders.setOnClickListener(this);
         mUserView.setOnClickListener(this);
         mSubsriberBtn.setOnClickListener(this);
         mAddDishBtn.setOnClickListener(this);
@@ -80,7 +83,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(this, "Under Construction", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.vendor_orders:
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DashboardActivity.this,VendorShowOrderActivity.class));
                 break;
             case R.id.vendor_sub_customers:
                 startActivity(new Intent(DashboardActivity.this,UserSubscriberActivity.class));

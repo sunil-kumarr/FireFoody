@@ -44,6 +44,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.GONE;
 
@@ -77,6 +78,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private TextView mPackOrder;
     private String DeliveryAddress;
     private String PackageName;
+    private ConstraintLayout mOrderSuccess;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
 
 
+        mOrderSuccess=findViewById(R.id.order_succes_show);
         mPackOrder = findViewById(R.id.checkout_order_package);
         mCheckoutTotalCost = findViewById(R.id.checkout_order_total_cost);
         mDeleteAddress = findViewById(R.id.delete_address_btn);
@@ -290,6 +293,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onComplete(@NonNull Task<Void> pTask) {
                             if(pTask.isSuccessful()){
+                                mOrderSuccess.setVisibility(View.VISIBLE);
+                                sCheckoutPlaceOrderModel.setOrderStatus("pending");
                                 sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
                                 Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
                                 mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
@@ -305,6 +310,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                                             @Override
                                             public void onSuccess(Void pVoid) {
                                                 Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                                finish();
                                             }
                                         });
                             }
@@ -335,7 +341,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         Uri uri = new Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", "par78vesh.kr@oksbi")
+                .appendQueryParameter("pa", "sunindus.sk@okaxis")
                 .appendQueryParameter("pn", "sunil kumar")
                 .appendQueryParameter("mc", "1234")
                 .appendQueryParameter("tr", tr)
@@ -351,7 +357,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, TEZ_REQUEST_CODE);
         } else {
-            AlertDialog.Builder vBuilder = new AlertDialog.Builder(CheckoutActivity.this)
+            AlertDialog.Builder vBuilder =
+                    new AlertDialog.Builder(CheckoutActivity.this)
                     .setCancelable(true)
                     .setIcon(R.drawable.ic_google_pay_mark_800_gray)
                     .setMessage("Google Pay not installed!!")
@@ -369,9 +376,27 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
            // Toast.makeText(this, "" + tr, Toast.LENGTH_SHORT).show();
             //Log.d(TAG, "onActivityResult: " + tr);
             if (data.getStringExtra("Status").equals("SUCCESS")) {
-                Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
-//                Log.d("result", data.getStringExtra("Status"));
-//                mFirebaseFirestore.collection("delivery_orders").document(tr).
+                mOrderSuccess.setVisibility(View.VISIBLE);
+               // Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
+                sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
+                sCheckoutPlaceOrderModel.setOrderStatus("pending");
+                Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
+                mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void pVoid) {
+                                Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
+                        .collection("my_orders").document(tr).set(sCheckoutPlaceOrderModel)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void pVoid) {
+                                Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
             }
             {
                 Toast.makeText(this, "Error Occurred !!", Toast.LENGTH_SHORT).show();

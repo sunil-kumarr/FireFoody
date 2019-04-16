@@ -14,12 +14,14 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     ImageView mPackageImage;
     TextView mPackageName;
     ImageView mPackTypeImg;
+    TextView mPackCost;
 
     HomeViewHolder(@NonNull View itemView) {
         super(itemView);
         mPackageImage = itemView.findViewById(R.id.home_pack_image);
         mPackageName=itemView.findViewById(R.id.home_pack_name);
         mPackTypeImg=itemView.findViewById(R.id.package_type_image);
+        mPackCost=itemView.findViewById(R.id.package_total_cost);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

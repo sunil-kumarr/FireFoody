@@ -35,6 +35,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
     protected void onBindViewHolder(@NonNull HomeViewHolder pHomeViewHolder, int pI, @NonNull final PackageModel pPackageModel) {
         pHomeViewHolder.mPackageName.setTypeface(mContext.getResources().getFont(R.font.iran_sans_mobile));
         pHomeViewHolder.mPackageName.setText(pPackageModel.getName());
+        pHomeViewHolder.mPackCost.setText(pPackageModel.getPrice());
          if(pPackageModel.isBreakfast()){
              pHomeViewHolder.mPackTypeImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_coffee));
          }
@@ -71,7 +72,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
         pHomeViewHolder.setOnClickListener(new HomeViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(mContext, ""+position, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, ""+position, Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(mContext, PackageDetailsActivity.class);
                 i.putExtra("package_name",pPackageModel.getName());
                 mContext.startActivity(i);

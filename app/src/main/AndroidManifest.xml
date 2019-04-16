@@ -89,6 +89,7 @@
         <activity android:name=".Activites.AddressActivity" />
         <activity android:name=".Activites.FeedbackActivity" />
         <activity android:name=".Activites.CheckoutActivity" />
+        <activity android:name=".Vendor_files.VendorShowOrderActivity" />
 
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data

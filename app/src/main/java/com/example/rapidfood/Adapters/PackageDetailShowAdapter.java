@@ -95,7 +95,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                     if (itemCount > selectedItems.size()) {
 
                         selectedItems.add(dishlist.get(position).getName());
-                        Toast.makeText(mContext, itemCount+""+selectedItems.size(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(mContext, itemCount+""+selectedItems.size(), Toast.LENGTH_SHORT).show();
                         btn.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
                         Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
                         btn.setText("Added");

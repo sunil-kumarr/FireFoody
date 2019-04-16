@@ -18,8 +18,16 @@ public class CheckoutPlaceOrderModel {
     String trans_id;
     String paymentmethod;
     String paymentstatus;
+    String orderStatus;
     String deliverystatus;
 
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String pOrderStatus) {
+        orderStatus = pOrderStatus;
+    }
 
     public String getUid() {
         return uid;

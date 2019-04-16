@@ -1,45 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView android:id="@+id/image_container"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_container"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:layout_margin="10dp"
     android:background="@color/grey_500"
-    android:elevation="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:elevation="5dp">
+
     <FrameLayout
         android:id="@+id/container_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/home_pack_image"
             android:layout_width="match_parent"
-            android:background="@color/grey_200"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/grey_200"
             android:scaleType="fitXY" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient"
-            />
+            android:background="@drawable/gradient" />
+
         <ImageView
             android:id="@+id/package_type_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_coffee"
             android:layout_gravity="end|top"
             android:layout_margin="10dp"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:src="@drawable/ic_coffee" />
+
         <TextView
             android:id="@+id/home_pack_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="25sp"
             android:fontFamily="@font/iran_sans_mobile"
-            android:textColor="@color/white"
             android:gravity="center"
-            android:textStyle="italic"
-            android:text="Breakfast"/>
+            android:text="Breakfast"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="italic" />
+
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_login_blue_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:text="₹"
+                android:textColor="@color/white_1000"
+                android:textSize="15sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/package_total_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:text="0"
+                android:textColor="@color/white_1000"
+                android:textSize="15sp"
+                android:textStyle="normal" />
+        </LinearLayout>
     </FrameLayout>
 
 
