@@ -49,14 +49,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCreateSubBtn = findViewById(R.id.vendor_create_subs);
         mCreatePackBtn = findViewById(R.id.vendor_create_packs);
         mAddDishBtn = findViewById(R.id.vendor_add_dish);
-        mUserView=findViewById(R.id.vendor_user_view);
+
         mTodayMenu=findViewById(R.id.vendor_today_menu);
         mSubsriberBtn=findViewById(R.id.vendor_sub_customers);
         mCustomOrders=findViewById(R.id.vendor_orders);
 
         mCreatePackBtn.setOnClickListener(this);
         mCustomOrders.setOnClickListener(this);
-        mUserView.setOnClickListener(this);
+
         mSubsriberBtn.setOnClickListener(this);
         mAddDishBtn.setOnClickListener(this);
         mCreateSubBtn.setOnClickListener(this);
@@ -78,10 +78,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         MaterialCardView mTapped = (MaterialCardView) v;
         switch (mTapped.getId()) {
-            case R.id.vendor_user_view:
-                startActivity(new Intent(DashboardActivity.this, UserSubscriberActivity.class));
-                Toast.makeText(this, "Under Construction", Toast.LENGTH_SHORT).show();
-                break;
+
             case R.id.vendor_orders:
                 startActivity(new Intent(DashboardActivity.this,VendorShowOrderActivity.class));
                 break;

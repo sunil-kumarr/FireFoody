@@ -45,7 +45,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/vendor_user_view"
+                android:id="@+id/vendor_default_order"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="190dp"
@@ -78,13 +78,12 @@
                         android:layout_height="1dp"
                         android:layout_margin="10dp"
                         android:background="@color/lightgray" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Deliver order by default"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -130,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Check and confirm orders"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -185,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Confirm user subscription"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -233,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Create new subscriptions here"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -288,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Step 1:create new package "
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -334,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Step 2:Add dish to existing package"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
@@ -388,57 +387,57 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Check your bank activities"
+                        android:text="Select Today's menu item to be served"
                         android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/vendor_today_menu"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="190dp"
-                android:layout_margin="10dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground">
+            <!--<com.google.android.material.card.MaterialCardView-->
+                <!--android:id="@+id/vendor_today_menu"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="190dp"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:clickable="true"-->
+                <!--android:foreground="?android:attr/selectableItemBackground">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
 
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/cerclebackgroundgreen"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_today_white_24dp" />
+                    <!--<ImageView-->
+                        <!--android:layout_width="64dp"-->
+                        <!--android:layout_height="64dp"-->
+                        <!--android:background="@drawable/cerclebackgroundgreen"-->
+                        <!--android:padding="10dp"-->
+                        <!--android:src="@drawable/ic_today_white_24dp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Today's Menu"
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:text="Today's Menu"-->
+                        <!--android:textStyle="bold" />-->
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="10dp"
-                        android:background="@color/lightgray" />
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:layout_margin="10dp"-->
+                        <!--android:background="@color/lightgray" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="Check your bank activities"
-                        android:textColor="@android:color/darker_gray" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:text="Check your bank activities"-->
+                        <!--android:textColor="@android:color/darker_gray" />-->
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <!--</LinearLayout>-->
+            <!--</com.google.android.material.card.MaterialCardView>-->
 
         </LinearLayout>
 

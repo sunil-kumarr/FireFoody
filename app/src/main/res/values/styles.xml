@@ -6,13 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/red_700</item>
         <item name="colorAccent">@color/red_500</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/white</item>
 
     </style>
-    <style name="AuthTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/red_600</item>
-        <item name="colorPrimaryDark">@color/red_800</item>
-        <item name="colorAccent">@color/red_500</item>
-    </style>
+
 
 
 

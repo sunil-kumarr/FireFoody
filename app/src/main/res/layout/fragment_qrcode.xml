@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:src="@drawable/img_undraw_construction" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/qr_toolbar"
         android:layout_width="match_parent"
@@ -19,88 +25,89 @@
         app:title="Generate Payment Code"
         app:titleTextColor="@color/black" />
 
-    <TextView
-        android:id="@+id/payment_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="Payment code for mobile number"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/qr_toolbar" />
+    <!--<TextView-->
+        <!--android:id="@+id/payment_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="Payment code for mobile number"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="15sp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/qr_toolbar" />-->
 
-    <TextView
-        android:id="@+id/payment_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="+918116227044"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/payment_text" />
+    <!--<TextView-->
+        <!--android:id="@+id/payment_number"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="4dp"-->
+        <!--android:text="+918116227044"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="25sp"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/payment_text" />-->
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/payment_amount_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:gravity="center"
-        android:hint="Enter Payment Amount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/payment_number">
+    <!--<com.google.android.material.textfield.TextInputLayout-->
+        <!--android:id="@+id/payment_amount_container"-->
+        <!--style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="30dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginEnd="30dp"-->
+        <!--android:gravity="center"-->
+        <!--android:hint="Enter Payment Amount"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/payment_number">-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/payment_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="5"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textColorHint="@android:color/transparent" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <!--<com.google.android.material.textfield.TextInputEditText-->
+            <!--android:id="@+id/payment_amount"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="number"-->
+            <!--android:maxLength="5"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:textColorHint="@android:color/transparent" />-->
+    <!--</com.google.android.material.textfield.TextInputLayout>-->
 
 
-    <Button
-        android:id="@+id/payment_generate_qr_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/button_red_background"
-        android:padding="15dp"
-        android:text="Generate Code"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/payment_amount_container" />
-    <ImageView
-        app:layout_constraintTop_toBottomOf="@id/payment_generate_qr_code"
-        android:layout_width="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="20dp"
-        android:layout_margin="20dp"
+    <!--<Button-->
+        <!--android:id="@+id/payment_generate_qr_code"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:background="@drawable/button_red_background"-->
+        <!--android:padding="15dp"-->
+        <!--android:text="Generate Code"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="15sp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/payment_amount_container" />-->
 
-        android:layout_height="0dp"
-        android:src="@drawable/ic_qrcode"/>
+    <!--<ImageView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:padding="20dp"-->
+        <!--android:src="@drawable/ic_qrcode"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/payment_generate_qr_code" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -90,7 +90,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.subscriber_btn_verify:
-                Toast.makeText(this, "verify clicked", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "verify clicked", Toast.LENGTH_SHORT).show();
                 changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
                 addToVerifiedSubscriber(pSubscriptionTransactionModel);
                 break;
@@ -103,7 +103,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()){
             case R.id.subscriber_btn_failed:
-                Toast.makeText(this, "fail clicked", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(this, "fail clicked", Toast.LENGTH_SHORT).show();
                 changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
                 break;
         }
@@ -118,15 +118,15 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         String[] days = pModel.getDuration().split(" ", 1);
         mp.put("duration", days[0]);
         mp.put("trans_id", pModel.getTransaction_id());
-        mp.put("balance", Integer.parseInt(pModel.getSubcost()));
+        mp.put("balance",pModel.getSubcost());
         mFirebaseFirestore.collection("subscribed_user").document(f_uid).set(mp).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> pTask) {
                     if(pTask.isSuccessful()){
-                        Toast.makeText(UserSubscriberActivity.this, "Added Subscriber", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(UserSubscriberActivity.this, "Added Subscriber", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
             }
         });
@@ -146,9 +146,9 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
                     @Override
                     public void onComplete(@NonNull Task<Void> pTask) {
                         if (pTask.isSuccessful()) {
-                            Toast.makeText(UserSubscriberActivity.this, "verified Transaction", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(UserSubscriberActivity.this, "verified Transaction", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

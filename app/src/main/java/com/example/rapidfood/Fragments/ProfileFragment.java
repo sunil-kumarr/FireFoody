@@ -19,6 +19,7 @@ import com.example.rapidfood.Activites.AddressActivity;
 import com.example.rapidfood.Activites.Authentication;
 import com.example.rapidfood.Activites.FeedbackActivity;
 import com.example.rapidfood.Models.UserModel;
+import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.User_files.ProfileActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
@@ -32,12 +33,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -45,7 +48,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mUserAddress;
     private TextView mSendFeedback;
     private ImageView mProfilePage;
+    private TextView mUserName;
     private ImageButton mDeleteAddress;
+
     private TextView mUserCurrentBal;
     private LinearLayout mAddressContainer;
     private Context mContext;
@@ -80,8 +85,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mAddressContainer = view.findViewById(R.id.address_container);
         mSendFeedback = view.findViewById(R.id.send_feedback);
         mSignOut_btn = view.findViewById(R.id.sign_out);
+        mUserName = view.findViewById(R.id.profile_user_name);
         mDeleteAddress = view.findViewById(R.id.delete_address_btn);
-        mUserCurrentBal=view.findViewById(R.id.user_current_balance);
+        mUserCurrentBal = view.findViewById(R.id.user_current_balance);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
@@ -96,17 +102,40 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (mFirebaseAuth.getCurrentUser() != null) {
             String uid = mFirebaseAuth.getCurrentUser().getUid();
             DocumentReference vUSerData = mFirebaseFirestore.collection("users").document(uid);
-            DocumentReference vSubData=mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
+            DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
             vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                  if(pTask.isSuccessful() && pTask.getResult().exists()){
-                      mUserCurrentBal.setText(String.format("₹%s", pTask.getResult().getString("balance")));
-                  }
-                  else{
-                      mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
-                      mUserCurrentBal.setText("Not Subscribed");
-                  }
+                    if (pTask.isSuccessful() && pTask.getResult().exists()) {
+                        DocumentSnapshot vDocumentSnapshot = pTask.getResult();
+                        mUserCurrentBal.setText(String.format("₹%s", pTask.getResult().getString("balance")));
+
+
+                    } else {
+                        mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
+                        mUserCurrentBal.setText("Not Subscribed");
+                    }
+                }
+            });
+
+            mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
+                    if (pDocumentSnapshot.exists()) {
+                        UserProfileModel vModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
+                        if (vModel != null) {
+                            Picasso.get().
+                                    load(vModel.getProfileimage()).
+                                    fit().
+                                    placeholder(R.drawable.profile).into(mProfilePage);
+                            if (vModel.getUsername() != null) {
+                                mUserName.setText(vModel.getUsername());
+                            } else {
+                                mUserName.setText(vModel.getMobile());
+                            }
+                        }
+                    }
                 }
             });
 
@@ -155,8 +184,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(mContext, AddressActivity.class));
                 v.setEnabled(false);
                 break;
-           case R.id.delete_address_btn:
-                 deleteUserAddress();
+            case R.id.delete_address_btn:
+                deleteUserAddress();
                 break;
             case R.id.send_feedback:
                 startActivity(new Intent(mContext, FeedbackActivity.class));
@@ -184,8 +213,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void deleteUserAddress() {
         if (mFirebaseAuth.getCurrentUser() != null) {
-            mFirebaseUser=mFirebaseAuth.getCurrentUser();
-            mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid()).update("address_first",null)
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid()).update("address_first", null)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void pVoid) {

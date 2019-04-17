@@ -48,6 +48,7 @@ public class LogoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
+        Log.d(TAG, "onCreate: ");
         FirebaseInstances vFirebaseInstances = new FirebaseInstances();
 
         mFirebaseAuth = vFirebaseInstances.getFirebaseAuth();
@@ -55,40 +56,39 @@ public class LogoActivity extends AppCompatActivity {
         mPreferenceManager = new PreferenceManager(this);
         mProgressDialog=new ProgressDialog(this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        Log.d(TAG, "onStart: ");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         String[] permissionsG = {
                 Manifest.permission.READ_SMS,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-
         if (PermissionUtils.shouldAskForPermission(LogoActivity.this, permissionsG[0])) {
             PermissionUtils.requestActivityPermissions(LogoActivity.this, permissionsG, REQUEST_PERMISSION_KEY);
         } else {
-           closeLogoActivity();
+            closeLogoActivity();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "onStop: ");
         mProgressDialog.dismiss();
 
     }
 
     private void closeLogoActivity() {
-
-
+        Log.d(TAG, "closeLogoActivity: ");
         Handler myHandler=new Handler();
         myHandler.postDelayed(new Runnable() {
             @Override
@@ -106,6 +106,7 @@ public class LogoActivity extends AppCompatActivity {
     }
 
     private void launchMain() {
+        Log.d(TAG, "launchMain: ");
         mPreferenceManager.setFirstTimeLaunch(false);
 
         if (mFirebaseUser == null) {
@@ -119,6 +120,7 @@ public class LogoActivity extends AppCompatActivity {
     }
 
     private void identifyUserTypeMethod() {
+        Log.d(TAG, "identifyUserTypeMethod: ");
         mProgressDialog.setMessage("Validating...");
         mProgressDialog.show();
        CollectionReference vCollectionReference= mFirebaseFirestore.collection("vendors");
@@ -153,6 +155,7 @@ public class LogoActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissionsG, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissionsG, grantResults);
+        Log.d(TAG, "onRequestPermissionsResult: ");
         switch (requestCode) {
             case REQUEST_PERMISSION_KEY: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

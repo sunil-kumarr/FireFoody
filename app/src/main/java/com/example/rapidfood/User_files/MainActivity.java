@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.rapidfood.Fragments.HomeFragment;
+import com.example.rapidfood.Fragments.NotificationFragment;
 import com.example.rapidfood.Fragments.ProfileFragment;
 import com.example.rapidfood.Fragments.QRFragment;
 import com.example.rapidfood.Fragments.TimingFragment;
@@ -52,15 +53,17 @@ public class MainActivity extends AppCompatActivity  {
     private void initBottomBar(AHBottomNavigation pBottomNavigation) {
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.ic_home_black_24dp, R.color.red_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("QR Scanner", R.drawable.ic_qrcode, R.color.green_500);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem("History", R.drawable.ic_access_time_black_24dp, R.color.blue_500);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem("Profile", R.drawable.ic_person_black_24dp, R.color.blue_500);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("QR Scanner", R.drawable.ic_qrcode, R.color.green_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("History", R.drawable.ic_receipt_black_24dp, R.color.blue_500);
+        AHBottomNavigationItem item4 =new   AHBottomNavigationItem("Notification", R.drawable.ic_notifications_black_24dp, R.color.blue_500);
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem("Profile", R.drawable.ic_person_black_24dp, R.color.blue_500);
 
         // Add items
         pBottomNavigation.addItem(item1);
         pBottomNavigation.addItem(item2);
         pBottomNavigation.addItem(item3);
         pBottomNavigation.addItem(item4);
+        pBottomNavigation.addItem(item5);
 
         // Set background color
         pBottomNavigation.setDefaultBackgroundColor(Color.parseColor("#ffffff"));
@@ -87,10 +90,10 @@ public class MainActivity extends AppCompatActivity  {
         pBottomNavigation.setCurrentItem(0);
 
         // Customize notification (title, background, typeface)
-        pBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
-
-        // Add or remove notification for each item
-        pBottomNavigation.setNotification("1", 2);
+//        pBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
+//
+//        // Add or remove notification for each item
+//        pBottomNavigation.setNotification("1", 2);
         // OR
 //        AHNotification notification = new AHNotification.Builder()
 //                .setText("1")
@@ -113,20 +116,24 @@ public class MainActivity extends AppCompatActivity  {
                         vFragment = new HomeFragment();
                         break;
                     case 1:
-                        vFragment=new QRFragment();
+                        vFragment=new TimingFragment();
+
                         break;
 
                     case 2:
-                        vFragment=new TimingFragment();
+                        vFragment=new QRFragment();
                         break;
                     case 3:
+                        vFragment=new NotificationFragment();
+                        break;
+                    case 4:
                         vFragment = new ProfileFragment();
 
                         break;
                     default:
                         vFragment = new HomeFragment();
                 }
-                mFragmentTransaction.replace(R.id.frame_user_holder, vFragment, "frag_user_home");
+                mFragmentTransaction.replace(R.id.frame_user_holder, vFragment, "frag");
                 mFragmentTransaction.addToBackStack(null);
                 mFragmentTransaction.commit();
                 return true;

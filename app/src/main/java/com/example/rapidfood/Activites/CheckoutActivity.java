@@ -228,7 +228,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 mGRadio.setChecked(true);
                 break;
             case R.id.checkout_order_button:
-                Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
                 placeMyOrder();
                 break;
         }
@@ -296,12 +296,12 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                                 mOrderSuccess.setVisibility(View.VISIBLE);
                                 sCheckoutPlaceOrderModel.setOrderStatus("pending");
                                 sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
-                                Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
                                 mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void pVoid) {
-                                                Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                 mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
@@ -309,7 +309,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void pVoid) {
-                                                Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                               // Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
                                         });
@@ -380,12 +380,12 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                // Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
                 sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
                 sCheckoutPlaceOrderModel.setOrderStatus("pending");
-                Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
                 mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void pVoid) {
-                                Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
                             }
                         });
                 mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
@@ -393,7 +393,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void pVoid) {
-                                Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(CheckoutActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         });

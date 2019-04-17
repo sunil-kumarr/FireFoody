@@ -48,9 +48,7 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         mORderRecycleView.setItemAnimator(new DefaultItemAnimator());
         mORderRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         Query query = mFirebaseFirestore
-                .collection("delivery_orders")
-                .orderBy("transaction_time", Query.Direction.ASCENDING);
-        // .whereEqualTo("verified", false);
+                .collection("delivery_orders");
         mOptions = new FirestoreRecyclerOptions.Builder<CheckoutPlaceOrderModel>()
                 .setQuery(query, CheckoutPlaceOrderModel.class).build();
         mOrderAdapter = new OrderListAdapter(mOptions, mORderRecycleView, this);

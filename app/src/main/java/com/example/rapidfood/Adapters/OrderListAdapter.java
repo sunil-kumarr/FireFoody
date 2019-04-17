@@ -2,6 +2,7 @@ package com.example.rapidfood.Adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     private RecyclerView mRecyclerview;
     private Context mContext;
     private OrderListener mOrderListener;
+    private static final String TAG = "OrderListAdapter";
 
     public OrderListAdapter(@NonNull FirestoreRecyclerOptions<CheckoutPlaceOrderModel> options,
                             RecyclerView pRecylerView, Context pContext) {
         super(options);
+        Log.d(TAG, "OrderListAdapter: ");
         mContext = pContext;
         mRecyclerview = pRecylerView;
         mOrderListener = (VendorShowOrderActivity) pContext;
@@ -36,6 +39,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     protected void onBindViewHolder(@NonNull final SubscriberViewHolder pSubscriptionViewHolder,
                                     int pI, @NonNull final CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
 
+        Log.d(TAG, "onBindViewHolder: "+pCheckoutPlaceOrderModel.getPackageordered());
         pSubscriptionViewHolder.paymentStatus.setText(pCheckoutPlaceOrderModel.getPaymentstatus());
         pSubscriptionViewHolder.transactiontime.setText(pCheckoutPlaceOrderModel.getOrdertimestamp().toString());
         pSubscriptionViewHolder.transactionId.setText(pCheckoutPlaceOrderModel.getTrans_id());
@@ -44,7 +48,6 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
         pSubscriptionViewHolder.mOrderCost.setText(pCheckoutPlaceOrderModel.getPackageprice());
         pSubscriptionViewHolder.mOrderDeliveryAddress.setText(pCheckoutPlaceOrderModel.getDeliveryaddress());
         pSubscriptionViewHolder.mPaymentMethod.setText(pCheckoutPlaceOrderModel.getPaymentmethod());
-
             if (pCheckoutPlaceOrderModel.getOrderStatus().equals("SUCCESS")) {
                 pSubscriptionViewHolder.confirmBTN.setEnabled(false);
                 pSubscriptionViewHolder.confirmBTN.setText("Confirmed");
@@ -52,8 +55,9 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
                 pSubscriptionViewHolder.confirmBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 pSubscriptionViewHolder.confirmBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
                 pSubscriptionViewHolder.cancelBTN.setVisibility(View.GONE);
-            } else if(pCheckoutPlaceOrderModel.getOrderStatus().equals("Canceled")){
+            } else if(pCheckoutPlaceOrderModel.getOrderStatus().equals("FAILURE")){
                 pSubscriptionViewHolder.cancelBTN.setEnabled(false);
+                pSubscriptionViewHolder.cancelBTN.setText("CANCELED");
                 Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
                 pSubscriptionViewHolder.cancelBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 pSubscriptionViewHolder.cancelBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
@@ -81,7 +85,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
                     Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
                     pSubscriptionViewHolder.cancelBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                     pSubscriptionViewHolder.cancelBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
-                    pSubscriptionViewHolder.cancelBTN.setVisibility(View.GONE);
+                    pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
                 }
             });
         }
@@ -97,7 +101,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     public SubscriberViewHolder onCreateViewHolder(ViewGroup group, int i) {
         View view = LayoutInflater.from(group.getContext())
                 .inflate(R.layout.vendor_show_order_layout, group, false);
-        return new OrderListAdapter.SubscriberViewHolder(view);
+        return new SubscriberViewHolder(view);
     }
 
     class SubscriberViewHolder extends RecyclerView.ViewHolder {
@@ -126,7 +130,6 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
             mOrderDeliveryAddress=itemView.findViewById(R.id.order_delivery_Address);
             mOrderDetails=itemView.findViewById(R.id.order_details);
         }
-
     }
 
     public interface OrderListener {

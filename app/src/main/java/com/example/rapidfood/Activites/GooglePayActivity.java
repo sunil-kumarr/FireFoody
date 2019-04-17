@@ -125,7 +125,7 @@ public class GooglePayActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mPreferenceManager.setTransIdTemp(tr);
-        Toast.makeText(this, "Stop Called", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Stop Called", Toast.LENGTH_SHORT).show();
     }
 
     void getSubDetails(String pSub_name) {
@@ -197,21 +197,21 @@ public class GooglePayActivity extends AppCompatActivity {
                     new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> pTask) {
-                            if (pTask.isSuccessful()) {
-                                Toast.makeText(GooglePayActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(GooglePayActivity.this, "Failed to save", Toast.LENGTH_SHORT).show();
-                            }
+//                            if (pTask.isSuccessful()) {
+//                                Toast.makeText(GooglePayActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(GooglePayActivity.this, "Failed to save", Toast.LENGTH_SHORT).show();
+//                            }
                         }
                     }
             );
-            if (data.getStringExtra("Status").equals("SUCCESS")) {
-                Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
-                Log.d("result", data.getStringExtra("Status"));
-            }
-            {
-                Toast.makeText(this, "Error Occurred !!", Toast.LENGTH_SHORT).show();
-            }
+//            if (data.getStringExtra("Status").equals("SUCCESS")) {
+//               // Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
+//                Log.d("result", data.getStringExtra("Status"));
+//            }
+//            {
+//                Toast.makeText(this, "Error Occurred !!", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 

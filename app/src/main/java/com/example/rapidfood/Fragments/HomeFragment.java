@@ -119,9 +119,9 @@ public class HomeFragment extends Fragment {
         super.onStart();
         mSubAdapter.startListening();
         mHomeAadapter.startListening();
-        Log.d(TAG,"FragmentHome: onStart ");
-        Toast.makeText(mContext, "Subs: "+mSubAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(mContext, "items: "+mHomeAadapter.getItemCount(), Toast.LENGTH_SHORT).show();
+       // Log.d(TAG,"FragmentHome: onStart ");
+       // Toast.makeText(mContext, "Subs: "+mSubAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "items: "+mHomeAadapter.getItemCount(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
         super.onStop();
         mSubAdapter.stopListening();
         mHomeAadapter.stopListening();
-        Log.d(TAG,"FragmentHome: onStop ");
+        //Log.d(TAG,"FragmentHome: onStop ");
     }
 
 

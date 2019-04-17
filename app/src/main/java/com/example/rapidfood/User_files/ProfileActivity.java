@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -58,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String image;
     private Uri imageUri;
     private Toolbar mToolbar;
+    private TextView mUploadImage;
     private EditText mUserNameEDT, mUserEmailEDt, mUserMobileEDt;
     private ImageView mUserImage;
     private Button mUpadteProfileBtn;
@@ -85,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mUpadteProfileBtn = findViewById(R.id.btn_save_profile);
         mUserImage = findViewById(R.id.profile_image_user);
         mUserMobileEDt = findViewById(R.id.edtMobileUser);
+        mUploadImage = findViewById(R.id.upload_image);
 
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
@@ -98,6 +101,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mUserImage.setOnClickListener(this);
 
+        mUploadImage.setOnClickListener(this);
         mUserModel = new UserProfileModel();
 
     }
@@ -148,20 +152,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
                     if (pDocumentSnapshot.exists()) {
-                        mUserModel = pDocumentSnapshot.toObject(UserProfileModel.class);
-                        mUserImage.setVisibility(View.VISIBLE);
-                        mUserMobileEDt.setText(mUserModel.getMobile());
-                        mUserMobileEDt.setEnabled(false);
-                        Picasso.get()
-                                .load(mUserModel.getProfileimage())
-                                .fit()
-                                .into(mUserImage);
-
-                        Log.d(TAG, "" + mUserModel.getProfileimage());
-
-                        mUserNameEDT.setText(pDocumentSnapshot.getString("username"));
-
-                        mUserEmailEDt.setText(pDocumentSnapshot.getString("emailAddress"));
+                        UserProfileModel mUserModel;
+                        mUserModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
+                        if (mUserModel != null) {
+                            mUserImage.setVisibility(View.VISIBLE);
+                            mUserMobileEDt.setText(mUserModel.getMobile());
+                            mUserMobileEDt.setEnabled(false);
+                            Picasso.get()
+                                    .load(mUserModel.getProfileimage())
+                                    .fit()
+                                    .into(mUserImage);
+                            mUserNameEDT.setText(mUserModel.getUsername());
+                            mUserEmailEDt.setText(mUserModel.getEmailAddress());
+                        }
                     }
                 }
             });
@@ -172,7 +175,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.profile_image_user:
+            case R.id.upload_image:
                 AlertDialog vBuilder = new AlertDialog.Builder(this)
                         .setCancelable(true)
                         .setMessage("Select image from device and update profile image..")
@@ -220,7 +223,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(this, "IMAGE" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
 
         DocumentReference user = mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid());
-        user.update("user_profile_data",mUserModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+        user.update("user_profile_data", mUserModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void pVoid) {
                 mProgressDialog.dismiss();
@@ -276,7 +279,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                return  true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
