@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rapidfood.R;
 import com.example.rapidfood.User_files.MainActivity;
@@ -167,9 +168,14 @@ public class Authentication extends AppCompatActivity {
 
                 // ...
             } else {
+                Toast.makeText(this, ""+requestCode, Toast.LENGTH_SHORT).show();
                 // Sign in failed. If response is null the user canceled the
+
                 if (response == null) {
                     Snackbar.make(mMainConatainer, "Login Failed ", Snackbar.LENGTH_SHORT);
+                }
+                else{
+                    Toast.makeText(this, ""+ Objects.requireNonNull(response.getError()).toString(), Toast.LENGTH_SHORT).show();
                 }
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
