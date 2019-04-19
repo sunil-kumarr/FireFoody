@@ -116,6 +116,7 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setCancelable(false);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.show();
             UploadImageToFirebase(ImageUri, "packages");

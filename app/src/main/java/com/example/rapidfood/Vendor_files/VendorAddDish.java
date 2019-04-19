@@ -121,6 +121,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setCancelable(false);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.show();
             UploadImageToFirebase(ImageUri, "dishes_main");
@@ -206,17 +207,10 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     private void addItemToFireStore(String CollectionName, String imageId) {
         mVendorDishModel.setImage(imageId);
         if (mAddDishPackHelpAdapter != null) {
-            Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
-//            for (String s : mAddDishPackHelpAdapter.getSelectedPacks()) {
-//                if (s.equals("Breakfast")) {
-//                    mVendorDishModel.setItemcategory(0);
-//                } else {
-//                    mVendorDishModel.setItemcategory(1);
-//                }
-//            }
+
             mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
         } else {
-            Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
         }
         mFirebaseFirestore.collection(CollectionName)
                 .document(mVendorDishModel.getName())

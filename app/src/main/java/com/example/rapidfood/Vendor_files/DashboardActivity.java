@@ -6,12 +6,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.rapidfood.Activites.Authentication;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.Utils.UtilClass;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,35 +33,37 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private MaterialCardView mTodayMenu;
     private MaterialCardView mSubsriberBtn;
     private MaterialCardView mCustomOrders;
-    FirebaseInstances mFirebaseInstances;
-    FirebaseAuth mFirebaseAuth;
-    FirebaseUser mFirebaseUser;
-
+    private FirebaseInstances mFirebaseInstances;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private LinearLayout mNoInternetLAyout;
+    private Button mCheckInternet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        mFirebaseInstances=new FirebaseInstances();
-        mFirebaseAuth=mFirebaseInstances.getFirebaseAuth();
+        mFirebaseInstances = new FirebaseInstances();
+        mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
 
         mToolbar = findViewById(R.id.toolbar_vendor);
         mCreateSubBtn = findViewById(R.id.vendor_create_subs);
         mCreatePackBtn = findViewById(R.id.vendor_create_packs);
         mAddDishBtn = findViewById(R.id.vendor_add_dish);
-
-        mTodayMenu=findViewById(R.id.vendor_today_menu);
-        mSubsriberBtn=findViewById(R.id.vendor_sub_customers);
-        mCustomOrders=findViewById(R.id.vendor_orders);
+        mTodayMenu = findViewById(R.id.vendor_today_menu);
+        mSubsriberBtn = findViewById(R.id.vendor_sub_customers);
+        mCustomOrders = findViewById(R.id.vendor_orders);
+        mCheckInternet=findViewById(R.id.btn_check_internet);
+        mNoInternetLAyout=findViewById(R.id.no_internet);
 
         mCreatePackBtn.setOnClickListener(this);
         mCustomOrders.setOnClickListener(this);
-
         mSubsriberBtn.setOnClickListener(this);
         mAddDishBtn.setOnClickListener(this);
         mCreateSubBtn.setOnClickListener(this);
         mTodayMenu.setOnClickListener(this);
+        mCheckInternet.setOnClickListener(this);
 
         setSupportActionBar(mToolbar);
         ActionBar vActionBar = getSupportActionBar();
@@ -80,16 +83,16 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (mTapped.getId()) {
 
             case R.id.vendor_orders:
-                startActivity(new Intent(DashboardActivity.this,VendorShowOrderActivity.class));
+                startActivity(new Intent(DashboardActivity.this, VendorShowOrderActivity.class));
                 break;
             case R.id.vendor_sub_customers:
-                startActivity(new Intent(DashboardActivity.this,UserSubscriberActivity.class));
+                startActivity(new Intent(DashboardActivity.this, UserSubscriberActivity.class));
                 break;
             case R.id.vendor_create_subs:
-                startActivity(new Intent(DashboardActivity.this,VendorCreateSubscription.class));
+                startActivity(new Intent(DashboardActivity.this, VendorCreateSubscription.class));
                 break;
             case R.id.vendor_create_packs:
-                startActivity(new Intent(DashboardActivity.this,VendorCreatePackage.class));
+                startActivity(new Intent(DashboardActivity.this, VendorCreatePackage.class));
                 break;
             case R.id.vendor_add_dish:
                 startActivity(new Intent(DashboardActivity.this, VendorAddDish.class));
@@ -97,24 +100,32 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             case R.id.vendor_today_menu:
                 startActivity(new Intent(DashboardActivity.this, VendorTodayMenuActivity.class));
                 break;
+            case R.id.btn_check_internet:
+                if(UtilClass.isConnectedToNetwork(this)){
+                    mNoInternetLAyout.setVisibility(View.GONE);
+                }
+                else{
+                    mNoInternetLAyout.setVisibility(View.VISIBLE);
+                }
+                break;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater vInflater=getMenuInflater();
-        vInflater.inflate(R.menu.dashboard_menu,menu);
+        MenuInflater vInflater = getMenuInflater();
+        vInflater.inflate(R.menu.dashboard_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId()==R.id.shutdown_dashboard){
-            if(mFirebaseUser!=null){
+        if (item.getItemId() == R.id.shutdown_dashboard) {
+            if (mFirebaseUser != null) {
                 mFirebaseAuth.signOut();
                 startActivity(new Intent(DashboardActivity.this, Authentication.class));
-              finish();
+                finish();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -123,6 +134,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
-       mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        if (!UtilClass.isConnectedToNetwork(this)) {
+            findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
+        }
+        else{
+            mNoInternetLAyout.setVisibility(View.GONE);
+        }
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
     }
+
 }

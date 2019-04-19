@@ -109,6 +109,7 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
             mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setCancelable(false);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.show();
             mSubscriptionModel.setDetails(detail);

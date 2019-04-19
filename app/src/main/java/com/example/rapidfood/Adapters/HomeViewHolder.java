@@ -35,7 +35,6 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     public interface ClickListener {
 
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
 
     }
 

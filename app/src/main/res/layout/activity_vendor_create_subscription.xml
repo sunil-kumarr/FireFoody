@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,14 +29,7 @@
 
             <include layout="@layout/subscription_image" />
 
-            <EditText
-                android:id="@+id/sub_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Subcription duration"
-                android:inputType="text"
-                android:textSize="15sp" />
+
 
             <EditText
                 android:id="@+id/sub_packtype"
@@ -45,6 +39,14 @@
                 android:hint="Subcription type"
                 android:inputType="text"
                 android:textSize="15sp" />
+            <EditText
+                android:id="@+id/sub_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Subcription duration"
+                android:inputType="number"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/sub_price"
@@ -52,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Subcription price"
-                android:inputType="text"
+                android:inputType="number"
                 android:textSize="15sp" />
             <EditText
                 android:id="@+id/sub_coupon"
@@ -60,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Subcription coupon price"
-                android:inputType="text"
+                android:inputType="number"
                 android:textSize="15sp" />
 
             <EditText
@@ -73,6 +75,7 @@
                 android:gravity="start"
                 android:hint="Subscription details..."
                 android:padding="10dp"
+                android:inputType="text"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="15sp" />

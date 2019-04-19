@@ -53,7 +53,6 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         setContentView(R.layout.activity_subscriber_list_layout);
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
-
         mSubscriberRecycler = findViewById(R.id.subscriber_recycler_View_list);
         mSubscriberRecycler.setItemAnimator(new DefaultItemAnimator());
         mSubscriberRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -130,6 +129,12 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
                     }
             }
         });
+        Map<String,Object> notify=new HashMap<>();
+        notify.put("note_type","subscription");
+        notify.put("timestamp", FieldValue.serverTimestamp());
+        notify.put("title","Congratulations,you subscribed customer");
+        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                .document().set(notify);
     }
 
     void changeVerificationStatus(String t_string, boolean token) {

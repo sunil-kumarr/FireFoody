@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -46,6 +47,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -57,9 +59,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseInstances mFirebaseInstances;
     private FirebaseUser mFirebaseUser;
     private String image;
+    private ConstraintLayout mMainContainer;
     private Uri imageUri;
     private Toolbar mToolbar;
-    private TextView mUploadImage;
+    private ImageView mUploadImage;
     private EditText mUserNameEDT, mUserEmailEDt, mUserMobileEDt;
     private ImageView mUserImage;
     private Button mUpadteProfileBtn;
@@ -87,6 +90,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mUpadteProfileBtn = findViewById(R.id.btn_save_profile);
         mUserImage = findViewById(R.id.profile_image_user);
         mUserMobileEDt = findViewById(R.id.edtMobileUser);
+        mMainContainer=findViewById(R.id.main_layout_holder);
         mUploadImage = findViewById(R.id.upload_image);
 
         mFirebaseInstances = new FirebaseInstances();
@@ -211,6 +215,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             if (mImageSelected) {
                 mProgressDialog.setMax(100);
                 mProgressDialog.setTitle("Uploading....");
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.setCanceledOnTouchOutside(false);
                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mProgressDialog.show();
                 UploadImageToFirebase(imageUri);
@@ -227,13 +233,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onSuccess(Void pVoid) {
                 mProgressDialog.dismiss();
-                Toast.makeText(ProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
+                Snackbar.make(mMainContainer,"Profile updated",Snackbar.LENGTH_LONG).show();
             }
         });
     }
 
     private void UploadImageToFirebase(Uri pImageUri) {
-        Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("user_profile/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

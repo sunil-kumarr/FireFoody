@@ -1,6 +1,7 @@
 package com.example.rapidfood.User_files;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -143,13 +145,31 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.order_now_package:
+
                 List<String> vList=mShowAdapter.getSelectedItems();
                 CheckoutOrderDataModel vModel=new CheckoutOrderDataModel();
                 vModel.setOrderDishlist(vList);
                 vModel.setPackageName(mShowAdapter.getPackName());
-                Intent vIntent=new Intent(PackageDetailsActivity.this, CheckoutActivity.class);
-                vIntent.putExtra("orderdata",vModel);
-                startActivity(vIntent);
+                if(vList.size()==0){
+                    AlertDialog vDialog=new AlertDialog.Builder(this)
+                            .setMessage("No Dish selected,order default Menu!")
+                            .setTitle("Order Default Menu")
+                            .setIcon(getResources().getDrawable(R.drawable.ic_lunch))
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent vIntent=new Intent(PackageDetailsActivity.this, CheckoutActivity.class);
+                                    vIntent.putExtra("orderdata",vModel);
+                                    startActivity(vIntent);
+                                }
+                            }).create();
+                    vDialog.show();
+                }
+                else{
+                    Intent vIntent=new Intent(PackageDetailsActivity.this, CheckoutActivity.class);
+                    vIntent.putExtra("orderdata",vModel);
+                    startActivity(vIntent);
+                }
                 break;
         }
     }

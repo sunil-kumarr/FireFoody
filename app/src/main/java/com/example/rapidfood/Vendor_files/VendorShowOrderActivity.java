@@ -15,6 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -77,7 +78,7 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.order_btn_confirm:
-                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), true);
+                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), true,pCheckoutPlaceOrderModel.getUid());
                 break;
 
         }
@@ -88,15 +89,21 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()){
             case R.id.order_btn_cancel:
-                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), false);
+                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), false,pCheckoutPlaceOrderModel.getUid());
                 break;
         }
     }
 
-    void changeVerificationStatus(String t_string, boolean token) {
+    void changeVerificationStatus(String t_string, boolean token,String f_uid) {
         Map<String, Object> mp = new HashMap<>();
         if(token) {
             mp.put("orderStatus", "SUCCESS");
+            Map<String,Object> notify=new HashMap<>();
+            notify.put("note_type","order");
+            notify.put("title","Your order is confirmed");
+            notify.put("timestamp", FieldValue.serverTimestamp());
+            mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                    .document().set(notify);
         }
         else{
             mp.put("orderStatus","FAILURE");

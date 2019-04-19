@@ -218,13 +218,17 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             case R.id.rapid_btn_container:
                 if (mGRadio.isChecked()) {
                     mGRadio.setChecked(false);
+                    mBtnGooglePay.setBackgroundColor(getResources().getColor(R.color.white));
                 }
+                mBtnRapidFood.setBackgroundColor(getResources().getColor(R.color.grey_200));
                 mRRadio.setChecked(true);
                 break;
             case R.id.google_btn_container:
                 if (mRRadio.isChecked()) {
+                    mBtnRapidFood.setBackgroundColor(getResources().getColor(R.color.white));
                     mRRadio.setChecked(false);
                 }
+                mBtnGooglePay.setBackgroundColor(getResources().getColor(R.color.grey_200));
                 mGRadio.setChecked(true);
                 break;
             case R.id.checkout_order_button:
@@ -256,10 +260,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             sCheckoutPlaceOrderModel.setUid(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid());
             sCheckoutPlaceOrderModel.setMobile(mFirebaseAuth.getCurrentUser().getPhoneNumber());
             if (mRRadio.isChecked()) {
-                sCheckoutPlaceOrderModel.setPaymentmethod("RapidFood Wallet");
+                sCheckoutPlaceOrderModel.setPaymentmethod("rapidfood_wallet");
                 verifySubscription();
             } else if (mGRadio.isChecked()) {
-                sCheckoutPlaceOrderModel.setPaymentmethod("Google pay");
+                sCheckoutPlaceOrderModel.setPaymentmethod("google_pay");
                 payWithGooglePay();
             } else {
                 Toast.makeText(this, "Select payment method", Toast.LENGTH_SHORT).show();

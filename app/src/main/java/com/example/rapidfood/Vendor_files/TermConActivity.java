@@ -32,10 +32,12 @@ public class TermConActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
             if(pTask.isSuccessful()){
                  DocumentSnapshot vDocumentSnapshot=pTask.getResult();
-                 mTerms.setText(vDocumentSnapshot.getString("terms"));
+                assert vDocumentSnapshot != null;
+                mTerms.setTextColor(getResources().getColor(R.color.grey_800));
+                mTerms.setText(vDocumentSnapshot.getString("terms"));
             }
             else{
-                Toast.makeText(TermConActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TermConActivity.this, "Firestore permission required??", Toast.LENGTH_SHORT).show();
             }
             }
         });

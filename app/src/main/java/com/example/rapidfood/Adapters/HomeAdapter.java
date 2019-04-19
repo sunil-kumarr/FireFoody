@@ -78,10 +78,6 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
                 mContext.startActivity(i);
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
 
     }
