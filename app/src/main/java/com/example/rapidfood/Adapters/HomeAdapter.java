@@ -2,17 +2,15 @@ package com.example.rapidfood.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.User_files.PackageDetailsActivity;
+import com.example.rapidfood.Activites.PackageDetailsActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Callback;

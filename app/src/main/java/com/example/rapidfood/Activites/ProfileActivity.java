@@ -1,4 +1,4 @@
-package com.example.rapidfood.User_files;
+package com.example.rapidfood.Activites;
 
 
 import android.app.Activity;
@@ -8,23 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.ImageUtil;
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +44,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {

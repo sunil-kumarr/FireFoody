@@ -1,4 +1,4 @@
-package com.example.rapidfood.Vendor_files;
+package com.example.rapidfood.VendorActivities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,9 +6,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.OrderListAdapter;
-import com.example.rapidfood.Adapters.SubscriberListAdapter;
 import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
-import com.example.rapidfood.Models.SubscriptionTransactionModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

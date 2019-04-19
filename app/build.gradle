@@ -57,11 +57,10 @@ dependencies {
 
 
     implementation 'com.karumi:dexter:5.0.0'
-    implementation 'com.applandeo:material-calendar-view:1.5.1'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
-    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,4 +1,4 @@
-package com.example.rapidfood.Vendor_files;
+package com.example.rapidfood.VendorActivities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -6,35 +6,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.rapidfood.Adapters.ShowSubscriptionAdapter;
 import com.example.rapidfood.Adapters.SubscriberListAdapter;
-import com.example.rapidfood.Models.PackageModel;
-import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.Models.SubscriptionTransactionModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

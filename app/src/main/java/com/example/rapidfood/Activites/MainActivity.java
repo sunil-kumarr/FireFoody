@@ -1,4 +1,4 @@
-package com.example.rapidfood.User_files;
+package com.example.rapidfood.Activites;
 
 
 import android.graphics.Color;

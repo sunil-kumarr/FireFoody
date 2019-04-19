@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.Vendor_files.UserSubscriberActivity;
-import com.example.rapidfood.Vendor_files.VendorShowOrderActivity;
+import com.example.rapidfood.VendorActivities.VendorShowOrderActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 

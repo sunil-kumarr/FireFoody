@@ -1,33 +1,18 @@
 package com.example.rapidfood.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.rapidfood.Activites.GooglePayActivity;
-import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.Models.SubscriptionTransactionModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.Vendor_files.UserSubscriberActivity;
+import com.example.rapidfood.VendorActivities.UserSubscriberActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

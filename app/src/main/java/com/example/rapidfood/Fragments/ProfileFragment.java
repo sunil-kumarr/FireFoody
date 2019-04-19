@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +18,11 @@ import com.example.rapidfood.Activites.FeedbackActivity;
 import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.User_files.ProfileActivity;
+import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,7 +35,6 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 

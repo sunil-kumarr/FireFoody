@@ -11,11 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
-import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.PermissionUtils;
 import com.example.rapidfood.Utils.UtilClass;
-import com.example.rapidfood.Vendor_files.DashboardActivity;
+import com.example.rapidfood.VendorActivities.DashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;

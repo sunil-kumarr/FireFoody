@@ -1,4 +1,4 @@
-package com.example.rapidfood.Vendor_files;
+package com.example.rapidfood.VendorActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

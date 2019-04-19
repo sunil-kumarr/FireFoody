@@ -33,13 +33,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeFragment extends Fragment {
 
+
+    private Context mContext;
+
     private RecyclerView mHomeRecycler, mSubscriptionRecycler;
     private FirebaseFirestore mFirebaseFirestore;
-    private Context mContext;
-    private ImageView mOpenMaps;
-    private Toolbar mToolbar;
-    private ShowSubscriptionAdapter mShowSubscriptionAdapter;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private FirestoreRecyclerOptions<SubscriptionModel> mSubscriptionModelFirestoreRecyclerOptions;
     private FirestoreRecyclerOptions<PackageModel> mPackageModelFirestoreRecyclerOptions;
     private FirestoreRecyclerAdapter mSubAdapter,mHomeAadapter;
@@ -66,7 +64,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mOpenMaps=view.findViewById(R.id.location_logo);
+
         mHomeRecycler = view.findViewById(R.id.home_recyclerview);
         mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
 //        mHomeRecycler.setHasFixedSize(true);

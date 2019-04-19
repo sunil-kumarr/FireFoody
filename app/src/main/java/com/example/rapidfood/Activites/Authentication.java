@@ -10,11 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rapidfood.R;
-import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.UtilClass;
-import com.example.rapidfood.Vendor_files.DashboardActivity;
-import com.example.rapidfood.Vendor_files.TermConActivity;
+import com.example.rapidfood.VendorActivities.DashboardActivity;
+import com.example.rapidfood.VendorActivities.TermConActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;

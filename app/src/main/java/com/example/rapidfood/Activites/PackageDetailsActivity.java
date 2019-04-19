@@ -1,4 +1,4 @@
-package com.example.rapidfood.User_files;
+package com.example.rapidfood.Activites;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rapidfood.Activites.CheckoutActivity;
 import com.example.rapidfood.Adapters.PackageDetailShowAdapter;
 import com.example.rapidfood.Models.CheckoutOrderDataModel;
 import com.example.rapidfood.Models.PackageContainerModel;

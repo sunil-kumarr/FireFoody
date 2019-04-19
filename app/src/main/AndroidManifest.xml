@@ -24,15 +24,15 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity
-            android:name=".Vendor_files.VendorTodayMenuActivity"
+            android:name=".VendorActivities.VendorTodayMenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Vendor_files.VendorCreateSubscription"
-            android:parentActivityName=".Vendor_files.DashboardActivity"
+            android:name=".VendorActivities.VendorCreateSubscription"
+            android:parentActivityName=".VendorActivities.DashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".User_files.MainActivity"
+            android:name=".Activites.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -55,11 +55,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".User_files.ProfileActivity"
+            android:name=".Activites.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Vendor_files.VendorCreatePackage"
-            android:parentActivityName=".Vendor_files.DashboardActivity"
+            android:name=".VendorActivities.VendorCreatePackage"
+            android:parentActivityName=".VendorActivities.DashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -67,20 +67,20 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Vendor_files.VendorAddDish"
+            android:name=".VendorActivities.VendorAddDish"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Vendor_files.DashboardActivity"
+            android:name=".VendorActivities.DashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Vendor_files.UserSubscriberActivity"
+            android:name=".VendorActivities.UserSubscriberActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".User_files.PackageDetailsActivity"
-            android:parentActivityName=".User_files.MainActivity"
+            android:name=".Activites.PackageDetailsActivity"
+            android:parentActivityName=".Activites.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activites.GooglePayActivity"
@@ -95,11 +95,12 @@
             android:name=".Activites.CheckoutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Vendor_files.VendorShowOrderActivity"
+            android:name=".VendorActivities.VendorShowOrderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Vendor_files.TermConActivity"
+            android:name=".VendorActivities.TermConActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".VendorActivities.VendorQRScannerActivity" />
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

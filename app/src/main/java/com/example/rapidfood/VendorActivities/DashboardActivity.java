@@ -1,4 +1,4 @@
-package com.example.rapidfood.Vendor_files;
+package com.example.rapidfood.VendorActivities;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.User_files.MainActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.GenerateUUIDClass;
 import com.google.android.gms.tasks.OnCompleteListener;
