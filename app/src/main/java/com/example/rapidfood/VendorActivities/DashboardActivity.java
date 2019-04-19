@@ -30,6 +30,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private MaterialCardView mAddDishBtn;
     private MaterialCardView mDeliveryOrderBtn;
     private MaterialCardView mUserView;
+    private MaterialCardView mQRScanner;
     private MaterialCardView mTodayMenu;
     private MaterialCardView mSubsriberBtn;
     private MaterialCardView mCustomOrders;
@@ -56,6 +57,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCustomOrders = findViewById(R.id.vendor_orders);
         mCheckInternet=findViewById(R.id.btn_check_internet);
         mNoInternetLAyout=findViewById(R.id.no_internet);
+        mQRScanner=findViewById(R.id.vendor_qr_scanner);
 
         mCreatePackBtn.setOnClickListener(this);
         mCustomOrders.setOnClickListener(this);
@@ -64,6 +66,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCreateSubBtn.setOnClickListener(this);
         mTodayMenu.setOnClickListener(this);
         mCheckInternet.setOnClickListener(this);
+        mQRScanner.setOnClickListener(this);
 
         setSupportActionBar(mToolbar);
         ActionBar vActionBar = getSupportActionBar();
@@ -99,6 +102,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.vendor_today_menu:
                 startActivity(new Intent(DashboardActivity.this, VendorTodayMenuActivity.class));
+                break;
+            case R.id.vendor_qr_scanner:
+                startActivity(new Intent(DashboardActivity.this,VendorQRScannerActivity.class));
                 break;
             case R.id.btn_check_internet:
                 if(UtilClass.isConnectedToNetwork(this)){

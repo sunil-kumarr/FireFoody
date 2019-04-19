@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -101,6 +104,7 @@
             android:name=".VendorActivities.TermConActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".VendorActivities.VendorQRScannerActivity" />
+        <activity android:name=".VendorActivities.ShowQRDataActivity" />
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
