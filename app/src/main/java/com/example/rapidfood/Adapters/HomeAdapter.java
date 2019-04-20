@@ -31,7 +31,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onBindViewHolder(@NonNull HomeViewHolder pHomeViewHolder, int pI, @NonNull final PackageModel pPackageModel) {
-        pHomeViewHolder.mPackageName.setTypeface(mContext.getResources().getFont(R.font.iran_sans_mobile));
+     //   pHomeViewHolder.mPackageName.setTypeface(mContext.getResources().getFont(R.font.iran_sans_mobile));
         pHomeViewHolder.mPackageName.setText(pPackageModel.getName());
         pHomeViewHolder.mPackCost.setText(pPackageModel.getPrice());
          if(pPackageModel.isBreakfast()){
