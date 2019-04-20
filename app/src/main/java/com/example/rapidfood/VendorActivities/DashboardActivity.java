@@ -1,5 +1,6 @@
 package com.example.rapidfood.VendorActivities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -128,11 +130,21 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.shutdown_dashboard) {
-            if (mFirebaseUser != null) {
-                mFirebaseAuth.signOut();
-                startActivity(new Intent(DashboardActivity.this, Authentication.class));
-                finish();
-            }
+            AlertDialog vDialog=new AlertDialog.Builder(this)
+                    .setTitle("Logout")
+                    .setMessage("Are you sure that you want to logout from admin panel?")
+                    .setIcon(R.drawable.ic_logout_new_red_24dp)
+                    .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mFirebaseUser != null) {
+                                mFirebaseAuth.signOut();
+                                startActivity(new Intent(DashboardActivity.this, Authentication.class));
+                                finish();
+                            }
+                        }
+                    }).create();
+             vDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -76,7 +76,7 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.order_btn_confirm:
-                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), true,pCheckoutPlaceOrderModel.getUid());
+                changeVerificationStatus(pCheckoutPlaceOrderModel, true,pCheckoutPlaceOrderModel.getUid());
                 break;
 
         }
@@ -87,26 +87,35 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()){
             case R.id.order_btn_cancel:
-                changeVerificationStatus(pCheckoutPlaceOrderModel.getTrans_id(), false,pCheckoutPlaceOrderModel.getUid());
+                changeVerificationStatus(pCheckoutPlaceOrderModel, false,pCheckoutPlaceOrderModel.getUid());
                 break;
         }
     }
 
-    void changeVerificationStatus(String t_string, boolean token,String f_uid) {
+    void changeVerificationStatus(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token,String f_uid) {
         Map<String, Object> mp = new HashMap<>();
+        Map<String,Object> notify=new HashMap<>();
         if(token) {
             mp.put("orderStatus", "SUCCESS");
-            Map<String,Object> notify=new HashMap<>();
-            notify.put("note_type","order");
             notify.put("title","Your order is confirmed");
-            notify.put("timestamp", FieldValue.serverTimestamp());
-            mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
-                    .document().set(notify);
+            notify.put("status",true);
         }
         else{
             mp.put("orderStatus","FAILURE");
+            notify.put("status",false);
+            notify.put("title","Your order is cancelled");
         }
-        mFirebaseFirestore.collection("delivery_orders").document(t_string).update(mp).addOnCompleteListener(
+        notify.put("note_type","order");
+        notify.put("timestamp", FieldValue.serverTimestamp());
+        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                .document().set(notify);
+        mFirebaseFirestore.collection("users").document(f_uid)
+                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
+                .set(pCheckoutPlaceOrderModel);
+        mFirebaseFirestore.collection("users").document(f_uid)
+                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
+                .update(mp);
+        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).update(mp).addOnCompleteListener(
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> pTask) {
@@ -118,5 +127,6 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
                     }
                 }
         );
+
     }
 }

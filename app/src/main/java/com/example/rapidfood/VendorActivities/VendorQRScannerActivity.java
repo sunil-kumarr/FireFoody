@@ -2,8 +2,6 @@ package com.example.rapidfood.VendorActivities;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.rapidfood.Activites.LogoActivity;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.UtilClass;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,7 +26,6 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
@@ -51,8 +47,12 @@ public class VendorQRScannerActivity extends AppCompatActivity implements ZXingS
 
     }
     private void setScanProperties(){
-        mZXingScannerView.setFormats(listOf(BarcodeFormat.QR_CODE));
+        mZXingScannerView.setFormats(listOf(BarcodeFormat.QR_CODE
+                ,BarcodeFormat.CODE_128, BarcodeFormat.AZTEC,BarcodeFormat.CODABAR
+                ,BarcodeFormat.DATA_MATRIX,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93
+                ,BarcodeFormat.EAN_8,BarcodeFormat.EAN_13,BarcodeFormat.MAXICODE,BarcodeFormat.PDF_417));
         mZXingScannerView.setAutoFocus(true);
+        mZXingScannerView.setBackgroundColor(getResources().getColor(R.color.red_500));
         mZXingScannerView.setLaserColor(R.color.red_500);
         mZXingScannerView.setMaskColor(R.color.red_500);
     }
@@ -117,7 +117,7 @@ public class VendorQRScannerActivity extends AppCompatActivity implements ZXingS
     @Override
     public void handleResult(Result pResult) {
         if(pResult!=null){
-            Toast.makeText(this, ""+pResult.getText(), Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(this, ""+pResult.getText(), Toast.LENGTH_SHORT).show();
             Intent vIntent=new Intent(VendorQRScannerActivity.this,ShowQRDataActivity.class);
             vIntent.putExtra("qr_data",pResult.getText());
             startActivity(vIntent);

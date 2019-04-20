@@ -10,6 +10,15 @@ public class NotificationModel {
     @ServerTimestamp
     Date timestamp;
     private String title;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean pStatus) {
+        status = pStatus;
+    }
 
     public String getNote_type() {
         return note_type;

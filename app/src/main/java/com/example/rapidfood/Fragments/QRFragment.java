@@ -17,8 +17,11 @@ import com.example.rapidfood.Utils.EncryptionHelper;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.GenerateUUIDClass;
 import com.example.rapidfood.Utils.QRCodeHelper;
+import com.example.rapidfood.VendorActivities.ShowQRDataActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -112,18 +115,31 @@ public class QRFragment extends Fragment implements QRAdapter.qrListener {
             pQRorderModel.setUser_mobile(mobile);
             pQRorderModel.setUser_UID(uid);
             pQRorderModel.setQr_id(qr_id);
-            String qrData=null;
-            try {
-                Gson vGson=new Gson();
-                 qrData= vGson.toJson(pQRorderModel);
-               // Toast.makeText(mContext, ""+qrData.toString(), Toast.LENGTH_SHORT).show();
-            } catch (Exception pE) {
-                pE.printStackTrace();
-            }
-            if(qrData!=null){
-                String encryptedString= EncryptionHelper.getInstance().encryptionString(qrData).encryptMsg();
-                setImageBitmap(encryptedString);
-            }
+            pQRorderModel.setOrder_Status("pending");
+            pQRorderModel.setPayment_status("pending");
+            pQRorderModel.setUsed_qr(false);
+            mFirebaseFirestore.collection("generated_qr_code").document(pQRorderModel.getQr_id()).set(pQRorderModel)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> pTask) {
+                            if(pTask.isSuccessful()){
+
+                                String qrData=null;
+                                try {
+                                    Gson vGson=new Gson();
+                                    qrData= vGson.toJson(pQRorderModel);
+                                    // Toast.makeText(mContext, ""+qrData.toString(), Toast.LENGTH_SHORT).show();
+                                } catch (Exception pE) {
+                                    pE.printStackTrace();
+                                }
+                                if(qrData!=null){
+                                    String encryptedString= EncryptionHelper.getInstance().encryptionString(qrData).encryptMsg();
+                                    setImageBitmap(encryptedString);
+                                }
+                            }
+                        }
+                    });
+
 
         }
     }

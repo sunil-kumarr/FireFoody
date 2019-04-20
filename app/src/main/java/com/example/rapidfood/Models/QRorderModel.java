@@ -23,13 +23,28 @@ public class QRorderModel implements Serializable {
     @SerializedName("qrId")
     @Expose
     private String qr_id;
-
-
     @SerializedName("timestamp")
     @Expose
     @ServerTimestamp
     private Date timestamp;
+    @SerializedName("paystatus")
+    @Expose
+    private String payment_status;
+    @SerializedName("orderstatus")
+    @Expose
+    private String order_Status;
+    @SerializedName("used_qr")
+    @Expose
+    private boolean used_qr;
 
+
+    public boolean isUsed_qr() {
+        return used_qr;
+    }
+
+    public void setUsed_qr(boolean pUsed_qr) {
+        used_qr = pUsed_qr;
+    }
 
     public String getQr_id() {
         return qr_id;
@@ -37,6 +52,26 @@ public class QRorderModel implements Serializable {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public String getPayment_status() {
+        return payment_status;
+    }
+
+    public void setPayment_status(String pPayment_status) {
+        payment_status = pPayment_status;
+    }
+
+    public String getOrder_Status() {
+        return order_Status;
+    }
+
+    public void setTimestamp(Date pTimestamp) {
+        timestamp = pTimestamp;
+    }
+
+    public void setOrder_Status(String pOrder_Status) {
+        order_Status = pOrder_Status;
     }
 
     public void setQr_id(String pQr_id) {

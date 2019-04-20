@@ -1,6 +1,7 @@
 package com.example.rapidfood.Fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
+import com.example.rapidfood.VendorActivities.DashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +36,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -194,11 +197,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.credits:
                 break;
             case R.id.sign_out:
-                if (mFirebaseAuth.getCurrentUser() != null) {
-                    mFirebaseAuth.signOut();
-                    startActivity(new Intent(mContext, Authentication.class));
-                    Objects.requireNonNull(getActivity()).finish();
-                }
+                AlertDialog vDialog=new AlertDialog.Builder(mContext)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure that you want to logout?")
+                        .setIcon(R.drawable.ic_logout_new_red_24dp)
+                        .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mFirebaseAuth.getCurrentUser() != null) {
+                                    mFirebaseAuth.signOut();
+                                    startActivity(new Intent(getActivity(), Authentication.class));
+                                    (getActivity()).finish();
+                                }
+                            }
+                        }).create();
+                vDialog.show();
                 break;
             default:
                 Toast.makeText(mContext, "Unknown action", Toast.LENGTH_SHORT).show();

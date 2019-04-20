@@ -76,7 +76,6 @@
                 android:layout_weight="9"
                 android:padding="5dp"
                 android:paddingStart="10dp"
-                android:text="Address 1"
                 android:visibility="visible" />
 
             <ImageButton

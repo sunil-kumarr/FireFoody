@@ -65,7 +65,8 @@ public class NotificationFragment  extends Fragment {
         Query query = mFirebaseFirestore
                 .collection("users")
                 .document(mFirebaseAuth.getCurrentUser().getUid())
-                .collection("notifications");
+                .collection("notifications")
+                .orderBy("timestamp", Query.Direction.DESCENDING);
                // .orderBy("timestamp", Query.Direction.DESCENDING);
         mOptions = new FirestoreRecyclerOptions.Builder<NotificationModel>()
                 .setQuery(query, NotificationModel.class).build();
