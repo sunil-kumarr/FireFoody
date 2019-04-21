@@ -2,7 +2,6 @@ package com.example.rapidfood.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,58 +46,40 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         pSubscriptionViewHolder.mSubCost.setText(pSubscriptionModel.getSubcost());
         pSubscriptionViewHolder.mSubCoupon.setText(pSubscriptionModel.getSubcoupon());
         pSubscriptionViewHolder.mSubTotalCost.setText(pSubscriptionModel.getTotal_paid());
-        // Toast.makeText(mContext, ""+pSubscriptionModel.getVerification_status()+" "+pSubscriptionModel.isVerifed(), Toast.LENGTH_SHORT).show();
-
-        if (pSubscriptionModel.getVerification_status().equals("SUCCESS")) {
-            pSubscriptionViewHolder.verifyBTN.setEnabled(false);
-            pSubscriptionViewHolder.verifyBTN.setText("Verified");
-            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-            pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-            pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
-            pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
-        } else if (pSubscriptionModel.getVerification_status().equals("FAILURE")) {
-            pSubscriptionViewHolder.failedBTN.setEnabled(false);
-            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-            pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-            pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+        pSubscriptionViewHolder.verificationStatus.setText(pSubscriptionModel.getVerification_status());
+        if(!pSubscriptionModel.getVerification_status().equals("pending")){
             pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
-        } else {
-            pSubscriptionViewHolder.failedBTN.setOnClickListener(new View.OnClickListener() {
+        }
+        else {
+            pSubscriptionViewHolder.verifyBTN.setVisibility(View.VISIBLE);
+            pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog vDialog = new AlertDialog.Builder(mContext)
                             .setTitle("CANCEL SUBSCRIPTION")
                             .setIcon(R.drawable.ic_cancel_red_24dp)
                             .setMessage("Are you sure you have verified the payment is failed for this subscription??")
-                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
+                                    mSubscriberListener.onClickVerify(v, pSubscriptionModel);
+                                }
+                            })
+                            .setNegativeButton("FAILED", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
                                     mSubscriberListener.onClickFailed(v, pSubscriptionModel);
                                 }
-                            }).create();
-                    vDialog.show();
-                }
-            });
-            pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                            .setTitle("CONFIRM SUBSCRIPTION")
-                            .setIcon(R.drawable.ic_check_circlce_button)
-                            .setMessage("Are you sure you have verified the payment for this subscription?")
-                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
-                                    mSubscriberListener.onClickVerify(v, pSubscriptionModel);
-                                }
-                            }).create();
+                            })
+                            .create();
                     vDialog.show();
                 }
             });
         }
     }
+
 
     @NonNull
     @Override
@@ -122,12 +103,12 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         private TextView transactiontime;
         private TextView userMobile;
         private TextView googleStatus;
-        private Button verifyBTN, failedBTN;
+        private TextView verificationStatus;
+        private Button verifyBTN;
 
         private SubscriberViewHolder(@NonNull View itemView) {
             super(itemView);
             verifyBTN = itemView.findViewById(R.id.subscriber_btn_verify);
-            failedBTN = itemView.findViewById(R.id.subscriber_btn_failed);
             userMobile = itemView.findViewById(R.id.subscriber_mobile);
             mSubName = itemView.findViewById(R.id.subscriber_type);
             mSubCost = itemView.findViewById(R.id.subscriber_cost);
@@ -136,6 +117,7 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
             transactionId = itemView.findViewById(R.id.subscriber_trans_id);
             transactiontime = itemView.findViewById(R.id.subscriber_date);
             googleStatus = itemView.findViewById(R.id.subscriber_google_Status);
+            verificationStatus = itemView.findViewById(R.id.subscriber_verification_Status);
         }
 
     }

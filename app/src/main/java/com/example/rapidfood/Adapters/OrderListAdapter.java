@@ -2,7 +2,6 @@ package com.example.rapidfood.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrderModel, OrderListAdapter.SubscriberViewHolder> {
+public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrderModel, OrderListAdapter.ORDERLISTViewHolder> {
 
     private RecyclerView mRecyclerview;
     private Context mContext;
@@ -37,7 +36,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final SubscriberViewHolder pSubscriptionViewHolder,
+    protected void onBindViewHolder(@NonNull final ORDERLISTViewHolder pSubscriptionViewHolder,
                                     int pI, @NonNull final CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
 
         Log.d(TAG, "onBindViewHolder: " + pCheckoutPlaceOrderModel.getPackageordered());
@@ -49,21 +48,12 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
         pSubscriptionViewHolder.mOrderCost.setText(pCheckoutPlaceOrderModel.getPackageprice());
         pSubscriptionViewHolder.mOrderDeliveryAddress.setText(pCheckoutPlaceOrderModel.getDeliveryaddress());
         pSubscriptionViewHolder.mPaymentMethod.setText(pCheckoutPlaceOrderModel.getPaymentmethod());
-        if (pCheckoutPlaceOrderModel.getOrderStatus().equals("SUCCESS")) {
-            pSubscriptionViewHolder.confirmBTN.setEnabled(false);
-            pSubscriptionViewHolder.confirmBTN.setText("Confirmed");
-            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-            pSubscriptionViewHolder.confirmBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-            pSubscriptionViewHolder.confirmBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
-            pSubscriptionViewHolder.cancelBTN.setVisibility(View.GONE);
-        } else if (pCheckoutPlaceOrderModel.getOrderStatus().equals("FAILURE")) {
-            pSubscriptionViewHolder.cancelBTN.setEnabled(false);
-            pSubscriptionViewHolder.cancelBTN.setText("CANCELED");
-            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-            pSubscriptionViewHolder.cancelBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-            pSubscriptionViewHolder.cancelBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+        pSubscriptionViewHolder.orderConfirmStatus.setText(pCheckoutPlaceOrderModel.getOrderStatus());
+
+        if (!pCheckoutPlaceOrderModel.getOrderStatus().equals("pending")) {
             pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
         } else {
+            pSubscriptionViewHolder.confirmBTN.setVisibility(View.VISIBLE);
             pSubscriptionViewHolder.confirmBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -71,34 +61,27 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
                             .setTitle("CONFIRM ORDER")
                             .setIcon(R.drawable.ic_check_circlce_button)
                             .setMessage("Are you sure you want to confirm order?")
-                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("CONFIRM ORDER", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    pSubscriptionViewHolder.cancelBTN.setVisibility(View.GONE);
+                                    pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
                                     mOrderListener.onClickVerify(v, pCheckoutPlaceOrderModel);
                                 }
-                            }).create();
-                    vDialog.show();
-                }
-            });
-            pSubscriptionViewHolder.cancelBTN.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                            .setTitle("CANCEL ORDER")
-                            .setIcon(R.drawable.ic_cancel_red_24dp)
-                            .setMessage("Are you sure you want to cancel order?")
-                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            })
+                            .setNegativeButton("CANCEL ORDER", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
                                     mOrderListener.onClickFailed(v, pCheckoutPlaceOrderModel);
                                 }
-                            }).create();
+                            })
+                            .create();
                     vDialog.show();
                 }
             });
         }
+
+
     }
 
     @NonNull
@@ -108,13 +91,13 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     }
 
     @Override
-    public SubscriberViewHolder onCreateViewHolder(ViewGroup group, int i) {
+    public ORDERLISTViewHolder onCreateViewHolder(ViewGroup group, int i) {
         View view = LayoutInflater.from(group.getContext())
                 .inflate(R.layout.vendor_show_order_layout, group, false);
-        return new SubscriberViewHolder(view);
+        return new ORDERLISTViewHolder(view);
     }
 
-    class SubscriberViewHolder extends RecyclerView.ViewHolder {
+    class ORDERLISTViewHolder extends RecyclerView.ViewHolder {
         private TextView mOrderName;
         private TextView mOrderCost;
         private TextView transactionId;
@@ -124,12 +107,13 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
         private TextView mOrderDeliveryAddress;
         private TextView mOrderDetails;
         private TextView mPaymentMethod;
-        private Button confirmBTN, cancelBTN;
+        private Button confirmBTN;
+        private TextView orderConfirmStatus;
 
-        private SubscriberViewHolder(@NonNull View itemView) {
+        private ORDERLISTViewHolder(@NonNull View itemView) {
             super(itemView);
             confirmBTN = itemView.findViewById(R.id.order_btn_confirm);
-            cancelBTN = itemView.findViewById(R.id.order_btn_cancel);
+            orderConfirmStatus = itemView.findViewById(R.id.order_confirm_Status);
             userMobile = itemView.findViewById(R.id.order_cust_mob);
             mOrderName = itemView.findViewById(R.id.order_pack_name);
             mOrderCost = itemView.findViewById(R.id.order_cost);

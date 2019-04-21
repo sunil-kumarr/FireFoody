@@ -72,49 +72,27 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
 
     @Override
     public void onClickVerify(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
-        Button vButton = (Button) pView;
-        switch (vButton.getId()) {
-            case R.id.order_btn_confirm:
-
-                vButton.setEnabled(false);
-                vButton.setText("Confirmed");
-                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
-                changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
-
-                break;
-
-        }
+        changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
     }
 
     @Override
     public void onClickFailed(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
-        Button vButton = (Button) pView;
-        switch (vButton.getId()) {
-            case R.id.order_btn_cancel:
 
-                vButton.setEnabled(false);
-                vButton.setText("Canceled");
-                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
-                changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
-
-
-                break;
-        }
+        changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
     }
 
     void changeVerificationStatus(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token, String f_uid) {
         Map<String, Object> notify = new HashMap<>();
+
         if (token) {
 
             pCheckoutPlaceOrderModel.setOrderStatus("SUCCESS");
+            pCheckoutPlaceOrderModel.setVerified(true);
             notify.put("title", "Your order is confirmed");
             notify.put("status", true);
         } else {
             pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
+            pCheckoutPlaceOrderModel.setVerified(true);
             notify.put("status", false);
             notify.put("title", "Your order is cancelled");
         }

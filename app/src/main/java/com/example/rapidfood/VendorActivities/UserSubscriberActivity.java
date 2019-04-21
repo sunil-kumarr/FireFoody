@@ -1,10 +1,7 @@
 package com.example.rapidfood.VendorActivities;
 
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.rapidfood.Adapters.SubscriberListAdapter;
 import com.example.rapidfood.Models.SubscriptionTransactionModel;
@@ -20,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,36 +69,14 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
 
     @Override
     public void onClickVerify(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel) {
-        Button vButton = (Button) pView;
-        switch (vButton.getId()) {
-            case R.id.subscriber_btn_verify:
 
-                                vButton.setEnabled(false);
-                                vButton.setText("Verified");
-                                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
-                                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
-                                addToVerifiedSubscriber(pSubscriptionTransactionModel);
-
-                break;
-
-        }
+        changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
+        addToVerifiedSubscriber(pSubscriptionTransactionModel);
     }
 
     @Override
     public void onClickFailed(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel) {
-        Button vButton = (Button) pView;
-        switch (vButton.getId()) {
-            case R.id.subscriber_btn_failed:
-                vButton.setEnabled(false);
-                vButton.setText("Failed");
-                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
-                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
-                break;
-        }
+        changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
     }
 
     void addToVerifiedSubscriber(SubscriptionTransactionModel pModel) {

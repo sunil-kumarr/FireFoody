@@ -297,6 +297,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                                         mOrderSuccess.setVisibility(View.VISIBLE);
                                         sCheckoutPlaceOrderModel.setOrderStatus("pending");
                                         sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
+                                        sCheckoutPlaceOrderModel.setVerified(false);
                                         //  Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
                                         mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -372,6 +373,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 // Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
                 sCheckoutPlaceOrderModel.setPaymentstatus("SUCCESS");
                 sCheckoutPlaceOrderModel.setOrderStatus("pending");
+                sCheckoutPlaceOrderModel.setVerified(false);
                 //   Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
                 mFirebaseFirestore.collection("delivery_orders").document(tr).set(sCheckoutPlaceOrderModel)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

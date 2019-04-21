@@ -20,6 +20,15 @@ public class CheckoutPlaceOrderModel {
     String paymentstatus;
     String orderStatus;
     String deliverystatus;
+    boolean verified;
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean pVerified) {
+        verified = pVerified;
+    }
 
     public String getOrderStatus() {
         return orderStatus;
