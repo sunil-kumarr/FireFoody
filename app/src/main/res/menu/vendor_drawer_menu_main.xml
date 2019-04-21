@@ -20,7 +20,7 @@
         <item android:id="@+id/packages"
             android:title="Create Package"
             app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_shopping_basket_black_24dp" />
+            android:icon="@drawable/ic_shopping_basket_white_24dp" />
         <item android:id="@+id/package_item"
             android:title="Create Package item"
             app:showAsAction="ifRoom"

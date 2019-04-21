@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -137,12 +139,34 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.container_frame:
-                Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
-                mImageUtil.pickFromGallery(VendorCreateSubscription.this);
+                AlertDialog vBuilder = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_photo_library_blue_24dp)
+                        .setMessage("SELECT IMAGE FROM YOUR DEVICE.")
+                        .setTitle("UPLOAD IMAGE")
+                        .setPositiveButton("OPEN GALLERY", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mImageUtil.pickFromGallery(VendorCreateSubscription.this);
+                            }
+                        }).create();
+                vBuilder.show();
+
                 break;
             case R.id.sub_create_btn:
-                Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
-                createSubscription();
+                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_lunch)
+                        .setMessage("ARE YOU SURE YOU WANT TO CREATE THIS SUBSCRIPTION??")
+                        .setTitle("CREATE SUBSCRIPTION ")
+                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                createSubscription();
+                            }
+                        }).create();
+                vUpdateDialog.show();
+
                 break;
         }
     }

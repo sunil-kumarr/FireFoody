@@ -1,7 +1,9 @@
 package com.example.rapidfood.VendorActivities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Adapters.AddDishPackHelpAdapter;
 import com.example.rapidfood.Models.PackageModel;
 import com.example.rapidfood.Models.VendorDishModel;
@@ -132,12 +135,33 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.frame_layout:
-                Toast.makeText(this, "Select image", Toast.LENGTH_SHORT).show();
-                mImageUtil.pickFromGallery(VendorAddDish.this);
+                AlertDialog vBuilder = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_photo_library_blue_24dp)
+                        .setMessage("SELECT IMAGE FROM YOUR DEVICE.")
+                        .setTitle("UPLOAD IMAGE")
+                        .setPositiveButton("OPEN GALLERY", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mImageUtil.pickFromGallery(VendorAddDish.this);
+                            }
+                        }).create();
+                vBuilder.show();
+
                 break;
             case R.id.item_create_btn:
-                Toast.makeText(this, "creating item", Toast.LENGTH_SHORT).show();
-                createPackItem();
+                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_lunch)
+                        .setMessage("ARE YOU SURE YOU WANT TO ADD THIS DISH TO MENU??")
+                        .setTitle("ADD DISH ")
+                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                createPackItem();
+                            }
+                        }).create();
+                vUpdateDialog.show();
                 break;
         }
     }

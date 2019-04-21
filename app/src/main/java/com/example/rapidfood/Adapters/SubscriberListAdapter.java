@@ -1,6 +1,7 @@
 package com.example.rapidfood.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.view.View.GONE;
@@ -61,19 +63,38 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
             pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
             pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
         } else {
-            pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
-                    mSubscriberListener.onClickVerify(v, pSubscriptionModel);
-                }
-            });
             pSubscriptionViewHolder.failedBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
-                    mSubscriberListener.onClickFailed(v, pSubscriptionModel);
-
+                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
+                            .setTitle("CANCEL SUBSCRIPTION")
+                            .setIcon(R.drawable.ic_cancel_red_24dp)
+                            .setMessage("Are you sure you have verified the payment is failed for this subscription??")
+                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
+                                    mSubscriberListener.onClickFailed(v, pSubscriptionModel);
+                                }
+                            }).create();
+                    vDialog.show();
+                }
+            });
+            pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
+                            .setTitle("CONFIRM SUBSCRIPTION")
+                            .setIcon(R.drawable.ic_check_circlce_button)
+                            .setMessage("Are you sure you have verified the payment for this subscription?")
+                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
+                                    mSubscriberListener.onClickVerify(v, pSubscriptionModel);
+                                }
+                            }).create();
+                    vDialog.show();
                 }
             });
         }

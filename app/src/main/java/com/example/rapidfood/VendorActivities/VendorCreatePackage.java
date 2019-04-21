@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -127,12 +129,35 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.container_frame:
-                Toast.makeText(this, "Select image", Toast.LENGTH_SHORT).show();
-                mImageUtil.pickFromGallery(VendorCreatePackage.this);
+                AlertDialog vBuilder = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_photo_library_blue_24dp)
+                        .setMessage("SELECT IMAGE FROM YOUR DEVICE.")
+                        .setTitle("UPLOAD IMAGE")
+                        .setPositiveButton("OPEN GALLERY", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mImageUtil.pickFromGallery(VendorCreatePackage.this);
+                            }
+                        }).create();
+                vBuilder.show();
+
                 break;
             case R.id.sub_create_btn:
-                Toast.makeText(this, "creating package", Toast.LENGTH_SHORT).show();
-                createPackage();
+                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_shopping_basket_black_24dp)
+                        .setMessage("ARE YOU SURE YOU WANT TO CREATE THIS PACKAGE??")
+                        .setTitle("CREATE PACKAGE ")
+                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                createPackage();
+                            }
+                        }).create();
+                vUpdateDialog.show();
+
+
                 break;
         }
     }

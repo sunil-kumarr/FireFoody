@@ -1,6 +1,5 @@
 package com.example.rapidfood.VendorActivities;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,22 +75,14 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.order_btn_confirm:
-                AlertDialog vDialog = new AlertDialog.Builder(this)
-                        .setTitle("CONFIRM ORDER")
-                        .setIcon(R.drawable.ic_check_circlce_button)
-                        .setMessage("Are you sure you want to confirm order?")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                vButton.setEnabled(false);
-                                vButton.setText("Confirmed");
-                                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
-                                changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
-                            }
-                        }).create();
-                vDialog.show();
+
+                vButton.setEnabled(false);
+                vButton.setText("Confirmed");
+                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
+                changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
+
                 break;
 
         }
@@ -103,22 +93,15 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.order_btn_cancel:
-                AlertDialog vDialog = new AlertDialog.Builder(this)
-                        .setTitle("CANCEL ORDER")
-                        .setIcon(R.drawable.ic_cancel_red_24dp)
-                        .setMessage("Are you sure you want to cancel order?")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                vButton.setEnabled(false);
-                                vButton.setText("Canceled");
-                                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
-                                changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
-                            }
-                        }).create();
-                vDialog.show();
+
+                vButton.setEnabled(false);
+                vButton.setText("Canceled");
+                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
+                changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
+
+
                 break;
         }
     }

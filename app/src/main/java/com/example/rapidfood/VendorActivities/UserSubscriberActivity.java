@@ -76,13 +76,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.subscriber_btn_verify:
-                AlertDialog vDialog = new AlertDialog.Builder(this)
-                        .setTitle("CONFIRM SUBSCRIPTION")
-                        .setIcon(R.drawable.ic_check_circlce_button)
-                        .setMessage("Are you sure you have verified the payment for this subscription?")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+
                                 vButton.setEnabled(false);
                                 vButton.setText("Verified");
                                 Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
@@ -90,9 +84,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
                                 vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
                                 changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
                                 addToVerifiedSubscriber(pSubscriptionTransactionModel);
-                            }
-                        }).create();
-                vDialog.show();
+
                 break;
 
         }
@@ -103,22 +95,12 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.subscriber_btn_failed:
-                AlertDialog vDialog = new AlertDialog.Builder(this)
-                        .setTitle("CANCEL SUBSCRIPTION")
-                        .setIcon(R.drawable.ic_cancel_red_24dp)
-                        .setMessage("Are you sure you have verified the payment is failed for this subscription??")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                vButton.setEnabled(false);
-                                vButton.setText("Failed");
-                                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
-                                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
-                            }
-                        }).create();
-                vDialog.show();
+                vButton.setEnabled(false);
+                vButton.setText("Failed");
+                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
+                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
                 break;
         }
     }

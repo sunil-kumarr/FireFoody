@@ -377,7 +377,7 @@
                             android:layout_height="64dp"
                             android:background="@drawable/cerclebackgroundorange"
                             android:padding="10dp"
-                            android:src="@drawable/ic_shopping_basket_black_24dp" />
+                            android:src="@drawable/ic_shopping_basket_white_24dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
