@@ -23,7 +23,7 @@
 
     <include
         android:id="@+id/footer"
-        layout="@layout/subscription_payment_bottom_sheet"
+        layout="@layout/activity_google_pay_subscription_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

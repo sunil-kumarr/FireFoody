@@ -13,8 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.TextView;
 
 import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
@@ -58,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Uri imageUri;
     private Toolbar mToolbar;
     private ImageView mUploadImage;
+    private TextView mImageUrl;
     private EditText mUserNameEDT, mUserEmailEDt, mUserMobileEDt;
     private ImageView mUserImage;
     private Button mUpadteProfileBtn;
@@ -85,8 +85,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mUpadteProfileBtn = findViewById(R.id.btn_save_profile);
         mUserImage = findViewById(R.id.profile_image_user);
         mUserMobileEDt = findViewById(R.id.edtMobileUser);
-        mMainContainer=findViewById(R.id.main_layout_holder);
+        mMainContainer = findViewById(R.id.main_layout_holder);
         mUploadImage = findViewById(R.id.upload_image);
+        mImageUrl = findViewById(R.id.image_url_id);
 
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseStorage = mFirebaseInstances.getFirebaseStorage();
@@ -128,10 +129,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         image = mImageUtil.FilePathNameExtractor(imageUri);
                     if (image != null) {
                         mUserImage.setVisibility(View.VISIBLE);
+                        mUploadImage.setVisibility(View.GONE);
                         Picasso.get()
                                 .load(imageUri)
-                                .centerCrop()
-                                .resize(150, 230)
                                 .into(mUserImage);
                         mImageSelected = true;
                     }
@@ -155,18 +155,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         mUserModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
                         if (mUserModel != null) {
                             mUserImage.setVisibility(View.VISIBLE);
-                            mUserMobileEDt.setText(mUserModel.getMobile());
-                            mUserMobileEDt.setEnabled(false);
                             Picasso.get()
                                     .load(mUserModel.getProfileimage())
-                                    .fit()
                                     .into(mUserImage);
+                            mImageUrl.setText(mUserModel.getProfileimage());
+                            mUploadImage.setVisibility(View.GONE);
                             mUserNameEDT.setText(mUserModel.getUsername());
                             mUserEmailEDt.setText(mUserModel.getEmailAddress());
                         }
                     }
                 }
             });
+            mUserMobileEDt.setText(mFirebaseUser.getPhoneNumber());
+            mUserMobileEDt.setEnabled(false);
         }
     }
 
@@ -177,9 +178,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.upload_image:
                 AlertDialog vBuilder = new AlertDialog.Builder(this)
                         .setCancelable(true)
-                        .setMessage("Select image from device and update profile image..")
-                        .setTitle("Select")
-                        .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                        .setIcon(R.drawable.ic_photo_library_blue_24dp)
+                        .setMessage("SELECT IMAGE FROM YOUR DEVICE.")
+                        .setTitle("UPLOAD IMAGE")
+                        .setPositiveButton("OPEN GALLERY", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mImageUtil.pickFromGallery(ProfileActivity.this);
@@ -188,7 +190,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 vBuilder.show();
                 break;
             case R.id.btn_save_profile:
-                updateToFireStore();
+                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.profile)
+                        .setMessage("ARE YOU SURE YOU WANT TO UPDATE YOUR PROFILE?")
+                        .setTitle("UPDATE PROFILE")
+                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                updateToFireStore();
+                            }
+                        }).create();
+                vUpdateDialog.show();
+
                 break;
         }
     }
@@ -221,20 +235,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void addItemToFireStore() {
-        Toast.makeText(this, "IMAGE" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
-
+        // Toast.makeText(this, "IMAGE" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
+        if (mUserModel.getProfileimage() == null) {
+            mUserModel.setProfileimage(mImageUrl.getText().toString());
+        }
         DocumentReference user = mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid());
         user.update("user_profile_data", mUserModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void pVoid) {
                 mProgressDialog.dismiss();
-                Snackbar.make(mMainContainer,"Profile updated",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mMainContainer, "Profile updated", Snackbar.LENGTH_LONG).show();
             }
         });
     }
 
     private void UploadImageToFirebase(Uri pImageUri) {
-      //  Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("user_profile/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

@@ -62,29 +62,19 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
                 pSubscriptionViewHolder.cancelBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
                 pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
             }
-         if(pCheckoutPlaceOrderModel.getOrderStatus().equals("pending")){
+         else{
             pSubscriptionViewHolder.confirmBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOrderListener.onClickVerify(v, pCheckoutPlaceOrderModel);
-                    pSubscriptionViewHolder.confirmBTN.setEnabled(false);
-                    pSubscriptionViewHolder.confirmBTN.setText("Confirmed");
-                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                    pSubscriptionViewHolder.confirmBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                    pSubscriptionViewHolder.confirmBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
                     pSubscriptionViewHolder.cancelBTN.setVisibility(View.GONE);
+                    mOrderListener.onClickVerify(v, pCheckoutPlaceOrderModel);
                 }
             });
             pSubscriptionViewHolder.cancelBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pSubscriptionViewHolder.cancelBTN.setEnabled(false);
-                    mOrderListener.onClickFailde(v, pCheckoutPlaceOrderModel);
-                    pSubscriptionViewHolder.cancelBTN.setText("Canceled");
-                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                    pSubscriptionViewHolder.cancelBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                    pSubscriptionViewHolder.cancelBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
                     pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
+                    mOrderListener.onClickFailed(v, pCheckoutPlaceOrderModel);
                 }
             });
         }
@@ -134,7 +124,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     public interface OrderListener {
         void onClickVerify(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel);
 
-        void onClickFailde(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel);
+        void onClickFailed(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel);
     }
 
 }

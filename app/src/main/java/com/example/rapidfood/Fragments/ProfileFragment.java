@@ -16,12 +16,11 @@ import android.widget.Toast;
 import com.example.rapidfood.Activites.AddressActivity;
 import com.example.rapidfood.Activites.Authentication;
 import com.example.rapidfood.Activites.FeedbackActivity;
+import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.Models.UserProfileModel;
 import com.example.rapidfood.R;
-import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Utils.FirebaseInstances;
-import com.example.rapidfood.VendorActivities.DashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -31,8 +30,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
-
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,9 +125,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                     placeholder(R.drawable.profile).into(mProfilePage);
                             if (vModel.getUsername() != null) {
                                 mUserName.setText(vModel.getUsername());
-                            } else {
-                                mUserName.setText(vModel.getMobile());
                             }
+                        } else {
+                            mUserName.setText(mFirebaseAuth.getCurrentUser().getPhoneNumber());
                         }
                     }
                 }
@@ -197,7 +194,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.credits:
                 break;
             case R.id.sign_out:
-                AlertDialog vDialog=new AlertDialog.Builder(mContext)
+                AlertDialog vDialog = new AlertDialog.Builder(mContext)
                         .setTitle("Logout")
                         .setMessage("Are you sure that you want to logout?")
                         .setIcon(R.drawable.ic_logout_new_red_24dp)

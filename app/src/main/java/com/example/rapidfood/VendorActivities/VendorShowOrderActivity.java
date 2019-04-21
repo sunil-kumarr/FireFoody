@@ -1,9 +1,10 @@
 package com.example.rapidfood.VendorActivities;
 
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.OrderListAdapter;
 import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
@@ -11,8 +12,6 @@ import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -20,8 +19,8 @@ import com.google.firebase.firestore.Query;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +46,8 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         mORderRecycleView.setItemAnimator(new DefaultItemAnimator());
         mORderRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         Query query = mFirebaseFirestore
-                .collection("delivery_orders");
+                .collection("delivery_orders")
+                .orderBy("ordertimestamp", Query.Direction.DESCENDING);
         mOptions = new FirestoreRecyclerOptions.Builder<CheckoutPlaceOrderModel>()
                 .setQuery(query, CheckoutPlaceOrderModel.class).build();
         mOrderAdapter = new OrderListAdapter(mOptions, mORderRecycleView, this);
@@ -59,6 +59,7 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -76,57 +77,79 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.order_btn_confirm:
-                changeVerificationStatus(pCheckoutPlaceOrderModel, true,pCheckoutPlaceOrderModel.getUid());
+                AlertDialog vDialog = new AlertDialog.Builder(this)
+                        .setTitle("CONFIRM ORDER")
+                        .setIcon(R.drawable.ic_check_circlce_button)
+                        .setMessage("Are you sure you want to confirm order?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                vButton.setEnabled(false);
+                                vButton.setText("Confirmed");
+                                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
+                                changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
+                            }
+                        }).create();
+                vDialog.show();
                 break;
 
         }
     }
 
     @Override
-    public void onClickFailde(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
+    public void onClickFailed(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
         Button vButton = (Button) pView;
-        switch (vButton.getId()){
+        switch (vButton.getId()) {
             case R.id.order_btn_cancel:
-                changeVerificationStatus(pCheckoutPlaceOrderModel, false,pCheckoutPlaceOrderModel.getUid());
+                AlertDialog vDialog = new AlertDialog.Builder(this)
+                        .setTitle("CANCEL ORDER")
+                        .setIcon(R.drawable.ic_cancel_red_24dp)
+                        .setMessage("Are you sure you want to cancel order?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                vButton.setEnabled(false);
+                                vButton.setText("Canceled");
+                                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
+                                changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
+                            }
+                        }).create();
+                vDialog.show();
                 break;
         }
     }
 
-    void changeVerificationStatus(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token,String f_uid) {
-        Map<String, Object> mp = new HashMap<>();
-        Map<String,Object> notify=new HashMap<>();
-        if(token) {
-            mp.put("orderStatus", "SUCCESS");
-            notify.put("title","Your order is confirmed");
-            notify.put("status",true);
+    void changeVerificationStatus(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token, String f_uid) {
+        Map<String, Object> notify = new HashMap<>();
+        if (token) {
+
+            pCheckoutPlaceOrderModel.setOrderStatus("SUCCESS");
+            notify.put("title", "Your order is confirmed");
+            notify.put("status", true);
+        } else {
+            pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
+            notify.put("status", false);
+            notify.put("title", "Your order is cancelled");
         }
-        else{
-            mp.put("orderStatus","FAILURE");
-            notify.put("status",false);
-            notify.put("title","Your order is cancelled");
-        }
-        notify.put("note_type","order");
+        notify.put("note_type", "order");
         notify.put("timestamp", FieldValue.serverTimestamp());
+
+        //Add notification to user database
         mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
                 .document().set(notify);
+
+
+        //Add order in user database
         mFirebaseFirestore.collection("users").document(f_uid)
                 .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
                 .set(pCheckoutPlaceOrderModel);
-        mFirebaseFirestore.collection("users").document(f_uid)
-                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
-                .update(mp);
-        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).update(mp).addOnCompleteListener(
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> pTask) {
-                        if (pTask.isSuccessful()) {
-                            Toast.makeText(VendorShowOrderActivity.this, "Order Confirmed", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(VendorShowOrderActivity.this, "Order Cancel", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
+
+        // add updated order to orders database
+        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).set(pCheckoutPlaceOrderModel);
 
     }
 }

@@ -16,6 +16,7 @@ import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.GenerateUUIDClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -47,14 +48,15 @@ public class GooglePayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subscription_payment_bottom_sheet);
+        setContentView(R.layout.activity_google_pay_subscription_layout);
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mPreferenceManager = new PreferenceManager(this);
+
         sub_name = getIntent().getStringExtra("sub_name");
 
-        mOrder = findViewById(R.id.bottom_sheet);
+        mOrder = findViewById(R.id.main_layout_holder);
         mPAymentSuccess = findViewById(R.id.payment_success);
         mPaymentFailure = findViewById(R.id.payment_failure);
         RelativeLayout payButton = findViewById(R.id.googlepay_button);
@@ -72,46 +74,61 @@ public class GooglePayActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                Toast.makeText(GooglePayActivity.this, "" + tr, Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, tr);
-                String amountt = mTotalCost.getText().toString();
-                if (amountt != null) {
-                    StringBuilder vStringBuilder = new StringBuilder();
-                    vStringBuilder.append(amountt)
-                            .append(".00");
-                    String am = vStringBuilder.toString();
-                    Uri uri = new Uri.Builder()
-                            .scheme("upi")
-                            .authority("pay")
-                            .appendQueryParameter("pa", "par78vesh.kr@oksbi")
-                            .appendQueryParameter("pn", "sunil kumar")
-                            .appendQueryParameter("mc", "1234")
-                            .appendQueryParameter("tr", tr)
-                            .appendQueryParameter("tn", "rapidfood subscription")
-                            .appendQueryParameter("am", "1")
-                            .appendQueryParameter("cu", "INR")
-                            .appendQueryParameter("url", "https://test.merchant.website")
-                            .build();
-                    PackageManager packageManager = getApplication().getPackageManager();
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(uri);
-                    intent.setPackage(GOOGLE_TEZ_PACKAGE_NAME);
-                    if (intent.resolveActivity(packageManager) != null) {
-                        startActivityForResult(intent, TEZ_REQUEST_CODE);
-                    } else {
-                        AlertDialog.Builder vBuilder = new AlertDialog.Builder(GooglePayActivity.this)
-                                .setCancelable(true)
-                                .setIcon(R.drawable.ic_google_pay_mark_800_gray)
-                                .setMessage("Google Pay not installed!!")
-                                .setTitle("Google Pay not found!");
-                        vBuilder.create().show();
-                    }
-
+                if (mFirebaseAuth.getCurrentUser() != null) {
+                    mFirebaseFirestore.collection("subscribed_user")
+                            .document(mFirebaseAuth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                            if (pTask.isSuccessful()) {
+                                Snackbar.make(mOrder, "ALREADY SUBSCRIBED USER!", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                MakePaymentGooglePay();
+                            }
+                        }
+                    });
 
                 }
             }
         });
+    }
+
+    private void MakePaymentGooglePay() {
+        String amountt = mTotalCost.getText().toString();
+        if (amountt != null) {
+            StringBuilder vStringBuilder = new StringBuilder();
+            vStringBuilder.append(amountt)
+                    .append(".00");
+            String am = vStringBuilder.toString();
+            Uri uri = new Uri.Builder()
+                    .scheme("upi")
+                    .authority("pay")
+                    .appendQueryParameter("pa", "par78vesh.kr@oksbi")
+                    .appendQueryParameter("pn", "sunil kumar")
+                    .appendQueryParameter("mc", "1234")
+                    .appendQueryParameter("tr", tr)
+                    .appendQueryParameter("tn", "rapidfood subscription")
+                    .appendQueryParameter("am", "1")
+                    .appendQueryParameter("cu", "INR")
+                    .appendQueryParameter("url", "https://test.merchant.website")
+                    .build();
+            PackageManager packageManager = getApplication().getPackageManager();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            intent.setPackage(GOOGLE_TEZ_PACKAGE_NAME);
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivityForResult(intent, TEZ_REQUEST_CODE);
+            } else {
+                AlertDialog.Builder vBuilder = new AlertDialog.Builder(GooglePayActivity.this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_google_pay_mark_800_gray)
+                        .setMessage("Google Pay not installed!!")
+                        .setTitle("Google Pay not found!");
+                vBuilder.create().show();
+            }
+
+
+        }
     }
 
 
@@ -124,7 +141,7 @@ public class GooglePayActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mPreferenceManager.setTransIdTemp(tr);
-       // Toast.makeText(this, "Stop Called", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Stop Called", Toast.LENGTH_SHORT).show();
     }
 
     void getSubDetails(String pSub_name) {
@@ -156,7 +173,7 @@ public class GooglePayActivity extends AppCompatActivity {
 
         if (requestCode == TEZ_REQUEST_CODE) {
             // Process based on the data in response.
-            Toast.makeText(this, "Transaction " + tr, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Transaction " + tr, Toast.LENGTH_SHORT).show();
             Log.d(TAG, tr);
             if (data.getStringExtra("Status").equals("SUCCESS")) {
                 mOrder.setVisibility(View.GONE);
@@ -170,7 +187,7 @@ public class GooglePayActivity extends AppCompatActivity {
             String s_cost = msubcost.getText().toString();
             String s_duration = msubval.getText().toString();
             String s_coupon = msubcoupon_Value.getText().toString();
-            String s_total=mTotalCost.getText().toString();
+            String s_total = mTotalCost.getText().toString();
             String uid = null;
             String mob = null;
             if (mFirebaseAuth.getCurrentUser() != null) {
@@ -186,11 +203,11 @@ public class GooglePayActivity extends AppCompatActivity {
             contentValues.put("uid", uid);
             contentValues.put("mobile", mob);
             contentValues.put("transaction_id", tr);
-            contentValues.put("total_paid",s_total);
+            contentValues.put("total_paid", s_total);
             contentValues.put("transaction_time", FieldValue.serverTimestamp());
             contentValues.put("googlePay_status", data.getStringExtra("Status"));
-            contentValues.put("verification_status","pending");
-            contentValues.put("verified",false);
+            contentValues.put("verification_status", "pending");
+            contentValues.put("verified", false);
             Log.d(TAG, contentValues.toString());
             mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(contentValues).addOnCompleteListener(
                     new OnCompleteListener<Void>() {

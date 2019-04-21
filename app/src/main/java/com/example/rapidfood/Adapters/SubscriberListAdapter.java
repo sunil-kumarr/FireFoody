@@ -17,6 +17,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.view.View.GONE;
+
 public class SubscriberListAdapter extends FirestoreRecyclerAdapter<SubscriptionTransactionModel, SubscriberListAdapter.SubscriberViewHolder> {
 
     private RecyclerView mRecyclerview;
@@ -43,44 +45,35 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
         pSubscriptionViewHolder.mSubCost.setText(pSubscriptionModel.getSubcost());
         pSubscriptionViewHolder.mSubCoupon.setText(pSubscriptionModel.getSubcoupon());
         pSubscriptionViewHolder.mSubTotalCost.setText(pSubscriptionModel.getTotal_paid());
-       // Toast.makeText(mContext, ""+pSubscriptionModel.getVerification_status()+" "+pSubscriptionModel.isVerifed(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(mContext, ""+pSubscriptionModel.getVerification_status()+" "+pSubscriptionModel.isVerifed(), Toast.LENGTH_SHORT).show();
 
-            if (pSubscriptionModel.getVerification_status().equals("SUCCESS")) {
-                pSubscriptionViewHolder.verifyBTN.setEnabled(false);
-                pSubscriptionViewHolder.verifyBTN.setText("Verified");
-                Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
-                pSubscriptionViewHolder.failedBTN.setVisibility(View.GONE);
-            } else if(pSubscriptionModel.getVerification_status().equals("FAILURE")){
-                pSubscriptionViewHolder.failedBTN.setEnabled(false);
-                Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
-                pSubscriptionViewHolder.verifyBTN.setVisibility(View.GONE);
-            }
-         if(pSubscriptionModel.getVerification_status().equals("pending")){
+        if (pSubscriptionModel.getVerification_status().equals("SUCCESS")) {
+            pSubscriptionViewHolder.verifyBTN.setEnabled(false);
+            pSubscriptionViewHolder.verifyBTN.setText("Verified");
+            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
+            pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+            pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+            pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
+        } else if (pSubscriptionModel.getVerification_status().equals("FAILURE")) {
+            pSubscriptionViewHolder.failedBTN.setEnabled(false);
+            Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+            pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+            pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+            pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
+        } else {
             pSubscriptionViewHolder.verifyBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    pSubscriptionViewHolder.failedBTN.setVisibility(GONE);
                     mSubscriberListener.onClickVerify(v, pSubscriptionModel);
-                    pSubscriptionViewHolder.verifyBTN.setEnabled(false);
-                    pSubscriptionViewHolder.verifyBTN.setText("Verified");
-                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                    pSubscriptionViewHolder.verifyBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                    pSubscriptionViewHolder.verifyBTN.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
-                    pSubscriptionViewHolder.failedBTN.setVisibility(View.GONE);
                 }
             });
             pSubscriptionViewHolder.failedBTN.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pSubscriptionViewHolder.failedBTN.setEnabled(false);
-                    mSubscriberListener.onClickFailde(v, pSubscriptionModel);
-                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
-                    pSubscriptionViewHolder.failedBTN.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                    pSubscriptionViewHolder.failedBTN.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
-                    pSubscriptionViewHolder.verifyBTN.setVisibility(View.GONE);
+                    pSubscriptionViewHolder.verifyBTN.setVisibility(GONE);
+                    mSubscriberListener.onClickFailed(v, pSubscriptionModel);
+
                 }
             });
         }
@@ -129,7 +122,7 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<Subscription
     public interface SubscriberListener {
         void onClickVerify(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel);
 
-        void onClickFailde(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel);
+        void onClickFailed(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel);
     }
 
 }

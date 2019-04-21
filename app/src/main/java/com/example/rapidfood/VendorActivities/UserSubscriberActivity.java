@@ -1,10 +1,10 @@
 package com.example.rapidfood.VendorActivities;
 
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.rapidfood.Adapters.SubscriberListAdapter;
 import com.example.rapidfood.Models.SubscriptionTransactionModel;
@@ -12,8 +12,6 @@ import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -21,8 +19,8 @@ import com.google.firebase.firestore.Query;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,7 +46,7 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Query query = mFirebaseFirestore
                 .collection("sub_transaction_data")
                 .orderBy("transaction_time", Query.Direction.DESCENDING);
-               // .whereEqualTo("verified", false);
+        // .whereEqualTo("verified", false);
         mOptions = new FirestoreRecyclerOptions.Builder<SubscriptionTransactionModel>()
                 .setQuery(query, SubscriptionTransactionModel.class).build();
         mSubListAdapter = new SubscriberListAdapter(mOptions, mSubscriberRecycler, this);
@@ -78,21 +76,49 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
         Button vButton = (Button) pView;
         switch (vButton.getId()) {
             case R.id.subscriber_btn_verify:
-               // Toast.makeText(this, "verify clicked", Toast.LENGTH_SHORT).show();
-                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
-                addToVerifiedSubscriber(pSubscriptionTransactionModel);
+                AlertDialog vDialog = new AlertDialog.Builder(this)
+                        .setTitle("CONFIRM SUBSCRIPTION")
+                        .setIcon(R.drawable.ic_check_circlce_button)
+                        .setMessage("Are you sure you have verified the payment for this subscription?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                vButton.setEnabled(false);
+                                vButton.setText("Verified");
+                                Drawable img = getResources().getDrawable(R.drawable.ic_check_white_24dp);
+                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                                vButton.setBackgroundColor(getResources().getColor(R.color.green_500));
+                                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), true);
+                                addToVerifiedSubscriber(pSubscriptionTransactionModel);
+                            }
+                        }).create();
+                vDialog.show();
                 break;
 
         }
     }
 
     @Override
-    public void onClickFailde(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel) {
+    public void onClickFailed(View pView, SubscriptionTransactionModel pSubscriptionTransactionModel) {
         Button vButton = (Button) pView;
-        switch (vButton.getId()){
+        switch (vButton.getId()) {
             case R.id.subscriber_btn_failed:
-              //  Toast.makeText(this, "fail clicked", Toast.LENGTH_SHORT).show();
-                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
+                AlertDialog vDialog = new AlertDialog.Builder(this)
+                        .setTitle("CANCEL SUBSCRIPTION")
+                        .setIcon(R.drawable.ic_cancel_red_24dp)
+                        .setMessage("Are you sure you have verified the payment is failed for this subscription??")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                vButton.setEnabled(false);
+                                vButton.setText("Failed");
+                                Drawable img = getResources().getDrawable(R.drawable.ic_circle_cross_24dp);
+                                vButton.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                                vButton.setBackgroundColor(getResources().getColor(R.color.red_500));
+                                changeVerificationStatus(pSubscriptionTransactionModel.getTransaction_id(), false);
+                            }
+                        }).create();
+                vDialog.show();
                 break;
         }
     }
@@ -100,52 +126,29 @@ public class UserSubscriberActivity extends AppCompatActivity implements Subscri
     void addToVerifiedSubscriber(SubscriptionTransactionModel pModel) {
         Map<String, Object> mp = new HashMap<>();
         String f_uid = pModel.getUid();
-        Log.d(TAG,f_uid);
-        Toast.makeText(this, ""+f_uid, Toast.LENGTH_SHORT).show();
         mp.put("start_date", FieldValue.serverTimestamp());
-        String[] days = pModel.getDuration().split(" ", 1);
-        mp.put("duration", days[0]);
+        mp.put("duration", pModel.getDuration());
         mp.put("trans_id", pModel.getTransaction_id());
-        mp.put("balance",pModel.getSubcost());
-        mFirebaseFirestore.collection("subscribed_user").document(f_uid).set(mp).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> pTask) {
-                    if(pTask.isSuccessful()){
-                       // Toast.makeText(UserSubscriberActivity.this, "Added Subscriber", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                       // Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-            }
-        });
-        Map<String,Object> notify=new HashMap<>();
-        notify.put("note_type","subscription");
+        mp.put("balance", pModel.getSubcost());
+        mFirebaseFirestore.collection("subscribed_user").document(f_uid).set(mp);
+
+
+        Map<String, Object> notify = new HashMap<>();
+        notify.put("note_type", "subscription");
         notify.put("timestamp", FieldValue.serverTimestamp());
-        notify.put("title","Congratulations,you subscribed customer");
+        notify.put("title", "Congratulations,you subscribed customer");
         mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
                 .document().set(notify);
     }
 
     void changeVerificationStatus(String t_string, boolean token) {
         Map<String, Object> mp = new HashMap<>();
-        if(token) {
+        if (token) {
             mp.put("verification_status", "SUCCESS");
+        } else {
+            mp.put("verification_status", "FAILURE");
         }
-        else{
-            mp.put("verification_status","FAILURE");
-        }
-        mp.put("verified",true);
-        mFirebaseFirestore.collection("sub_transaction_data").document(t_string).update(mp).addOnCompleteListener(
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> pTask) {
-                        if (pTask.isSuccessful()) {
-                          //  Toast.makeText(UserSubscriberActivity.this, "verified Transaction", Toast.LENGTH_SHORT).show();
-                        } else {
-                          //  Toast.makeText(UserSubscriberActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
+        mp.put("verified", true);
+        mFirebaseFirestore.collection("sub_transaction_data").document(t_string).update(mp);
     }
 }
