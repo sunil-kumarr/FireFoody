@@ -16,28 +16,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Delivery History"
+        app:title="Delivery Selector"
         app:titleTextColor="@color/black" />
+
     <ImageView
+        android:id="@+id/not_subscribed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:src="@drawable/ic_undraw_setup_wizard" />
+        android:src="@drawable/ic_undraw_setup_wizard"
+        android:visibility="gone" />
 
-    <!--<com.applandeo.materialcalendarview.CalendarView-->
-        <!--android:id="@+id/calendarView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="9"/>-->
-    <!--<TextView-->
-        <!--android:id="@+id/delivery_text"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:gravity="start"-->
-        <!--android:padding="5dp"-->
-        <!--android:text="Select food delivery timing.Default delivery all time"-->
-        <!--android:textColor="@color/red_500"-->
-        <!--android:textSize="10sp" />-->
+    <TextView
+        android:id="@+id/delivery_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="start"
+        android:padding="5dp"
+        android:text="**Select food delivery timing(Deafult All Days)."
+        android:textColor="@color/red_500"
+        android:textSize="10sp" />
+
+   <com.skyhope.eventcalenderlibrary.CalenderEvent
+       android:layout_width="match_parent"
+       android:id="@+id/time_sheet_calendar"
+       android:layout_height="match_parent"/>
+
+
 </LinearLayout>

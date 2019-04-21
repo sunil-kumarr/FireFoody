@@ -155,9 +155,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         mUserModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
                         if (mUserModel != null) {
                             mUserImage.setVisibility(View.VISIBLE);
-                            Picasso.get()
-                                    .load(mUserModel.getProfileimage())
-                                    .into(mUserImage);
+                            if (!mUserModel.getProfileimage().equals("")) {
+                                Picasso.get()
+                                        .load(mUserModel.getProfileimage())
+                                        .into(mUserImage);
+                            }
                             mImageUrl.setText(mUserModel.getProfileimage());
                             mUploadImage.setVisibility(View.GONE);
                             mUserNameEDT.setText(mUserModel.getUsername());
@@ -237,7 +239,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void addItemToFireStore() {
         // Toast.makeText(this, "IMAGE" + mUserModel.getProfileimage(), Toast.LENGTH_SHORT).show();
         if (mUserModel.getProfileimage() == null) {
-            mUserModel.setProfileimage(mImageUrl.getText().toString());
+            if (mImageUrl.getText() != null) {
+                mUserModel.setProfileimage(mImageUrl.getText().toString());
+            } else {
+                mUserModel.setProfileimage("");
+            }
+
         }
         DocumentReference user = mFirebaseFirestore.collection("users").document(mFirebaseUser.getUid());
         user.update("user_profile_data", mUserModel).addOnSuccessListener(new OnSuccessListener<Void>() {

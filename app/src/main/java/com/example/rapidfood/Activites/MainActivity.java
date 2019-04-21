@@ -3,8 +3,6 @@ package com.example.rapidfood.Activites;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -15,25 +13,26 @@ import com.example.rapidfood.Fragments.QRFragment;
 import com.example.rapidfood.Fragments.TimingFragment;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
-import com.google.android.gms.wallet.PaymentsClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
     private AHBottomNavigation bottomNavigation;
     private FirebaseInstances mFirebaseInstances;
-
-    //Google pay ///
-    private PaymentsClient mPaymentsClient;
-    private View mGooglePayButton;
-    private TextView mGooglePayStatusText;
-    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
+    private FirebaseFirestore mFirebaseFirestore;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,9 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_user);
 
         mFirebaseInstances = new FirebaseInstances();
+        mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
+        mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
+
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         Fragment vFragment = new HomeFragment();
@@ -54,8 +56,8 @@ public class MainActivity extends AppCompatActivity  {
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.ic_home_black_24dp, R.color.red_500);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("QR Scanner", R.drawable.ic_qrcode, R.color.green_500);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("History", R.drawable.ic_receipt_black_24dp, R.color.blue_500);
-        AHBottomNavigationItem item4 =new   AHBottomNavigationItem("Notification", R.drawable.ic_notifications_black_24dp, R.color.blue_500);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("Delivery", R.drawable.ic_today_white_24dp, R.color.blue_500);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("Notification", R.drawable.ic_notifications_black_24dp, R.color.blue_500);
         AHBottomNavigationItem item5 = new AHBottomNavigationItem("Profile", R.drawable.ic_person_black_24dp, R.color.blue_500);
 
         // Add items
@@ -116,15 +118,15 @@ public class MainActivity extends AppCompatActivity  {
                         vFragment = new HomeFragment();
                         break;
                     case 1:
-                        vFragment=new TimingFragment();
+                        vFragment = new TimingFragment();
 
                         break;
 
                     case 2:
-                        vFragment=new QRFragment();
+                        vFragment = new QRFragment();
                         break;
                     case 3:
-                        vFragment=new NotificationFragment();
+                        vFragment = new NotificationFragment();
                         break;
                     case 4:
                         vFragment = new ProfileFragment();
@@ -147,4 +149,11 @@ public class MainActivity extends AppCompatActivity  {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Map<String, Object> mp = new HashMap<>();
+        mp.put("timestamp", FieldValue.serverTimestamp());
+        mFirebaseFirestore.collection("company_data").document("timestamp").update(mp);
+    }
 }

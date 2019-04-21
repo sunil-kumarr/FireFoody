@@ -119,10 +119,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     if (pDocumentSnapshot.exists()) {
                         UserProfileModel vModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
                         if (vModel != null) {
-                            Picasso.get().
-                                    load(vModel.getProfileimage()).
-                                    fit().
-                                    placeholder(R.drawable.profile).into(mProfilePage);
+                            if (!vModel.getProfileimage().equals("")) {
+                                Picasso.get().
+                                        load(vModel.getProfileimage()).
+                                        fit().
+                                        placeholder(R.drawable.profile).into(mProfilePage);
+                            }
                             if (vModel.getUsername() != null) {
                                 mUserName.setText(vModel.getUsername());
                             }
