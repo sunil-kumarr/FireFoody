@@ -39,10 +39,18 @@
         android:textColor="@color/red_500"
         android:textSize="10sp" />
 
-   <com.skyhope.eventcalenderlibrary.CalenderEvent
-       android:layout_width="match_parent"
-       android:id="@+id/time_sheet_calendar"
-       android:layout_height="match_parent"/>
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/time_sheet_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:mcv_allowClickDaysOutsideCurrentMonth="false"
+        app:mcv_calendarMode="month"
+        app:mcv_selectionColor="@color/red_500"
+        app:mcv_showOtherDates="all"
+        app:mcv_showWeekDays="true"
+        app:mcv_selectionMode="single"
+        app:mcv_titleAnimationOrientation="vertical" />
 
 
 </LinearLayout>
