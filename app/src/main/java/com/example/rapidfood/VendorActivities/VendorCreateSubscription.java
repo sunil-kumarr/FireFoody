@@ -110,9 +110,9 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
             String Coupon=mSubCoupon.getText().toString();
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
-            mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setMessage("Creating Subscription");
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.show();
             mSubscriptionModel.setDetails(detail);
             mSubscriptionModel.setDuration(duration);
@@ -193,7 +193,7 @@ public class VendorCreateSubscription extends AppCompatActivity implements View.
     }
 
     private void UploadImageToFirebase(Uri pImageUri, final String CollectionName) {
-        Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("subscription_image/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

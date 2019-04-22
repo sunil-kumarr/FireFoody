@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.rapidfood.Activites.GooglePayActivity;
 import com.example.rapidfood.Models.SubscriptionModel;
@@ -64,6 +65,8 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
                                 });
                     }
                 });
+        pSubscriptionViewHolder.mSubName.setText(pSubscriptionModel.getType());
+        pSubscriptionViewHolder.mSubPrice.setText(pSubscriptionModel.getPrice());
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,17 +90,15 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
 
     class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         private ImageView mSubImage;
+        private TextView mSubName;
+        private TextView mSubPrice;
         SubscriptionViewHolder(View itemView) {
             super(itemView);
             mSubImage= itemView.findViewById(R.id.sub_image);
-
+            mSubName=itemView.findViewById(R.id.sub_name);
+            mSubPrice=itemView.findViewById(R.id.sub_total_cost);
         }
-//        void showBottomSheetDialog() {
-//            View view = LayoutInflater.from(mContext).inflate(R.layout.subscription_payment_bottom_sheet,null);
-//            BottomSheetDialog dialog = new BottomSheetDialog(mContext);
-//            dialog.setContentView(view);
-//            dialog.show();
-//        }
+
     }
 
 }

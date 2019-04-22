@@ -1,7 +1,6 @@
 package com.example.rapidfood.Adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rapidfood.Activites.PackageDetailsActivity;
 import com.example.rapidfood.Models.VendorDishModel;
@@ -21,9 +23,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetailShowAdapter.PackageViewHolder> {
 
     private List<VendorDishModel> dishlist;
@@ -32,14 +31,16 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     private String packName;
     private int itemCount;
     private ShowButtonListener buttonListener;
+    private Button mOrderBtn;
 
-    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext, int itemCount, String pPackName) {
+    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext, int itemCount, String pPackName, Button vOrderBtn) {
         dishlist = pDishlist;
         mContext = pContext;
         this.itemCount = itemCount;
         packName = pPackName;
-        buttonListener=(PackageDetailsActivity)mContext;
+        buttonListener = (PackageDetailsActivity) mContext;
         selectedItems = new ArrayList<>();
+        mOrderBtn = vOrderBtn;
     }
 
     @NonNull
@@ -61,10 +62,11 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     public void onBindViewHolder(@NonNull PackageViewHolder holder, int position) {
         VendorDishModel vModel = dishlist.get(position);
         holder.dishName.setText(vModel.getName());
-        holder.dishDetail.setText(vModel.getDescription());
+        holder.dishDesc.setText(vModel.getDescription());
         Picasso.get()
                 .load(vModel.getImage())
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
                 .into(holder.dishImage, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -76,6 +78,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                         //Try again online if cache failed
                         Picasso.get()
                                 .load(vModel.getImage())
+                                .fit()
                                 .error(R.drawable.ic_undraw_failure)
                                 .into(holder.dishImage, new Callback() {
                                     @Override
@@ -92,36 +95,31 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
         holder.dishAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Button btn = (Button) v;
-
-                if (btn.getText().equals("Add")) {
-                    if (itemCount > selectedItems.size()) {
-
-                        selectedItems.add(dishlist.get(position).getName());
-                       // Toast.makeText(mContext, itemCount+""+selectedItems.size(), Toast.LENGTH_SHORT).show();
-                        btn.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
-                        Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
-                        btn.setText("Added");
-                        buttonListener.onClickBtn(selectedItems.size());
-                        btn.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                    }
-                    else{
-                        Toast.makeText(mContext, "Cart is full!!", Toast.LENGTH_SHORT).show();
-                    }
+                if (itemCount > selectedItems.size()) {
+                    selectedItems.add(dishlist.get(position).getName());
+                    holder.dishAddedButton.setVisibility(View.VISIBLE);
+                    holder.dishAddButton.setVisibility(View.GONE);
                 } else {
-
-                    selectedItems.remove(dishlist.get(position).getName());
-                    Drawable back = mContext.getResources().getDrawable(R.drawable.button_red_background);
-                    btn.setBackground(back);
-                    btn.setText("Add");
+                    Toast.makeText(mContext, "Cart is full!!", Toast.LENGTH_SHORT).show();
+                }
+                if (selectedItems.size() == 1) {
                     buttonListener.onClickBtn(selectedItems.size());
-                    Drawable img = mContext.getResources().getDrawable(R.drawable.ic_add_white_24dp);
-                    btn.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
+                }
+            }
+        });
+        holder.dishAddedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedItems.remove(dishlist.get(position).getName());
+                holder.dishAddButton.setVisibility(View.VISIBLE);
+                holder.dishAddedButton.setVisibility(View.GONE);
+                if (selectedItems.size() == 0) {
+                    buttonListener.onClickBtn(selectedItems.size());
                 }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -131,20 +129,21 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     class PackageViewHolder extends RecyclerView.ViewHolder {
         private ImageView dishImage;
         private TextView dishName;
-        private TextView dishDetail;
-        private TextView dishPrice;
+        private TextView dishDesc;
         private Button dishAddButton;
+        private Button dishAddedButton;
 
         PackageViewHolder(@NonNull View itemView) {
             super(itemView);
             dishImage = itemView.findViewById(R.id.item_Image);
-            dishDetail = itemView.findViewById(R.id.item_Desc);
-//            dishPrice = itemView.findViewById(R.id.item_Price);
             dishName = itemView.findViewById(R.id.item_Name);
+            dishDesc= itemView.findViewById(R.id.item_Desc);
+            dishAddedButton = itemView.findViewById(R.id.dis_added_button);
             dishAddButton = itemView.findViewById(R.id.dis_add_button);
         }
     }
-   public interface ShowButtonListener{
+
+    public interface ShowButtonListener {
         void onClickBtn(int size);
     }
 }

@@ -117,9 +117,9 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
 
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
-            mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setMessage("Creating package");
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.show();
             UploadImageToFirebase(ImageUri, "packages");
         }
@@ -184,7 +184,7 @@ public class VendorCreatePackage extends AppCompatActivity implements View.OnCli
     }
 
     private void UploadImageToFirebase(Uri pImageUri, final String CollectionName) {
-        Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("package_image/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

@@ -76,6 +76,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 uploadTodayMenu();
+                                finish();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -93,7 +94,8 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     private void uploadTodayMenu() {
         final ProgressDialog vProgressDialog = new ProgressDialog(this);
         vProgressDialog.setCancelable(false);
-        vProgressDialog.setMessage("Updating menu....");
+        vProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        vProgressDialog.setMessage("Publishing menu....");
         vProgressDialog.show();
 
 

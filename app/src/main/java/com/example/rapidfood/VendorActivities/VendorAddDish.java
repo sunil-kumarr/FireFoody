@@ -123,9 +123,9 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
             mVendorDishModel.setDescription(mDesc.getText().toString());
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMax(100);
-            mProgressDialog.setTitle("Uploading....");
+            mProgressDialog.setMessage("Create dish and adding to package....");
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.show();
             UploadImageToFirebase(ImageUri, "dishes_main");
         }
@@ -188,7 +188,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
     }
 
     private void UploadImageToFirebase(Uri pImageUri, final String CollectionName) {
-        Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("package_item_image/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

@@ -115,7 +115,7 @@
             android:background="@color/grey_200"
             android:focusedByDefault="false"
             android:gravity="start"
-            android:hint="Subscription details..."
+            android:hint="Enter default menu items..."
             android:padding="10dp"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
@@ -128,10 +128,10 @@
 
         <Button
             android:id="@+id/sub_create_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/button_red_background"
+            android:background="@drawable/button_red_plain"
             android:elevation="4dp"
             android:padding="5dp"
             android:text="Create Package"

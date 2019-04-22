@@ -88,18 +88,22 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (mTapped.getId()) {
 
             case R.id.vendor_orders:
+
                 startActivity(new Intent(DashboardActivity.this, VendorShowOrderActivity.class));
                 break;
             case R.id.vendor_sub_customers:
                 startActivity(new Intent(DashboardActivity.this, UserSubscriberActivity.class));
                 break;
             case R.id.vendor_create_subs:
+                mCreateSubBtn.setEnabled(false);
                 startActivity(new Intent(DashboardActivity.this, VendorCreateSubscription.class));
                 break;
             case R.id.vendor_create_packs:
+                mCreatePackBtn.setEnabled(false);
                 startActivity(new Intent(DashboardActivity.this, VendorCreatePackage.class));
                 break;
             case R.id.vendor_add_dish:
+                mAddDishBtn.setEnabled(false);
                 startActivity(new Intent(DashboardActivity.this, VendorAddDish.class));
                 break;
             case R.id.vendor_today_menu:
@@ -152,6 +156,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
+        mCreatePackBtn.setEnabled(true);
+        mCreateSubBtn.setEnabled(true);
+        mAddDishBtn.setEnabled(true);
         if (!UtilClass.isConnectedToNetwork(this)) {
             findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
         }
