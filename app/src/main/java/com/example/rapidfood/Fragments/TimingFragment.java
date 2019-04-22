@@ -22,13 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -86,6 +84,7 @@ public class TimingFragment extends Fragment {
                                         assert vTimeStamp != null;
                                         String realTimestamp = vTimeStamp.getTimestamp().toString();
                                         compareTimestamp(realTimestamp, date);
+
                                     }
                                 } else {
                                     Toast.makeText(mContext, "Sorry something wrong!", Toast.LENGTH_SHORT).show();
@@ -159,7 +158,7 @@ public class TimingFragment extends Fragment {
         CalendarBreakfast = view.findViewById(R.id.calendar_Choice_breakfast);
         CalendarLunch = view.findViewById(R.id.calendar_Choice_lunch);
         CalendarDinner = view.findViewById(R.id.calendar_Choice_dinner);
-        mFirebaseFirestore.collection("users")
+        mFirebaseFirestore.collection("subscribed_user")
                 .document(mFirebaseAuth.getCurrentUser().getUid())
                 .collection("dates")
                 .document(pDate.getDate().toString()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -176,7 +175,7 @@ public class TimingFragment extends Fragment {
                         CalendarLunch.setTextColor(mContext.getResources().getColor(R.color.white));
                         CalendarLunch.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
                     }
-                    if(Objects.equals(pDocumentSnapshot.getString("lunch"), "true")){
+                    if(Objects.equals(pDocumentSnapshot.getString("dinner"), "true")){
                         CalendarDinner.setEnabled(false);
                         CalendarDinner.setTextColor(mContext.getResources().getColor(R.color.white));
                         CalendarDinner.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
@@ -261,24 +260,24 @@ public class TimingFragment extends Fragment {
             userDataDate.put("dinner", "false");
             Map<String,Object> update=new HashMap<>();
             update.put(category,"true");
-            mFirebaseFirestore.collection("users")
+            mFirebaseFirestore.collection("subscribed_user")
                     .document(mFirebaseAuth.getCurrentUser().getUid())
                     .collection("dates")
                     .document(pDate).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
                         if(!pDocumentSnapshot.exists()){
-                            mFirebaseFirestore.collection("users")
+                            mFirebaseFirestore.collection("subscribed_user")
                                     .document(mFirebaseAuth.getCurrentUser().getUid())
                                     .collection("dates")
                                     .document(pDate).set(userDataDate);
-                            mFirebaseFirestore.collection("users")
+                            mFirebaseFirestore.collection("subscribed_user")
                                     .document(mFirebaseAuth.getCurrentUser().getUid())
                                     .collection("dates")
                                     .document(pDate).update(update);
                         }
                         else{
-                            mFirebaseFirestore.collection("users")
+                            mFirebaseFirestore.collection("subscribed_user")
                                     .document(mFirebaseAuth.getCurrentUser().getUid())
                                     .collection("dates")
                                     .document(pDate).update(update);
@@ -319,27 +318,7 @@ public class TimingFragment extends Fragment {
 //                    }
 //                }
 //            });
-//            mFirebaseFirestore.collection("users")
-//                    .document(mFirebaseAuth.getCurrentUser().getUid())
-//                    .collection("dates").get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> pTask) {
-//                            if (pTask.isSuccessful()) {
-//                                Toast.makeText(mContext, "Date noted", Toast.LENGTH_SHORT).show();
-//                                QuerySnapshot vQueryDocumentSnapshots = pTask.getResult();
-//                                if (vQueryDocumentSnapshots != null) {
-//                                    List<DocumentSnapshot> vDocumentSnapshots = vQueryDocumentSnapshots.getDocuments();
-//                                    for (DocumentSnapshot vSnapshots : vDocumentSnapshots) {
-//                                        CalendarDay vCalendarDay = vSnapshots.get("date", CalendarDay.class);
-//                                        mTimeCalendar.setDateSelected(vCalendarDay, true);
-//                                        mTimeCalendar.setSelectedDate(vCalendarDay);
-//                                    }
-//                                }
-//                            }
 //
-//                        }
-//                    });
         }
     }
 
