@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Activites.PackageDetailsActivity;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.squareup.picasso.Callback;
@@ -30,12 +31,14 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     private List<String> selectedItems;
     private String packName;
     private int itemCount;
+    private ShowButtonListener buttonListener;
 
     public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext, int itemCount, String pPackName) {
         dishlist = pDishlist;
         mContext = pContext;
         this.itemCount = itemCount;
         packName = pPackName;
+        buttonListener=(PackageDetailsActivity)mContext;
         selectedItems = new ArrayList<>();
     }
 
@@ -89,6 +92,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
         holder.dishAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Button btn = (Button) v;
 
                 if (btn.getText().equals("Add")) {
@@ -99,6 +103,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                         btn.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
                         Drawable img = mContext.getResources().getDrawable(R.drawable.ic_check_white_24dp);
                         btn.setText("Added");
+                        buttonListener.onClickBtn(selectedItems.size());
                         btn.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                     }
                     else{
@@ -110,6 +115,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                     Drawable back = mContext.getResources().getDrawable(R.drawable.button_red_background);
                     btn.setBackground(back);
                     btn.setText("Add");
+                    buttonListener.onClickBtn(selectedItems.size());
                     Drawable img = mContext.getResources().getDrawable(R.drawable.ic_add_white_24dp);
                     btn.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null);
                 }
@@ -137,5 +143,8 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
             dishName = itemView.findViewById(R.id.item_Name);
             dishAddButton = itemView.findViewById(R.id.dis_add_button);
         }
+    }
+   public interface ShowButtonListener{
+        void onClickBtn(int size);
     }
 }

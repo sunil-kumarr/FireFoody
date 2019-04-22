@@ -19,7 +19,9 @@ import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Callback;
@@ -37,10 +39,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PackageDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class PackageDetailsActivity extends AppCompatActivity implements View.OnClickListener , PackageDetailShowAdapter.ShowButtonListener {
 
     private FirebaseInstances mFirebaseInstances;
     private FirebaseFirestore mFirestore;
+    private FirebaseAuth mFireAuth;
     private ImageView mPackageImage;
     private TextView mPackageDetails;
     private ImageView mPAckTypeImg;
@@ -71,10 +74,32 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
 
         mFirebaseInstances = new FirebaseInstances();
         mFirestore = mFirebaseInstances.getFirebaseFirestore();
+        mFireAuth=mFirebaseInstances.getFirebaseAuth();
         mPackageImage = findViewById(R.id.package_image);
 
         String s = getIntent().getStringExtra("package_name");
         getPackageDetail(s);
+        if(mFireAuth.getCurrentUser()!=null){
+            mFirestore.collection("subscribed_user")
+                    .document(mFireAuth.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(!task.isSuccessful()){
+                                DocumentSnapshot documentSnapshot=task.getResult();
+                                assert documentSnapshot != null;
+                                if(documentSnapshot.exists()) {
+                                    mOrderBtn.setVisibility(View.GONE);
+                                }
+                                else{
+                                    mOrderBtn.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                        }
+                    });
+        }
         Toast.makeText(this, "" + s, Toast.LENGTH_SHORT).show();
     }
 
@@ -171,5 +196,24 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onClickBtn(int s) {
+        if(s==0){
+            Toast.makeText(mContext, "size:"+s, Toast.LENGTH_SHORT).show();
+            mOrderBtn.setVisibility(View.GONE);
+        }
+        else if(s>0){
+            Toast.makeText(mContext, "size:"+s, Toast.LENGTH_SHORT).show();
+            mOrderBtn.setVisibility(View.VISIBLE);
+        }
+
     }
 }

@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.threeten.bp.LocalDate;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -154,7 +156,7 @@ public class TimingFragment extends Fragment {
     private void showBottomSheetDialog(CalendarDay pDate, String pS) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_bottom_time_sheet, null);
         TextView dateHead = view.findViewById(R.id.calendar_Choice_date);
-        dateHead.setText(pDate.getDate().toString());
+        dateHead.setText(String.valueOf(pDate.getDate()));
         CalendarBreakfast = view.findViewById(R.id.calendar_Choice_breakfast);
         CalendarLunch = view.findViewById(R.id.calendar_Choice_lunch);
         CalendarDinner = view.findViewById(R.id.calendar_Choice_dinner);
@@ -302,23 +304,23 @@ public class TimingFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (mFirebaseAuth.getCurrentUser() != null) {
-//            mFirebaseFirestore.collection("subscribed_user")
-//                    .document(mFirebaseAuth.getCurrentUser().getUid())
-//                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-//                    if (pTask.isSuccessful()) {
-//                        if (pTask.getResult().exists()) {
-//                            mNotSubscribedLayout.setVisibility(View.GONE);
-//                        } else {
-//                            mNotSubscribedLayout.setVisibility(View.VISIBLE);
-//                        }
-//                    } else {
-//                        mNotSubscribedLayout.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            });
-//
+            mFirebaseFirestore.collection("subscribed_user")
+                    .document(mFirebaseAuth.getCurrentUser().getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                    if (pTask.isSuccessful()) {
+                        if (pTask.getResult().exists()) {
+                            mNotSubscribedLayout.setVisibility(View.GONE);
+                        } else {
+                            mNotSubscribedLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        mNotSubscribedLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
         }
     }
 
