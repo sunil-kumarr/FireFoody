@@ -54,6 +54,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
     private RecyclerView mPackageItemRecyclerView;
     private Toolbar mToolbar;
     private FrameLayout mImageContainer;
+    private TextView mPackPRice;
     private Context mContext;
     private PackageDetailShowAdapter mShowAdapter;
     private Button mOrderBtn;
@@ -70,6 +71,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
         mPackItemCount=findViewById(R.id.package_detail_item_count);
         mImageContainer=findViewById(R.id.frame_layout_contaienr);
         mPAckTypeImg=findViewById(R.id.pack_detail_type_img);
+        mPackPRice=findViewById(R.id.package_total_cost);
         mOrderBtn.setOnClickListener(this);
 
         GridLayoutManager vLayoutManager = new GridLayoutManager(this, 2,RecyclerView.VERTICAL,false);
@@ -157,6 +159,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                     assert pack != null;
                     mPackageDetails.setText(pack.getDescription());
                     mPackItemCount.setText(String.format("**select any:%s dishs", pack.getItem_count()));
+                    mPackPRice.setText(pack.getPrice());
                     List<VendorDishModel> items=pack.getDishlist();
                     int count=0;
                     try {

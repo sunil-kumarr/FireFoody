@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -157,6 +159,9 @@ public class GooglePayActivity extends AppCompatActivity {
                                 mdetails.setText(String.format("**%s", vModel.getDetails()));
                                 msubval.setText(vModel.getDuration());
                                 msubname.setText(vModel.getType());
+                                Picasso.get().load(vModel.getImagesub())
+                                        .fit()
+                                        .into((ImageView) findViewById(R.id.sub_image));
                                 msubcoupon_Value.setText(String.format("%s", vModel.getCoupon()));
                                 long total_bill = (Long.parseLong(vModel.getPrice()) - Long.parseLong(vModel.getCoupon()));
                                 // Toast.makeText(GooglePayActivity.this, "" + Long.toString(total_bill), Toast.LENGTH_SHORT).show();
