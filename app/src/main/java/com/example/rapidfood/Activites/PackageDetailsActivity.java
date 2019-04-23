@@ -95,11 +95,13 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            boolean isSubscribed=false;
                             if(task.isSuccessful()){
                                 DocumentSnapshot documentSnapshot=task.getResult();
                                 assert documentSnapshot != null;
                                 if(documentSnapshot.exists()) {
                                     mOrderBtn.setVisibility(View.GONE);
+                                    isSubscribed=true;
                                 }
                                 else{
                                     mOrderBtn.setVisibility(View.VISIBLE);
@@ -108,14 +110,15 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                             else{
                                 mOrderBtn.setVisibility(View.VISIBLE);
                             }
+                            getPackageDetail(s,isSubscribed);
 
                         }
                     });
         }
-        getPackageDetail(s);
+
     }
 
-    void getPackageDetail(String package_name) {
+    void getPackageDetail(String package_name,boolean isSubscribed) {
         mFirestore.collection("today_menu").document(package_name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
@@ -169,7 +172,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
 
                     }
                     mShowAdapter = new PackageDetailShowAdapter(items, PackageDetailsActivity.this,
-                            count,pack.getName(),mOrderBtn);
+                            count,pack.getName(),isSubscribed);
                     mPackageItemRecyclerView.setAdapter(mShowAdapter);
                 } else {
                     Toast.makeText(PackageDetailsActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();

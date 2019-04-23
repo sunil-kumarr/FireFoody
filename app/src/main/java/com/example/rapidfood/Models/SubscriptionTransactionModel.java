@@ -19,24 +19,7 @@ public class SubscriptionTransactionModel {
     private String uid;
     private String transaction_id;
     private String googlePay_status;
-    private String verification_status="pending";
-    private boolean verifed;
 
-    public boolean isVerifed() {
-        return verifed;
-    }
-
-    public void setVerifed(boolean pVerifed) {
-        verifed = pVerifed;
-    }
-
-    public void setVerification_status(String pVerification_status) {
-        verification_status = pVerification_status;
-    }
-
-    public String getVerification_status() {
-        return verification_status;
-    }
 
     public String getTotal_paid() {
         return total_paid;

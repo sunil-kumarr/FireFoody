@@ -31,16 +31,17 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
     private String packName;
     private int itemCount;
     private ShowButtonListener buttonListener;
-    private Button mOrderBtn;
+    private boolean isSubscribed;
 
-    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext, int itemCount, String pPackName, Button vOrderBtn) {
+    public PackageDetailShowAdapter(List<VendorDishModel> pDishlist, Context pContext,
+                                    int itemCount, String pPackName,boolean isSubscribed) {
         dishlist = pDishlist;
         mContext = pContext;
         this.itemCount = itemCount;
         packName = pPackName;
         buttonListener = (PackageDetailsActivity) mContext;
         selectedItems = new ArrayList<>();
-        mOrderBtn = vOrderBtn;
+        this.isSubscribed=isSubscribed;
     }
 
     @NonNull
@@ -102,6 +103,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                 } else {
                     Toast.makeText(mContext, "Cart is full!!", Toast.LENGTH_SHORT).show();
                 }
+                if(isSubscribed)
                 if (selectedItems.size() == 1) {
                     buttonListener.onClickBtn(selectedItems.size());
                 }
@@ -113,6 +115,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
                 selectedItems.remove(dishlist.get(position).getName());
                 holder.dishAddButton.setVisibility(View.VISIBLE);
                 holder.dishAddedButton.setVisibility(View.GONE);
+                if(isSubscribed)
                 if (selectedItems.size() == 0) {
                     buttonListener.onClickBtn(selectedItems.size());
                 }

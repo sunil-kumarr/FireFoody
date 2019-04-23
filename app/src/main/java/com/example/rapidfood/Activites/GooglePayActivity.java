@@ -177,17 +177,8 @@ public class GooglePayActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TEZ_REQUEST_CODE) {
-            // Process based on the data in response.
-           // Toast.makeText(this, "Transaction " + tr, Toast.LENGTH_SHORT).show();
-            Log.d(TAG, tr);
-            if (data.getStringExtra("Status").equals("SUCCESS")) {
-                mOrder.setVisibility(View.GONE);
-                mPAymentSuccess.setVisibility(View.VISIBLE);
 
-            } else {
-                mOrder.setVisibility(View.GONE);
-                mPaymentFailure.setVisibility(View.VISIBLE);
-            }
+
             String s_name = msubname.getText().toString();
             String s_cost = msubcost.getText().toString();
             String s_duration = msubval.getText().toString();
@@ -210,29 +201,18 @@ public class GooglePayActivity extends AppCompatActivity {
             contentValues.put("transaction_id", tr);
             contentValues.put("total_paid", s_total);
             contentValues.put("transaction_time", FieldValue.serverTimestamp());
-            contentValues.put("googlePay_status", data.getStringExtra("Status"));
-            contentValues.put("verification_status", "pending");
-            contentValues.put("verified", false);
-            Log.d(TAG, contentValues.toString());
-            mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(contentValues).addOnCompleteListener(
-                    new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> pTask) {
-//                            if (pTask.isSuccessful()) {
-//                                Toast.makeText(GooglePayActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(GooglePayActivity.this, "Failed to save", Toast.LENGTH_SHORT).show();
-//                            }
-                        }
-                    }
-            );
-//            if (data.getStringExtra("Status").equals("SUCCESS")) {
-//               // Toast.makeText(this, "Result :" + data.getStringExtra("Status"), Toast.LENGTH_SHORT).show();
-//                Log.d("result", data.getStringExtra("Status"));
-//            }
-//            {
-//                Toast.makeText(this, "Error Occurred !!", Toast.LENGTH_SHORT).show();
-//            }
+            contentValues.put("payment_status", data.getStringExtra("Status"));
+
+
+            if (data.getStringExtra("Status").equals("SUCCESS")) {
+                mOrder.setVisibility(View.GONE);
+                mPAymentSuccess.setVisibility(View.VISIBLE);
+
+            } else {
+                mOrder.setVisibility(View.GONE);
+                mPaymentFailure.setVisibility(View.VISIBLE);
+            }
+            mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(contentValues);
         }
     }
 
