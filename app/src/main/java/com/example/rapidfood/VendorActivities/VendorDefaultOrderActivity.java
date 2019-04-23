@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -47,6 +48,8 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
     private FirestoreRecyclerOptions<SubscribedUserModel> mOptions;
     private FirestoreRecyclerAdapter mOrderListAdapter;
     private RecyclerView orderRecyclerView;
+    private TextView mTotalCount;
+    private TextView mDinnerCount,mBreakfastCount,mLunchCount;
     private final static String CURRENT_DATE = String.valueOf(CalendarDay.today());
 
     @Override
@@ -59,6 +62,10 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
         firebaseAuth = firebaseInstances.getFirebaseAuth();
 
 
+        mTotalCount=findViewById(R.id.deliver_total_count);
+        mDinnerCount=findViewById(R.id.deliver_dinner_count);
+        mBreakfastCount=findViewById(R.id.deliver_breakfast_count);
+        mLunchCount=findViewById(R.id.deliver_lunch_count);
         orderRecyclerView = findViewById(R.id.vendor_default_recycler_view);
 
         Query query = firebaseFirestore.collection("subscribed_user")
@@ -86,6 +93,65 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
         super.onStart();
         mOrderListAdapter.startListening();
         //Toast.makeText(this, ""+CalendarDay.today(), Toast.LENGTH_SHORT).show();
+        firebaseFirestore.collection("subscribed_user")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int count=queryDocumentSnapshots.getDocuments().size();
+                mTotalCount.setText(String.valueOf(count));
+                firebaseFirestore.collection("delivery_cancelled")
+                        .document(CURRENT_DATE)
+                        .collection("breakfast")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            QuerySnapshot queryDocumentSnapshots=task.getResult();
+                            int bre = queryDocumentSnapshots.getDocuments().size();
+                            mBreakfastCount.setText(String.valueOf(bre));
+                        }
+                        else{
+                            Toast.makeText(VendorDefaultOrderActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                firebaseFirestore.collection("delivery_cancelled")
+                        .document(CURRENT_DATE)
+                        .collection("lunch")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            int bre = queryDocumentSnapshots.getDocuments().size();
+                            int d = count - bre;
+                            mLunchCount.setText(String.valueOf(d));
+                        }
+                        else{
+                           // Toast.makeText(VendorDefaultOrderActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                firebaseFirestore.collection("delivery_cancelled")
+                        .document(CURRENT_DATE)
+                        .collection("dinner")
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            int bre = queryDocumentSnapshots.getDocuments().size();
+                            int d = count - bre;
+                            mDinnerCount.setText(String.valueOf(d));
+                        }
+                        else{
+                            //Toast.makeText(VendorDefaultOrderActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+
+
     }
 
     @Override

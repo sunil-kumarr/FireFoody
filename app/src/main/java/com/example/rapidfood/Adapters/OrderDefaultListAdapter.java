@@ -37,7 +37,7 @@ public class OrderDefaultListAdapter extends FirestoreRecyclerAdapter<Subscribed
     protected void onBindViewHolder(@NonNull final SubscriberViewHolder pSubscriptionViewHolder,
                                     int pI, @NonNull final SubscribedUserModel pSubscriptionModel) {
 
-        Toast.makeText(mContext, ""+pSubscriptionModel.getUid(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(mContext, ""+pSubscriptionModel.getUid(), Toast.LENGTH_SHORT).show();
             pSubscriptionViewHolder.mUserMobile.setText(pSubscriptionModel.getMobile());
             pSubscriptionViewHolder.mSubscriptionType.setText(pSubscriptionModel.getSubscriptionType());
             if(pSubscriptionModel.getAddress_first()!=null) {
