@@ -33,7 +33,7 @@ public class SubscriberListAdapter extends FirestoreRecyclerAdapter<SubscribedUs
                                     int pI, @NonNull final SubscribedUserModel pSubscriptionModel) {
 
         pSubscriptionViewHolder.googleStatus.setText("SUCCESS");
-        pSubscriptionViewHolder.transactiontime.setText(pSubscriptionModel.getStart_date().toString());
+        pSubscriptionViewHolder.transactiontime.setText(String.valueOf(pSubscriptionModel.getStart_date()));
         pSubscriptionViewHolder.transactionId.setText(pSubscriptionModel.getTrans_id());
         pSubscriptionViewHolder.userMobile.setText(pSubscriptionModel.getMobile());
         pSubscriptionViewHolder.mSubName.setText(pSubscriptionModel.getSubscriptionType());

@@ -18,8 +18,17 @@ public class SubscriptionTransactionModel {
     private String mobile;
     private String uid;
     private String transaction_id;
-    private String googlePay_status;
+    private String payment_status;
+    private String verified;
 
+
+    public String getVerified() {
+        return verified;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
+    }
 
     public String getTotal_paid() {
         return total_paid;
@@ -93,11 +102,11 @@ public class SubscriptionTransactionModel {
         transaction_id = pTransaction_id;
     }
 
-    public String getGooglePay_status() {
-        return googlePay_status;
+    public String getPayment_status() {
+        return payment_status;
     }
 
-    public void setGooglePay_status(String pGooglePay_status) {
-        googlePay_status = pGooglePay_status;
+    public void setPayment_status(String payment_status) {
+        this.payment_status = payment_status;
     }
 }

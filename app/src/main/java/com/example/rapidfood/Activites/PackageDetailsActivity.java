@@ -233,6 +233,10 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
         }
 
     }
+    public void goBackHome(View view) {
+        startActivity(new Intent(PackageDetailsActivity.this, MainActivity.class));
+        finish();
+    }
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));

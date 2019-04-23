@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
@@ -63,11 +64,17 @@ public class AddressActivity extends AppCompatActivity {
                                     mFirebaseUser=mFirebaseAuth.getCurrentUser();
                                     String uid=mFirebaseUser.getUid();
                                     DocumentReference userData= mFirebaseFirestore.collection("users").document(uid);
-                                    userData.update("address_first", mUserAddressModal).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    userData.update("address_first", mUserAddressModal);
+                                    mFirebaseFirestore.collection("subscribed_user").document(uid)
+                                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onSuccess(Void pVoid) {
-                                            Toast.makeText(AddressActivity.this, "Address updated successfully", Toast.LENGTH_SHORT).show();
-                                            finish();
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                            if(documentSnapshot.exists()){
+                                                mFirebaseFirestore.collection("subscribed_user")
+                                                        .document(uid).update("address_first",mUserAddressModal);
+                                            }
                                         }
                                     });
 

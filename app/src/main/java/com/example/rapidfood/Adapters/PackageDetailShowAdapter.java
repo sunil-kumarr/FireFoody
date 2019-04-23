@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rapidfood.Activites.PackageDetailsActivity;
 import com.example.rapidfood.Models.VendorDishModel;
 import com.example.rapidfood.R;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -96,6 +97,7 @@ public class PackageDetailShowAdapter extends RecyclerView.Adapter<PackageDetail
         holder.dishAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (itemCount > selectedItems.size()) {
                     selectedItems.add(dishlist.get(position).getName());
                     holder.dishAddedButton.setVisibility(View.VISIBLE);

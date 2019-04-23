@@ -2,15 +2,19 @@ package com.example.rapidfood.VendorActivities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.rapidfood.Adapters.OrderDefaultListAdapter;
 import com.example.rapidfood.Adapters.SubscriberListAdapter;
 import com.example.rapidfood.Models.SubscribedUserModel;
 import com.example.rapidfood.Models.SubscriptionTransactionModel;
+import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -58,8 +62,15 @@ public class UserSubscriberActivity extends AppCompatActivity  {
                             if(x.exists()){
                                 SubscriptionTransactionModel vModel=x.toObject(SubscriptionTransactionModel.class);
                                 assert vModel != null;
-                                if(vModel.getGooglePay_status().equals("SUCCESS")){
-                                    addToVerifiedSubscriber(vModel);
+                                if(vModel.getVerified().equals("pending")) {
+                                    if (vModel.getPayment_status().equals("SUCCESS")) {
+                                        addToVerifiedSubscriber(vModel);
+                                    }
+                                    Map<String,Object> mp=new HashMap<>();
+                                    mp.put("verified","SUCCESS");
+                                    mFirebaseFirestore.collection("sub_transaction_data")
+                                            .document(x.getString("transaction_id"))
+                                            .update(mp);
                                 }
                             }
                         }
@@ -85,17 +96,33 @@ public class UserSubscriberActivity extends AppCompatActivity  {
     }
     void addToVerifiedSubscriber(SubscriptionTransactionModel  pModel ) {
         Map<String, Object> mp = new HashMap<>();
-        String f_uid = pModel.getUid();
-        mp.put("start_date", FieldValue.serverTimestamp());
-        mp.put("duration", pModel.getDuration());
-        mp.put("trans_id", pModel.getTransaction_id());
-        mp.put("balance", pModel.getSubcost());
-        mp.put("subscription_type",pModel.getSubname());
-        mp.put("mobile",pModel.getMobile());
-        mFirebaseFirestore.collection("subscribed_user").document(f_uid).set(mp);
+        SubscribedUserModel vModel=new SubscribedUserModel();
+        vModel.setBalance(pModel.getSubcost());
+        vModel.setDuration(pModel.getDuration());
+        vModel.setTrans_id(pModel.getTransaction_id());
+        vModel.setMobile(pModel.getMobile());
+        vModel.setSubscriptionType(pModel.getSubname());
+        vModel.setUid(pModel.getUid());
+        mFirebaseFirestore.collection("users")
+                .document(pModel.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
+                        if (pDocumentSnapshot.exists()) {
 
-        sendInAppNotification(f_uid);
+                            UserModel vUserModel = pDocumentSnapshot.toObject(UserModel.class);
+                            if (vUserModel != null) {
+                                vModel.setAddress_first(vUserModel.getAddress_first());
+                                mFirebaseFirestore.collection("subscribed_user").document(pModel.getUid()).set(vModel);
+                                sendInAppNotification(pModel.getUid());
+                            }
+                        }
+                    }
+                });
     }
+
+
 
     private void sendInAppNotification(String f_uid) {
         Map<String, Object> notify = new HashMap<>();

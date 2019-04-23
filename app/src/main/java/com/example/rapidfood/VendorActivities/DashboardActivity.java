@@ -17,12 +17,16 @@ import com.example.rapidfood.Utils.UtilClass;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -60,6 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCheckInternet=findViewById(R.id.btn_check_internet);
         mNoInternetLAyout=findViewById(R.id.no_internet);
         mQRScanner=findViewById(R.id.vendor_qr_scanner);
+        mDeliveryOrderBtn=findViewById(R.id.vendor_default_order);
 
         mCreatePackBtn.setOnClickListener(this);
         mCustomOrders.setOnClickListener(this);
@@ -69,6 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mTodayMenu.setOnClickListener(this);
         mCheckInternet.setOnClickListener(this);
         mQRScanner.setOnClickListener(this);
+        mDeliveryOrderBtn.setOnClickListener(this);
 
         setSupportActionBar(mToolbar);
         ActionBar vActionBar = getSupportActionBar();
@@ -87,6 +93,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         MaterialCardView mTapped = (MaterialCardView) v;
         switch (mTapped.getId()) {
 
+            case R.id.vendor_default_order:
+                startActivity(new Intent(DashboardActivity.this, VendorDefaultOrderActivity.class));
+                break;
             case R.id.vendor_orders:
 
                 startActivity(new Intent(DashboardActivity.this, VendorShowOrderActivity.class));
@@ -168,4 +177,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Map<String, Object> mp = new HashMap<>();
+        mp.put("timestamp", FieldValue.serverTimestamp());
+        mFirebaseInstances.getFirebaseFirestore().collection("company_data").document("timestamp").update(mp);
+    }
 }

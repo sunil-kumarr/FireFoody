@@ -49,7 +49,12 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
         pSubscriptionViewHolder.mOrderDeliveryAddress.setText(pCheckoutPlaceOrderModel.getDeliveryaddress());
         pSubscriptionViewHolder.mPaymentMethod.setText(pCheckoutPlaceOrderModel.getPaymentmethod());
         pSubscriptionViewHolder.orderConfirmStatus.setText(pCheckoutPlaceOrderModel.getOrderStatus());
-
+        if(pCheckoutPlaceOrderModel.isCustom()) {
+            pSubscriptionViewHolder.mOrderDetails.setText(String.valueOf(pCheckoutPlaceOrderModel.getSelecteditems()));
+        }
+        else{
+            pSubscriptionViewHolder.mOrderDetails.setText("Default Order");
+        }
         if (!pCheckoutPlaceOrderModel.getOrderStatus().equals("pending")) {
             pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
         } else {

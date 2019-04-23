@@ -20,8 +20,8 @@
             android:id="@+id/topbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
             android:background="@drawable/gradient"
+            android:orientation="horizontal"
             android:padding="5dp">
 
             <ImageView
@@ -52,7 +52,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/order_now_package"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_gravity="top|center"
+                    android:onClick="goBackHome"
                     android:background="@color/grey_100"
                     android:scaleType="fitXY" />
 
@@ -89,61 +90,65 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/dimen_4dp"
                     app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+
                     <LinearLayout
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|start"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/red_500"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/red_500"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:text="₹"
+                                android:textColor="@color/white_1000"
+                                android:textSize="15sp"
+                                android:textStyle="normal" />
+
+                            <TextView
+                                android:id="@+id/package_total_cost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="start"
+                                android:text="0"
+                                android:textColor="@color/white_1000"
+                                android:textSize="15sp"
+                                android:textStyle="normal" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/package_details_text_view"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:text="₹"
-                            android:textColor="@color/white_1000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/package_total_cost"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/package_detail_item_count"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="start"
-                            android:text="0"
-                            android:textColor="@color/white_1000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/package_details_text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-                    <TextView
-                        android:id="@+id/package_detail_item_count"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-                </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -162,7 +167,7 @@
     <Button
         android:id="@+id/order_now_package"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_gravity="bottom|center"
         android:background="@drawable/button_red_plain"
         android:gravity="center"

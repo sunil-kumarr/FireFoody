@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.UtilClass;
@@ -145,13 +146,14 @@ public class Authentication extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
                         if (!pDocumentSnapshot.exists()) {
-                            Map<String, Object> mp = new HashMap<>();
-                            mp.put("balance", "0");
-                            mp.put("subscribed", false);
-                            mp.put("firebase_id", mFirebaseAuth.getCurrentUser().getUid());
-                            mp.put("mobile", Objects.requireNonNull(mFirebaseAuth.getCurrentUser().getPhoneNumber()));
+
+                            UserModel mUserModel = new UserModel();
+                            mUserModel.setBalance("0");
+                            mUserModel.setSubscribed(false);
+                            mUserModel.setFirebase_id(mFirebaseAuth.getCurrentUser().getUid());
+                            mUserModel.setMobile(Objects.requireNonNull(mFirebaseAuth.getCurrentUser().getPhoneNumber()));
                             mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
-                                    .set(mp);
+                                    .set(mUserModel);
                         }
                     }
                 });
@@ -167,14 +169,13 @@ public class Authentication extends AppCompatActivity {
 
                 // ...
             } else {
-                Toast.makeText(this, ""+requestCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + requestCode, Toast.LENGTH_SHORT).show();
                 // Sign in failed. If response is null the user canceled the
 
                 if (response == null) {
                     Snackbar.make(mMainConatainer, "Login Failed ", Snackbar.LENGTH_SHORT);
-                }
-                else{
-                    Toast.makeText(this, ""+ Objects.requireNonNull(response.getError()).toString(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "" + Objects.requireNonNull(response.getError()).toString(), Toast.LENGTH_SHORT).show();
                 }
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.

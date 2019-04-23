@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rapidfood.Models.SubscriptionModel;
+import com.example.rapidfood.Models.SubscriptionTransactionModel;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.GenerateUUIDClass;
@@ -177,8 +178,6 @@ public class GooglePayActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TEZ_REQUEST_CODE) {
-
-
             String s_name = msubname.getText().toString();
             String s_cost = msubcost.getText().toString();
             String s_duration = msubval.getText().toString();
@@ -191,18 +190,17 @@ public class GooglePayActivity extends AppCompatActivity {
                 uid = mFirebaseAuth.getCurrentUser().getUid();
             }
             tr = mPreferenceManager.getT_ID();
-            Map<String, Object> contentValues = new HashMap<>();
-            contentValues.put("subname", s_name);
-            contentValues.put("subcost", s_cost);
-            contentValues.put("subcoupon", s_coupon);
-            contentValues.put("duration", s_duration);
-            contentValues.put("uid", uid);
-            contentValues.put("mobile", mob);
-            contentValues.put("transaction_id", tr);
-            contentValues.put("total_paid", s_total);
-            contentValues.put("transaction_time", FieldValue.serverTimestamp());
-            contentValues.put("payment_status", data.getStringExtra("Status"));
-
+            SubscriptionTransactionModel vModel=new SubscriptionTransactionModel();
+            vModel.setSubname(s_name);
+            vModel.setDuration(s_duration);
+            vModel.setSubcost(s_cost);
+            vModel.setSubcoupon(s_coupon);
+            vModel.setUid(uid);
+            vModel.setMobile(mob);
+            vModel.setTotal_paid(s_total);
+            vModel.setTransaction_id(tr);
+            vModel.setPayment_status(data.getStringExtra("Status"));
+            vModel.setVerified("pending");
 
             if (data.getStringExtra("Status").equals("SUCCESS")) {
                 mOrder.setVisibility(View.GONE);
@@ -212,7 +210,7 @@ public class GooglePayActivity extends AppCompatActivity {
                 mOrder.setVisibility(View.GONE);
                 mPaymentFailure.setVisibility(View.VISIBLE);
             }
-            mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(contentValues);
+            mFirebaseFirestore.collection("sub_transaction_data").document(tr).set(vModel);
         }
     }
 

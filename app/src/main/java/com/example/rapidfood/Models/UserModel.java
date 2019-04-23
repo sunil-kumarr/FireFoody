@@ -6,7 +6,32 @@ public class UserModel {
     private UserProfileModel user_profile;
     private String balance;
     private boolean subscribed;
+    private String firebase_id;
+    private String mobile;
 
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed = subscribed;
+    }
+
+    public String getFirebase_id() {
+        return firebase_id;
+    }
+
+    public void setFirebase_id(String firebase_id) {
+        this.firebase_id = firebase_id;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public UserProfileModel getUser_profile() {
         return user_profile;

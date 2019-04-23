@@ -6,52 +6,18 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:layout_margin="10dp"
+
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:padding="10dp"
         android:layout_width="match_parent"
+        android:id="@+id/getUserDataLayout"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="2dp"
-                android:text="Customer Name "
-                android:textAlignment="viewStart"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text=":"
-                android:textAlignment="viewStart"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/defualt_customer_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jon Doe"
-                android:textAlignment="viewStart"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -156,49 +122,41 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <LinearLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/deliver_breakfast"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
-                android:text=" B "
-                android:textColor="@color/white"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:background="@color/colorGrey" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="2dp"
+                android:text="Delivery Instruction "
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
             <TextView
-                android:id="@+id/deliver_lunch"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
-                android:text=" L "
-                android:textColor="@color/white"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:background="@color/colorGrey" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text=":"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
             <TextView
-                android:id="@+id/deliver_dinner"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
-                android:text=" D "
-                android:textColor="@color/white"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:background="@color/colorGrey" />
+                android:id="@+id/default_delivery_instruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="nil"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
         </LinearLayout>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
