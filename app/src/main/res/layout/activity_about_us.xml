@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/grey_100"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:background="@color/white_1000"
+        app:cardElevation="5dp"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="About us"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textStyle="normal"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        android:scrollingCache="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!--<com.google.android.material.card.MaterialCardView-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardCornerRadius="2.0dip"-->
+                <!--app:cardElevation="2.0dip"-->
+                <!--app:cardUseCompatPadding="true">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:paddingBottom="8dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="@dimen/spacing_large"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Our Team"-->
+                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+                        <!--android:textColor="@color/grey_90"-->
+                        <!--app:fontFamily="sans-serif-medium" />-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="25.0dip"-->
+                        <!--android:layout_height="4.0dip"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginTop="5.0dip"-->
+                        <!--android:src="@drawable/swipe_up_handle"-->
+                        <!--android:tint="@color/red_700" />-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_large"-->
+                        <!--android:layout_marginTop="@dimen/spacing_large"-->
+                        <!--android:layout_marginRight="@dimen/spacing_large"-->
+                        <!--android:gravity="center_horizontal"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_male_2"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Adams G"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Executive Officer"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_female_2"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Betty L"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Marketing"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_male_7"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Roberts"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Business Analyst"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+                    <!--</LinearLayout>-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_large"-->
+                        <!--android:layout_marginTop="@dimen/spacing_mlarge"-->
+                        <!--android:layout_marginRight="@dimen/spacing_large"-->
+                        <!--android:gravity="center_horizontal"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_male_3"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Miller W"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="UX Designer"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_male_5"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Kevin John"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Web Developer"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="0.0dip"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1.0"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                                <!--android:layout_width="50.0dip"-->
+                                <!--android:layout_height="50.0dip"-->
+                                <!--android:src="@drawable/photo_female_1"-->
+                                <!--app:civ_border="true"-->
+                                <!--app:civ_border_color="@color/grey_10"-->
+                                <!--app:civ_border_width="2.0dip"-->
+                                <!--app:civ_shadow="true"-->
+                                <!--app:civ_shadow_radius="0.0" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/spacing_medium"-->
+                                <!--android:text="Laura M"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_90"-->
+                                <!--app:fontFamily="sans-serif-medium" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="Mobile Dev"-->
+                                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                                <!--android:textColor="@color/grey_60"-->
+                                <!--app:fontFamily="sans-serif-light" />-->
+                        <!--</LinearLayout>-->
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+            <!--</com.google.android.material.card.MaterialCardView>-->
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="2.0dip"
+                app:cardElevation="2.0dip"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                     android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Mission"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"
+                        app:fontFamily="sans-serif-medium" />
+
+                    <ImageView
+                        android:layout_width="25.0dip"
+                        android:layout_height="4.0dip"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5.0dip"
+                        android:tint="@color/red_700" />
+
+                    <TextView
+                        android:id="@+id/about_us_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/grey_900"
+                        app:fontFamily="sans-serif-light" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -108,6 +108,7 @@
         <activity android:name=".VendorActivities.ShowQRDataActivity" />
         <activity android:name=".VendorActivities.VendorDefaultOrderActivity" />
         <activity android:name=".Activites.FAQActivity" />
+        <activity android:name=".Activites.AboutUsActivity" />
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

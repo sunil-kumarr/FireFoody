@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rapidfood.Activites.AboutUsActivity;
 import com.example.rapidfood.Activites.AddressActivity;
 import com.example.rapidfood.Activites.Authentication;
 import com.example.rapidfood.Activites.FeedbackActivity;
@@ -44,6 +45,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ImageView mProfilePage;
     private TextView mUserName;
     private ImageButton mDeleteAddress;
+    private TextView mAbout;
 
     private TextView mUserCurrentBal;
     private LinearLayout mAddressContainer;
@@ -84,6 +86,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mDeleteAddress = view.findViewById(R.id.delete_address_btn);
         mUserCurrentBal = view.findViewById(R.id.user_current_balance);
         mShareUS=view.findViewById(R.id.share_us);
+        mAbout=view.findViewById(R.id.about_us);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
@@ -91,6 +94,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mSendFeedback.setOnClickListener(this);
         mSignOut_btn.setOnClickListener(this);
         mShareUS.setOnClickListener(this);
+        mAbout.setOnClickListener(this);
 
     }
 
@@ -171,6 +175,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mAddAddressButton.setEnabled(true);
         mSendFeedback.setEnabled(true);
         mShareUS.setEnabled(true);
+        mAbout.setEnabled(true);
     }
 
     @Override
@@ -200,6 +205,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 v.setEnabled(false);
                 break;
             case R.id.about_us:
+                startActivity(new Intent(mContext, AboutUsActivity.class));
+                v.setEnabled(false);
                 break;
             case R.id.faq_about_us:
                 break;
