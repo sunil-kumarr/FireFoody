@@ -119,6 +119,7 @@
 
         <activity android:name=".Activites.AboutUsActivity" />
         <activity android:name=".Activites.SubscriptionCheckoutActivity" />
+        <activity android:name=".Activites.PayTMActivity" />
 
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data

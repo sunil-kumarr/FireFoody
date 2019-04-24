@@ -45,22 +45,6 @@ public class ApiService {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient.addInterceptor(interceptor);
 
-
-        httpClient.addInterceptor(chain -> {
-            Request original = chain.request();
-            Request.Builder requestBuilder = original.newBuilder()
-                    .addHeader("Accept", "application/json");
-
-//            // adding auth token
-//            String token = AppPref.getInstance().getAuthToken();
-//            if (!TextUtils.isEmpty(token)) {
-//                requestBuilder.addHeader("Authorization", "Bearer " + token);
-//            }
-
-            Request request = requestBuilder.build();
-            return chain.proceed(request);
-        });
-
         okHttpClient = httpClient.build();
     }
 }

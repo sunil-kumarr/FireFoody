@@ -55,8 +55,8 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
         sub_name = getIntent().getStringExtra("sub_name");
 
         mOrder = findViewById(R.id.main_layout_holder);
-        RelativeLayout payButton = findViewById(R.id.googlepay_button);
-
+        RelativeLayout googlepaybtn = findViewById(R.id.googlepay_button);
+        RelativeLayout paytmButton =findViewById(R.id.paytm_btn);
         msubcost = findViewById(R.id.subscription_cost);
         msubval = findViewById(R.id.subscription_validity);
         mdetails = findViewById(R.id.subscription_detail);
@@ -70,7 +70,7 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
 
 
 
-        payButton.setOnClickListener(new View.OnClickListener() {
+        googlepaybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mFirebaseAuth.getCurrentUser() != null) {
@@ -99,6 +99,36 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                 }
             }
         });
+        paytmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mFirebaseAuth.getCurrentUser() != null) {
+                    mFirebaseFirestore.collection("subscribed_user")
+                            .document(mFirebaseAuth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                            if (!pTask.isSuccessful()) {
+                                Snackbar.make(mOrder, "ALREADY SUBSCRIBED USER!", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                if(mFirebaseAuth.getCurrentUser()!=null) {
+                                    mPaymentSubDataModel=new PaymentSubDataModel();
+                                    mPaymentSubDataModel.setCust_id(mFirebaseAuth.getCurrentUser().getUid());
+                                    mPaymentSubDataModel.setDuration(String.valueOf(msubval.getText()));
+                                    mPaymentSubDataModel.setMobile(mFirebaseAuth.getCurrentUser().getPhoneNumber());
+                                    mPaymentSubDataModel.setSubcost(String.valueOf(msubcost.getText()));
+                                    mPaymentSubDataModel.setSubcoupon(String.valueOf(msubcoupon_Value.getText()));
+                                    mPaymentSubDataModel.setSubname(sub_name);
+                                }
+                                payUsingPayTM();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
 
 
     }
@@ -110,6 +140,17 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
 
 
         Intent intent=new Intent(SubscriptionCheckoutActivity.this,GooglePayActivity.class);
+        intent.putExtra("payload",mPaymentSubDataModel);
+
+        startActivity(intent);
+    }
+    private void payUsingPayTM() {
+        tr = vGenerateUUIDClass.generateUniqueKeyUsingUUID();
+        mPaymentSubDataModel.setOrder_id(tr);
+        mPaymentSubDataModel.setAmount(getPaymentAmount());
+
+
+        Intent intent=new Intent(SubscriptionCheckoutActivity.this,PayTMActivity.class);
         intent.putExtra("payload",mPaymentSubDataModel);
 
         startActivity(intent);

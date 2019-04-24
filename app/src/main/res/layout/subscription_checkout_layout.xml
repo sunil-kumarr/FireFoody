@@ -347,7 +347,7 @@
                             android:visibility="gone" />
                     </FrameLayout>
                     <include
-                        android:id="@+id/googlepay_button"
+                        android:id="@+id/paytm_btn"
                         android:layout_gravity="center"
                         android:layout_marginBottom="10dp"
                         layout="@layout/buy_with_paytm_button"

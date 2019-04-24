@@ -12,6 +12,6 @@ import retrofit2.http.POST;
 public interface ApiClient {
 
     @FormUrlEncoded
-    @POST("getChecksum")
+    @POST("generateChecksum.php")
     Call<ChecksumResponse> getCheckSum(@FieldMap Map<String, String> params);
 }
