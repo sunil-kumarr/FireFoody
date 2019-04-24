@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private TextView mSignOut_btn;
+    private  TextView mShareUS;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,12 +83,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mUserName = view.findViewById(R.id.profile_user_name);
         mDeleteAddress = view.findViewById(R.id.delete_address_btn);
         mUserCurrentBal = view.findViewById(R.id.user_current_balance);
+        mShareUS=view.findViewById(R.id.share_us);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
         mAddAddressButton.setOnClickListener(this);
         mSendFeedback.setOnClickListener(this);
         mSignOut_btn.setOnClickListener(this);
+        mShareUS.setOnClickListener(this);
 
     }
 
@@ -167,6 +170,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mProfilePage.setEnabled(true);
         mAddAddressButton.setEnabled(true);
         mSendFeedback.setEnabled(true);
+        mShareUS.setEnabled(true);
     }
 
     @Override
@@ -188,6 +192,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 v.setEnabled(false);
                 break;
             case R.id.share_us:
+                Intent intent=new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT,"www.rapdfoods.com");
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent,"Share Us"));
+                v.setEnabled(false);
                 break;
             case R.id.about_us:
                 break;

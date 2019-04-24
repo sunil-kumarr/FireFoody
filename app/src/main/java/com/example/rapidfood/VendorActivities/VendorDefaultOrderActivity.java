@@ -88,6 +88,19 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
 
     }
 
+    private String getCurrentDate(){
+        String[] ar=CURRENT_DATE.split("-");
+        StringBuilder builder=new StringBuilder();
+        builder.append(ar[0]);
+        int month=Integer.parseInt(ar[1]);
+        if(month<10){
+            builder.append("-").append("0"+ar[1]);
+            builder.append("-").append(ar[2]);
+            return builder.toString();
+        }
+        return CURRENT_DATE;
+
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -100,7 +113,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
                 int count=queryDocumentSnapshots.getDocuments().size();
                 mTotalCount.setText(String.valueOf(count));
                 firebaseFirestore.collection("delivery_cancelled")
-                        .document(CURRENT_DATE)
+                        .document(getCurrentDate())
                         .collection("breakfast")
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -116,7 +129,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
                     }
                 });
                 firebaseFirestore.collection("delivery_cancelled")
-                        .document(CURRENT_DATE)
+                        .document(getCurrentDate())
                         .collection("lunch")
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -132,7 +145,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
                     }
                 });
                 firebaseFirestore.collection("delivery_cancelled")
-                        .document(CURRENT_DATE)
+                        .document(getCurrentDate())
                         .collection("dinner")
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -165,7 +178,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
 
     @Override
     public void getUserDates(String userId) {
-        showBottomSheetDialog(CURRENT_DATE);
+        showBottomSheetDialog(getCurrentDate());
     }
 
     @Override
@@ -177,14 +190,14 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
     private void showBottomSheetDialog(String pDate) {
         View view = LayoutInflater.from(VendorDefaultOrderActivity.this).inflate(R.layout.layout_bottom_time_sheet, null);
         TextView dateHead = view.findViewById(R.id.calendar_Choice_date);
-        dateHead.setText(CURRENT_DATE);
+        dateHead.setText(getCurrentDate());
         TextView CalendarBreakfast = view.findViewById(R.id.calendar_Choice_breakfast);
         TextView CalendarLunch = view.findViewById(R.id.calendar_Choice_lunch);
         TextView CalendarDinner = view.findViewById(R.id.calendar_Choice_dinner);
         firebaseFirestore.collection("subscribed_user")
                 .document()
                 .collection("dates")
-                .document(CURRENT_DATE).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .document(getCurrentDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
                 if (pDocumentSnapshot.exists() && pDocumentSnapshot != null) {
