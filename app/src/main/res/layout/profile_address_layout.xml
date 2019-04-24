@@ -52,14 +52,6 @@
             android:textColor="@color/blue_500"
             android:textSize="15sp" />
 
-        <View
-            android:id="@+id/address_part_1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/grey_300"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/address_container"

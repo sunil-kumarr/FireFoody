@@ -6,64 +6,53 @@
     android:background="@color/white_1000"
     android:orientation="vertical">
 
-    <View
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/grey_200" />
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:text="Choose Payment Method"/>
 
-    <include layout="@layout/profile_payment_option_layout"
-        android:layout_marginStart="10dp"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"/>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
 
-        <LinearLayout
-            android:id="@+id/rapid_btn_container"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <include
+            android:id="@+id/checkout_wallet_option"
+            layout="@layout/profile_wallet_rapifood_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content" />
+    </com.google.android.material.card.MaterialCardView>
 
-            <RadioButton
-                android:id="@+id/radio_btn_rapidfood"
-                android:clickable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp">
+    <include
+        android:id="@+id/checkout_paytm_option"
+        layout="@layout/buy_with_paytm_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp" />
 
-                <include
-                    android:id="@+id/checkout_wallet_option"
-                    layout="@layout/profile_wallet_rapifood_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
+    <include
+        android:id="@+id/checkout_google_option"
+        layout="@layout/buy_with_googlepay_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/google_btn_container"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radio_btn_google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:layout_gravity="center" />
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp">
-            <include
-                android:id="@+id/checkout_google_option"
-                layout="@layout/buy_with_googlepay_button_no_shadow"
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
 </LinearLayout>

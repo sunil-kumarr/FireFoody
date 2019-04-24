@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.example.rapidfood.Utils.GenerateUUIDClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,10 +54,15 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     private static final String GOOGLE_TEZ_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
     private static final int TEZ_REQUEST_CODE = 526;
+
+
     private static CheckoutPlaceOrderModel sCheckoutPlaceOrderModel;
+
+
     private ListView mOrderItems;
     private TextView mDefaultMenu;
-    private LinearLayout mBtnRapidFood, mBtnGooglePay;
+    private ConstraintLayout mBtnRapidFood;
+         private RelativeLayout mBtnGooglePay;
     private RadioButton mRRadio, mGRadio;
     private Button mPlaceOrderBtn;
     private String tr;
@@ -71,6 +78,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private TextView mUserCurrentBal;
     private TextView mCheckoutTotalCost;
     private RelativeLayout mGooglePayCheckout;
+    private RelativeLayout mPayTMCheckout;
     private int OrderCost;
     private List<String> mItems;
     private TextView mPackOrder;
@@ -82,34 +90,34 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_checkout_layout);
+
+
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
 
 
-        mOrderSuccess = findViewById(R.id.order_succes_show);
-        mPackOrder = findViewById(R.id.checkout_order_package);
         mCheckoutTotalCost = findViewById(R.id.checkout_order_total_cost);
         mDeleteAddress = findViewById(R.id.delete_address_btn);
-        mUserCurrentBal = findViewById(R.id.user_current_balance);
         mAddAddressButton = findViewById(R.id.add_address_profile_button);
         mAddressContainer = findViewById(R.id.address_container);
         mUserAddress = findViewById(R.id.profile_address_first);
-        mRRadio = findViewById(R.id.radio_btn_rapidfood);
-        mGRadio = findViewById(R.id.radio_btn_google);
-        mBtnRapidFood = findViewById(R.id.rapid_btn_container);
-        mBtnGooglePay = findViewById(R.id.google_btn_container);
+        mPackOrder=findViewById(R.id.checkout_order_package);
         mPlaceOrderBtn = findViewById(R.id.checkout_order_button);
+
+
         mDeleteAddress.setOnClickListener(this);
         mPlaceOrderBtn.setOnClickListener(this);
-        mBtnGooglePay.setOnClickListener(this);
-        mBtnRapidFood.setOnClickListener(this);
         mAddAddressButton.setOnClickListener(this);
+
+
         mUUIDGeneration = new GenerateUUIDClass();
 
         CheckoutOrderDataModel vModel = (CheckoutOrderDataModel) Objects.requireNonNull(getIntent().getExtras()).getSerializable("orderdata");
+
         mOrderItems = findViewById(R.id.checkout_dish_list);
         mDefaultMenu = findViewById(R.id.checkout_default_menu);
+
         mItems = new ArrayList<>();
 
         if (vModel != null) {
@@ -117,7 +125,6 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             mPackOrderName = vModel.getPackageName();
         }
         if (mItems.size() > 0) {
-            Toast.makeText(this, "" + mItems.size(), Toast.LENGTH_SHORT).show();
             ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mItems);
             mOrderItems.setAdapter(mAdapter);
         }
@@ -138,7 +145,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                             mDefaultMenu.setVisibility(View.VISIBLE);
                             mDefaultMenu.setText(pDocumentSnapshot.getString("description"));
                         }
-                        mPackOrder.setText(String.format("Package: %s", pDocumentSnapshot.getString("name")));
+                        mPackOrder.setText(String.format("%s", pDocumentSnapshot.getString("name")));
                         mCheckoutTotalCost.setText(pDocumentSnapshot.getString("price"));
                     }
                 });
@@ -149,21 +156,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         if (mFirebaseAuth.getCurrentUser() != null) {
             String uid = mFirebaseAuth.getCurrentUser().getUid();
             DocumentReference vUSerData = mFirebaseFirestore.collection("users").document(uid);
-            DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
-            vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                    if (pTask.isSuccessful() && pTask.getResult().exists()) {
-                        DocumentSnapshot vSnapshot = pTask.getResult();
-                        SubscribedUserModel vModel = vSnapshot.toObject(SubscribedUserModel.class);
-                        String bal = String.valueOf(vModel.getBalance());
-                        mUserCurrentBal.setText("₹" + bal);
-                    } else {
-                        mUserCurrentBal.setTextColor(getResources().getColor(R.color.red_500));
-                        mUserCurrentBal.setText("Not Subscribed");
-                    }
-                }
-            });
+
 
             vUSerData.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -212,33 +205,51 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 v.setEnabled(false);
                 v.setVisibility(GONE);
                 break;
+
             case R.id.delete_address_btn:
                 deleteUserAddress();
                 break;
-            case R.id.rapid_btn_container:
-                if (mGRadio.isChecked()) {
-                    mGRadio.setChecked(false);
-                    mBtnGooglePay.setBackgroundColor(getResources().getColor(R.color.white));
-                }
-                mBtnRapidFood.setBackgroundColor(getResources().getColor(R.color.grey_200));
-                mRRadio.setChecked(true);
+
+            case R.id.checkout_wallet_option:
+                Toast.makeText(this, "pressed", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.google_btn_container:
-                if (mRRadio.isChecked()) {
-                    mBtnRapidFood.setBackgroundColor(getResources().getColor(R.color.white));
-                    mRRadio.setChecked(false);
-                }
-                mBtnGooglePay.setBackgroundColor(getResources().getColor(R.color.grey_200));
-                mGRadio.setChecked(true);
-                break;
+
             case R.id.checkout_order_button:
-                // Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
-                placeMyOrder();
+
+                View view = LayoutInflater.from(this).inflate(R.layout.checkout_payment_option_layout, null);
+                mBtnRapidFood = view.findViewById(R.id.checkout_wallet_option);
+                mBtnGooglePay = view.findViewById(R.id.checkout_google_option);
+
+                mUserCurrentBal=view.findViewById(R.id.user_current_balance);
+                mBtnGooglePay.setOnClickListener(this);
+                mBtnRapidFood.setOnClickListener(this);
+
+                DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
+                vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                        if (pTask.isSuccessful() && pTask.getResult().exists()) {
+                            DocumentSnapshot vSnapshot = pTask.getResult();
+                            SubscribedUserModel vModel = vSnapshot.toObject(SubscribedUserModel.class);
+                            String bal = String.valueOf(vModel.getBalance());
+                            mUserCurrentBal.setText("₹" + bal);
+                        } else {
+                            mUserCurrentBal.setTextColor(getResources().getColor(R.color.red_500));
+                            mUserCurrentBal.setText("Not Subscribed");
+                        }
+                    }
+                });
+
+                BottomSheetDialog dialog = new BottomSheetDialog(this);
+                dialog.setContentView(view);
+                dialog.show();
+               // placeMyOrder();
                 break;
         }
     }
 
     private void placeMyOrder() {
+
         sCheckoutPlaceOrderModel = new CheckoutPlaceOrderModel();
         OrderCost = Integer.parseInt(mCheckoutTotalCost.getText().toString());
         PackageName = mPackOrder.getText().toString();

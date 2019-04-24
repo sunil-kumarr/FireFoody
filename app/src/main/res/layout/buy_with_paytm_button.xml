@@ -6,8 +6,8 @@
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="48sp"
-    android:background="@drawable/googlepay_button_background"
     android:padding="4dp"
+    android:background="@drawable/googlepay_button_background"
     android:contentDescription="@string/buy_with_googlepay_button_content_description">
     <LinearLayout
         android:duplicateParentState="true"
@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             android:duplicateParentState="true"
             android:src="@drawable/paytm"/>
     </LinearLayout>

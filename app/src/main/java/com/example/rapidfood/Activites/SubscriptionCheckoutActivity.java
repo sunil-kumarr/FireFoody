@@ -79,7 +79,7 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                            if (!pTask.isSuccessful()) {
+                            if (pTask.isSuccessful()) {
                                 Snackbar.make(mOrder, "ALREADY SUBSCRIBED USER!", Snackbar.LENGTH_LONG).show();
                             } else {
                                 if(mFirebaseAuth.getCurrentUser()!=null) {
@@ -108,7 +108,7 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                            if (!pTask.isSuccessful()) {
+                            if (pTask.isSuccessful()) {
                                 Snackbar.make(mOrder, "ALREADY SUBSCRIBED USER!", Snackbar.LENGTH_LONG).show();
                             } else {
                                 if(mFirebaseAuth.getCurrentUser()!=null) {
@@ -183,9 +183,9 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                                 mdetails.setText(String.format("**%s", vModel.getDetails()));
                                 msubval.setText(vModel.getDuration());
                                 msubname.setText(vModel.getType());
-                                Picasso.get().load(vModel.getImagesub())
-                                        .fit()
-                                        .into((ImageView) findViewById(R.id.sub_image));
+//                                Picasso.get().load(vModel.getImagesub())
+//                                        .fit()
+//                                        .into((ImageView) findViewById(R.id.sub_image));
                                 msubcoupon_Value.setText(String.format("%s", vModel.getCoupon()));
                                 long total_bill = (Long.parseLong(vModel.getPrice()) - Long.parseLong(vModel.getCoupon()));
                                 // Toast.makeText(GooglePayActivity.this, "" + Long.toString(total_bill), Toast.LENGTH_SHORT).show();

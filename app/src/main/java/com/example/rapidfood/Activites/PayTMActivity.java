@@ -152,7 +152,6 @@ public class PayTMActivity extends AppCompatActivity {
 
                         mSuccesORDER.setVisibility(View.VISIBLE);
                         String orderId = inResponse.getString("ORDERID");
-                        finish();
                         Toast.makeText(PayTMActivity.this, ""+orderId, Toast.LENGTH_SHORT).show();
 
                     }

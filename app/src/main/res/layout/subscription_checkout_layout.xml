@@ -30,8 +30,9 @@
             <FrameLayout
                 android:id="@+id/frame_layout_contaienr"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:background="@color/red_400"
+                app:layout_constraintBottom_toTopOf="@+id/materialCardView6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image">
@@ -39,18 +40,20 @@
                 <ImageView
                     android:id="@+id/sub_image"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="top|center"
                     android:background="@color/red_400"
                     android:scaleType="fitXY" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginEnd="20dp"
-                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="4dp">
 
@@ -307,6 +310,7 @@
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -320,6 +324,15 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <include
+                        android:id="@+id/paytm_btn"
+                        layout="@layout/buy_with_paytm_button"
+                        android:layout_width="@dimen/buy_button_width"
+                        android:layout_height="@dimen/buy_button_height"
+                        android:layout_gravity="center"
+                        android:layout_margin="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="visible" />
                     <FrameLayout
                         android:id="@+id/frameLayout"
                         android:layout_width="wrap_content"
@@ -346,14 +359,8 @@
                             android:text="@string/googlepay_status_checking"
                             android:visibility="gone" />
                     </FrameLayout>
-                    <include
-                        android:id="@+id/paytm_btn"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        layout="@layout/buy_with_paytm_button"
-                        android:layout_width="@dimen/buy_button_width"
-                        android:layout_height="@dimen/buy_button_height"
-                        android:visibility="visible" />
+
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
