@@ -107,10 +107,11 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         mAddAddressButton.setOnClickListener(this);
         mUUIDGeneration = new GenerateUUIDClass();
 
-        CheckoutOrderDataModel vModel = (CheckoutOrderDataModel) getIntent().getExtras().getSerializable("orderdata");
+        CheckoutOrderDataModel vModel = (CheckoutOrderDataModel) Objects.requireNonNull(getIntent().getExtras()).getSerializable("orderdata");
         mOrderItems = findViewById(R.id.checkout_dish_list);
         mDefaultMenu = findViewById(R.id.checkout_default_menu);
         mItems = new ArrayList<>();
+
         if (vModel != null) {
             mItems = vModel.getOrderDishlist();
             mPackOrderName = vModel.getPackageName();

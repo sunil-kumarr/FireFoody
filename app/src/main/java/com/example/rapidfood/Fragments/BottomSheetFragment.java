@@ -22,6 +22,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_google_pay_subscription_layout, container, false);
+        return inflater.inflate(R.layout.subscription_checkout_layout, container, false);
     }
 }

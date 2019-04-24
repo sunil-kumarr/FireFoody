@@ -1,5 +1,7 @@
 package com.example.rapidfood.Models;
 
+import java.io.Serializable;
+
 public class SubscriptionModel {
 
 

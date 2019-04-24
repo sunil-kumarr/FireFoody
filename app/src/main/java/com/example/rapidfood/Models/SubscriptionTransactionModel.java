@@ -13,8 +13,10 @@ public class SubscriptionTransactionModel {
     private String subcoupon;
     private String total_paid;
     private String duration;
+
     @ServerTimestamp
     private Date transaction_time;
+
     private String mobile;
     private String uid;
     private String transaction_id;

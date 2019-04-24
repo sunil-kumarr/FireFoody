@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rapidfood.Activites.GooglePayActivity;
+import com.example.rapidfood.Activites.SubscriptionCheckoutActivity;
 import com.example.rapidfood.Models.SubscriptionModel;
 import com.example.rapidfood.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -70,7 +71,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(mContext, GooglePayActivity.class);
+                Intent i=new Intent(mContext, SubscriptionCheckoutActivity.class);
                 i.putExtra("sub_name",pSubscriptionModel.getType());
                 mContext.startActivity(i);
             }

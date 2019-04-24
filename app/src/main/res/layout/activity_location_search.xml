@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".Activites.MapActivity">
+   >
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView"
@@ -23,8 +23,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="2dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/autoCompleteTextView"
-        android:src="@drawable/powered_by_google_light" />
+        android:layout_below="@+id/autoCompleteTextView"/>
+
 
     <TextView
         android:id="@+id/select"
