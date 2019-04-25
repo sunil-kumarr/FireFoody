@@ -19,6 +19,7 @@ public class ApiService {
     private static Retrofit retrofit = null;
     private static int REQUEST_TIMEOUT = 15;
     private static OkHttpClient okHttpClient;
+    private static final String BASE_URL="https://technogb.com/paytm/";
 
     public static Retrofit getClient() {
 
@@ -27,7 +28,7 @@ public class ApiService {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_URL)
+                    .baseUrl(BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

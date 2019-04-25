@@ -71,6 +71,8 @@ public class PayTMActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             String mid=documentSnapshot.getString("mid");
+                            Toast.makeText(PayTMActivity.this, ""+model.getAmount(), Toast.LENGTH_SHORT).show();
+                            //
                             getChecksum(model,mid);
                         }
                     });
@@ -94,7 +96,10 @@ public class PayTMActivity extends AppCompatActivity {
                     return;
                 }
 
+                assert response.body() != null;
+
                 paramMap.put("CHECKSUMHASH", response.body().CHECKSUMHASH);
+                Log.d(TAG, "onResponse: "+response.body().CHECKSUMHASH);
                placeOrder(paramMap);
             }
 
@@ -109,15 +114,14 @@ public class PayTMActivity extends AppCompatActivity {
 
     public Map<String, String> preparePayTmParams( PaymentSubDataModel paymentSubDataModel,String Mid) {
         Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("CALLBACK_URL", String.format(BuildConfig.PAYTM_CALLBACK_URL, paymentSubDataModel.getOrder_id()));
+        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="+ paymentSubDataModel.getOrder_id());
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("CUST_ID", "CUSTOMER_" + paymentSubDataModel.getCust_id());
         paramMap.put("INDUSTRY_TYPE_ID","Retail");
         paramMap.put("MID", Mid);
-        paramMap.put("WEBSITE", "WEBSTAGING");
+        paramMap.put("WEBSITE", "DEFAULT");
         paramMap.put("ORDER_ID", paymentSubDataModel.getOrder_id());
         paramMap.put("TXN_AMOUNT", "1.0");
-        paramMap.put("MOBILE_NO","8116227044");
         return paramMap;
     }
 
@@ -125,8 +129,7 @@ public class PayTMActivity extends AppCompatActivity {
     public void placeOrder(Map<String, String> params) {
 
         // choosing between PayTM staging and production
-        PaytmPGService pgService = BuildConfig.IS_PATM_STAGIN ?
-                PaytmPGService.getStagingService() : PaytmPGService.getProductionService();
+        PaytmPGService pgService = PaytmPGService.getProductionService();
 
         PaytmOrder Order = new PaytmOrder((HashMap<String, String>) params);
 
@@ -150,7 +153,7 @@ public class PayTMActivity extends AppCompatActivity {
                     @Override
                     public void onTransactionResponse(Bundle inResponse) {
 
-                        mSuccesORDER.setVisibility(View.VISIBLE);
+//                        mSuccesORDER.setVisibility(View.VISIBLE);
                         String orderId = inResponse.getString("ORDERID");
                         Toast.makeText(PayTMActivity.this, ""+orderId, Toast.LENGTH_SHORT).show();
 

@@ -108,7 +108,7 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                            if (pTask.isSuccessful()) {
+                            if (!pTask.isSuccessful()) {
                                 Snackbar.make(mOrder, "ALREADY SUBSCRIBED USER!", Snackbar.LENGTH_LONG).show();
                             } else {
                                 if(mFirebaseAuth.getCurrentUser()!=null) {

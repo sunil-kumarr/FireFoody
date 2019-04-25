@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.rapidfood.Models.CheckoutOrderDataModel;
 import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
+import com.example.rapidfood.Models.PaymentSubDataModel;
 import com.example.rapidfood.Models.SubscribedUserModel;
 import com.example.rapidfood.Models.UserModel;
 import com.example.rapidfood.R;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -62,7 +64,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
     private ListView mOrderItems;
     private TextView mDefaultMenu;
     private ConstraintLayout mBtnRapidFood;
-         private RelativeLayout mBtnGooglePay;
+    private RelativeLayout mBtnGooglePay;
     private RadioButton mRRadio, mGRadio;
     private Button mPlaceOrderBtn;
     private String tr;
@@ -102,8 +104,9 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         mAddAddressButton = findViewById(R.id.add_address_profile_button);
         mAddressContainer = findViewById(R.id.address_container);
         mUserAddress = findViewById(R.id.profile_address_first);
-        mPackOrder=findViewById(R.id.checkout_order_package);
+        mPackOrder = findViewById(R.id.checkout_order_package);
         mPlaceOrderBtn = findViewById(R.id.checkout_order_button);
+        mOrderSuccess=findViewById(R.id.order_succes_show);
 
 
         mDeleteAddress.setOnClickListener(this);
@@ -212,45 +215,70 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.checkout_wallet_option:
                 Toast.makeText(this, "pressed", Toast.LENGTH_SHORT).show();
+                sCheckoutPlaceOrderModel.setPaymentmethod("wallet");
+                verifySubscription();
+                break;
+
+            case R.id.checkout_google_option:
+                sCheckoutPlaceOrderModel.setPaymentmethod("google_pay");
+                payWithGooglePay();
+                break;
+
+            case R.id.checkout_paytm_option:
+                PaymentSubDataModel model=new PaymentSubDataModel();
+                model.setAmount(sCheckoutPlaceOrderModel.getPackageprice());
+                model.setOrder_id(sCheckoutPlaceOrderModel.getTrans_id());
+                model.setCust_id(sCheckoutPlaceOrderModel.getUid());
+
+                Intent intent=new Intent(CheckoutActivity.this,PayTMActivity.class);
+                intent.putExtra("payload",model);
+
+                startActivity(intent);
                 break;
 
             case R.id.checkout_order_button:
 
-                View view = LayoutInflater.from(this).inflate(R.layout.checkout_payment_option_layout, null);
-                mBtnRapidFood = view.findViewById(R.id.checkout_wallet_option);
-                mBtnGooglePay = view.findViewById(R.id.checkout_google_option);
+                createOrderBox();
 
-                mUserCurrentBal=view.findViewById(R.id.user_current_balance);
-                mBtnGooglePay.setOnClickListener(this);
-                mBtnRapidFood.setOnClickListener(this);
-
-                DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
-                vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                        if (pTask.isSuccessful() && pTask.getResult().exists()) {
-                            DocumentSnapshot vSnapshot = pTask.getResult();
-                            SubscribedUserModel vModel = vSnapshot.toObject(SubscribedUserModel.class);
-                            String bal = String.valueOf(vModel.getBalance());
-                            mUserCurrentBal.setText("₹" + bal);
-                        } else {
-                            mUserCurrentBal.setTextColor(getResources().getColor(R.color.red_500));
-                            mUserCurrentBal.setText("Not Subscribed");
-                        }
-                    }
-                });
-
-                BottomSheetDialog dialog = new BottomSheetDialog(this);
-                dialog.setContentView(view);
-                dialog.show();
-               // placeMyOrder();
                 break;
         }
     }
 
-    private void placeMyOrder() {
+    private void showPAymentOptions() {
+        View view = LayoutInflater.from(this).inflate(R.layout.checkout_payment_option_layout, null);
+        mBtnRapidFood = view.findViewById(R.id.checkout_wallet_option);
+        mBtnGooglePay = view.findViewById(R.id.checkout_google_option);
+        mUserCurrentBal = view.findViewById(R.id.user_current_balance);
+        mPayTMCheckout=view.findViewById(R.id.checkout_paytm_option);
+        mBtnGooglePay.setOnClickListener(this);
+        mPayTMCheckout.setOnClickListener(this);
+        mBtnRapidFood.setOnClickListener(this);
+
+        DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
+        vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                if (pTask.isSuccessful() && pTask.getResult().exists()) {
+                    DocumentSnapshot vSnapshot = pTask.getResult();
+                    SubscribedUserModel vModel = vSnapshot.toObject(SubscribedUserModel.class);
+                    String bal = String.valueOf(vModel.getBalance());
+                    mUserCurrentBal.setText("₹" + bal);
+                } else {
+                    mUserCurrentBal.setTextColor(getResources().getColor(R.color.red_500));
+                    mUserCurrentBal.setText("Not Subscribed");
+                }
+            }
+        });
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private void createOrderBox() {
 
         sCheckoutPlaceOrderModel = new CheckoutPlaceOrderModel();
+
         OrderCost = Integer.parseInt(mCheckoutTotalCost.getText().toString());
         PackageName = mPackOrder.getText().toString();
         sCheckoutPlaceOrderModel.setPackageprice(String.valueOf(OrderCost));
@@ -262,23 +290,19 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             sCheckoutPlaceOrderModel.setCustom(true);
             sCheckoutPlaceOrderModel.setSelecteditems(mItems);
         }
-        if (mUserAddress.getText() != null && mAddAddressButton.getVisibility()==View.GONE) {
+
+
+        if (mUserAddress.getText() != null && mAddAddressButton.getVisibility() == View.GONE) {
             DeliveryAddress = mUserAddress.getText().toString();
             sCheckoutPlaceOrderModel.setDeliveryaddress(DeliveryAddress);
             tr = mUUIDGeneration.generateUniqueKeyUsingUUID();
+
             sCheckoutPlaceOrderModel.setTrans_id(tr);
             sCheckoutPlaceOrderModel.setUid(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid());
             sCheckoutPlaceOrderModel.setMobile(mFirebaseAuth.getCurrentUser().getPhoneNumber());
-            if (mRRadio.isChecked()) {
-                sCheckoutPlaceOrderModel.setPaymentmethod("rapidfood_wallet");
-                verifySubscription();
-            } else if (mGRadio.isChecked()) {
-                sCheckoutPlaceOrderModel.setPaymentmethod("google_pay");
-                payWithGooglePay();
-            } else {
-                Toast.makeText(this, "Select payment method", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+                showPAymentOptions();
+        }
+        else {
             Toast.makeText(this, "Add Address", Toast.LENGTH_SHORT).show();
         }
 
@@ -294,6 +318,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                     assert vDocumentSnapshot != null;
                     if (vDocumentSnapshot.exists()) {
                         String curBal = vDocumentSnapshot.getString("balance");
+                        assert curBal != null;
                         int curBalance = Integer.parseInt(curBal);
                         if (curBalance > OrderCost) {
                             Map<String, Object> mp = new HashMap<>();
@@ -346,12 +371,12 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         Uri uri = new Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", "sunindus.sk@okaxis")
+                .appendQueryParameter("pa", "par78vesh.kr@oksbi")
                 .appendQueryParameter("pn", "sunil kumar")
                 .appendQueryParameter("mc", "1234")
                 .appendQueryParameter("tr", tr)
                 .appendQueryParameter("tn", "rapidfood subscription")
-                .appendQueryParameter("am", sCheckoutPlaceOrderModel.getPackageprice())
+                .appendQueryParameter("am", "1.0")
                 .appendQueryParameter("cu", "INR")
                 .appendQueryParameter("url", "https://test.merchant.website")
                 .build();

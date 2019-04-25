@@ -39,26 +39,26 @@ android {
     }
 
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "${rootProject.appName}-${variant.name}-v${variant.versionName}.apk"
-        }
-    }
-
-    flavorDimensions "tier"
-    productFlavors {
-        dev {
-            buildConfigField "String", "BASE_URL", "\"https://technogb.com/paytm/\""
-            buildConfigField "String", "PAYTM_CALLBACK_URL", "\"https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=%s\""
-            buildConfigField "boolean", "IS_PATM_STAGIN", "true"
-        }
-
-        prod {
-            buildConfigField "String", "BASE_URL", "\"https://technogb.com/paytm/\""
-            buildConfigField "String", "PAYTM_CALLBACK_URL", "\"https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=%s\""
-            buildConfigField "boolean", "IS_PATM_STAGIN", "false"
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "${rootProject.appName}-${variant.name}-v${variant.versionName}.apk"
+//        }
+//    }
+//
+//    flavorDimensions "tier"
+//    productFlavors {
+//        dev {
+//            buildConfigField "String", "BASE_URL", "\"https://technogb.com/paytm/\""
+//            buildConfigField "String", "PAYTM_CALLBACK_URL", "\"https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=%s\""
+//            buildConfigField "boolean", "IS_PATM_STAGIN", "true"
+//        }
+//
+//        prod {
+//            buildConfigField "String", "BASE_URL", "\"https://technogb.com/paytm/\""
+//            buildConfigField "String", "PAYTM_CALLBACK_URL", "\"https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=%s\""
+//            buildConfigField "boolean", "IS_PATM_STAGIN", "false"
+//        }
+//    }
 
 
 
