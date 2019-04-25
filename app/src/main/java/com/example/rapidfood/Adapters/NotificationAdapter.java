@@ -40,16 +40,12 @@ public class NotificationAdapter extends FirestoreRecyclerAdapter<NotificationMo
     protected void onBindViewHolder(@NonNull final NoteHolder pNoteHolder,
                                     int pI, @NonNull final NotificationModel pNotificationModel) {
        pNoteHolder.mNoteTitle.setText(pNotificationModel.getTitle());
+       pNoteHolder.mNoteDesc.setText(pNotificationModel.getDescription());
        if(pNotificationModel.getNote_type().equals("subscription")){
-           if(pNotificationModel.isStatus()) {
                pNoteHolder.mNoteImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_undraw_subscriber));
-           }
-           else{
-               pNoteHolder.mNoteImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_undraw_failure));
-           }
        }
        else if(pNotificationModel.getNote_type().equals("order")){
-           if(pNotificationModel.isStatus()) {
+           if(pNotificationModel.getStatus().equals("true")) {
                pNoteHolder.mNoteImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_undraw_confirmation));
            }
            else{
@@ -69,8 +65,10 @@ public class NotificationAdapter extends FirestoreRecyclerAdapter<NotificationMo
     class NoteHolder extends RecyclerView.ViewHolder {
         private ImageView mNoteImage;
         private TextView mNoteTitle;
+        private TextView mNoteDesc;
         NoteHolder(View itemView) {
             super(itemView);
+            mNoteDesc=itemView.findViewById(R.id.notification_desc);
             mNoteImage= itemView.findViewById(R.id.notify_image);
             mNoteTitle=itemView.findViewById(R.id.notification_title);
         }

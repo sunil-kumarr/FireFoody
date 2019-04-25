@@ -18,14 +18,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Delivery Selector"
         app:titleTextColor="@color/black" />
-
-    <ImageView
+    <LinearLayout
         android:id="@+id/not_subscribed"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/white"
-        android:src="@drawable/ic_undraw_setup_wizard"
-        android:visibility="gone" />
+        android:layout_height="match_parent">
+        <ImageView
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:background="@color/white"
+            android:src="@drawable/ic_undraw_setup_wizard"
+            android:visibility="visible" />
+        <TextView
+            android:layout_margin="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:background="@color/white"
+            android:text="Sorry your not subscribed!Please subscribe to use this feature."/>
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/delivery_text"

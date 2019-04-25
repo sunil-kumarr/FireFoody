@@ -83,7 +83,7 @@
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:text="About us"
+            android:text="About Our Company"
             android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
         <View
@@ -102,7 +102,7 @@
             android:background="@drawable/textview_click_background_blue"
             android:paddingStart="?android:attr/listPreferredItemPaddingStart"
             android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:text="FAQ"
+            android:text="Frequently Asked Questions"
             android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
         <View
@@ -112,25 +112,25 @@
             android:layout_marginEnd="10dp"
             android:background="@color/grey_300" />
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/credits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
-            android:gravity="center_vertical"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="@drawable/textview_click_background_blue"
-            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-            android:text="Credits"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:id="@+id/credits"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableRight="@drawable/ic_chevron_right_black_24dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:minHeight="?android:attr/listPreferredItemHeightSmall"-->
+            <!--android:background="@drawable/textview_click_background_blue"-->
+            <!--android:paddingStart="?android:attr/listPreferredItemPaddingStart"-->
+            <!--android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"-->
+            <!--android:text="Credits"-->
+            <!--android:textAppearance="?android:attr/textAppearanceListItemSmall" />-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/grey_300" />
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_marginEnd="10dp"-->
+            <!--android:background="@color/grey_300" />-->
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/sign_out"

@@ -6,64 +6,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="4dp"
-        app:cardElevation="4dp">
+    <!--<com.google.android.material.card.MaterialCardView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:elevation="4dp"-->
+        <!--app:cardElevation="4dp">-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp">
+        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="70dp">-->
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableLeft="@drawable/ic_locale"
-                android:text="Our location"
-                android:textColor="@color/grey_500"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:drawableLeft="@drawable/ic_locale"-->
+                <!--android:text="Our location"-->
+                <!--android:textColor="@color/grey_500"-->
+                <!--android:textSize="15sp"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/dashed_bottom_line"
-                android:text="New Delhi,India"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-
-            <!--<ImageView-->
-                <!--android:id="@+id/location_logo"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_margin="10dp"-->
-                <!--android:background="@drawable/user_search_background"-->
-                <!--android:padding="10dp"-->
-                <!--android:src="@drawable/ic_map"-->
+            <!--<TextView-->
+                <!--android:id="@+id/textView4"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="15dp"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:layout_marginEnd="15dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:background="@drawable/dashed_bottom_line"-->
+                <!--android:text="New Delhi,India"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="20sp"-->
                 <!--app:layout_constraintBottom_toBottomOf="parent"-->
                 <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintTop_toTopOf="parent" />-->
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
 
+
+            <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/location_logo"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="50dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_margin="10dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="@drawable/user_search_background"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:padding="10dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@drawable/ic_map"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;-->
+        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--</com.google.android.material.card.MaterialCardView>-->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:background="@color/white_1000"
+        app:cardElevation="5dp"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="RapidFoods"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-black"
+            android:textAlignment="center"
+            android:textStyle="normal"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.core.widget.NestedScrollView
 

@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -115,6 +117,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
+    private boolean MinLengthString(View v) {
+        EditText localEditText = (EditText) v;
+        if (localEditText.getText().toString().length() < 8) {
+            localEditText.setError("Please enter valid full name");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -192,18 +206,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 vBuilder.show();
                 break;
             case R.id.btn_save_profile:
-                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
-                        .setCancelable(true)
-                        .setIcon(R.drawable.profile)
-                        .setMessage("ARE YOU SURE YOU WANT TO UPDATE YOUR PROFILE?")
-                        .setTitle("UPDATE PROFILE")
-                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                updateToFireStore();
-                            }
-                        }).create();
-                vUpdateDialog.show();
+
+                updateToFireStore();
+
 
                 break;
         }
@@ -216,23 +221,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String name = mUserNameEDT.getText().toString();
         String email = "No email address";
         email = mUserEmailEDt.getText().toString();
-        if (EmptyString(mUserNameEDT)) {
+        if (EmptyString(mUserNameEDT) && EmptyString(mUserEmailEDt) && MinLengthString(mUserNameEDT)) {
 
-            mProgressDialog = new ProgressDialog(this);
-            mUserModel.setUsername(name);
-            mUserModel.setEmailAddress(email);
-
-            mUserModel.setMobile(mFirebaseUser.getPhoneNumber());
-            if (mImageSelected) {
-                mProgressDialog.setMax(100);
-                mProgressDialog.setTitle("Uploading....");
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.setCanceledOnTouchOutside(false);
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.show();
-                UploadImageToFirebase(imageUri);
+            if (isValidEmail(email)) {
+                mProgressDialog = new ProgressDialog(this);
+                mUserModel.setUsername(name);
+                mUserModel.setEmailAddress(email);
+                mUserModel.setMobile(mFirebaseUser.getPhoneNumber());
+                AlertDialog vUpdateDialog = new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.profile)
+                        .setMessage("ARE YOU SURE YOU WANT TO UPDATE YOUR PROFILE?")
+                        .setTitle("UPDATE PROFILE")
+                        .setPositiveButton("Yes,Sure.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mImageSelected) {
+                                    mProgressDialog.setMax(100);
+                                    mProgressDialog.setTitle("Uploading....");
+                                    mProgressDialog.setCancelable(false);
+                                    mProgressDialog.setCanceledOnTouchOutside(false);
+                                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                    mProgressDialog.show();
+                                    UploadImageToFirebase(imageUri);
+                                }
+                                addItemToFireStore();
+                            }
+                        }).create();
+                vUpdateDialog.show();
+            } else {
+                mUserEmailEDt.setError("Invalid Email format");
             }
-            addItemToFireStore();
+
         }
     }
 
@@ -257,7 +277,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void UploadImageToFirebase(Uri pImageUri) {
-        //  Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
+//  Toast.makeText(this, "Upload called", Toast.LENGTH_SHORT).show();
         final StorageReference ref = mFirebaseStorage.getReference().child("user_profile/" + image);
         ref.putFile(pImageUri).
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

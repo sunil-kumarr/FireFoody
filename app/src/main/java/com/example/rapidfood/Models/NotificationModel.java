@@ -10,14 +10,23 @@ public class NotificationModel {
     @ServerTimestamp
     Date timestamp;
     private String title;
-    private boolean status;
+    private String description;
+    private String status;
 
-    public boolean isStatus() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean pStatus) {
-        status = pStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getNote_type() {

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.rapidfood.Activites.AboutUsActivity;
 import com.example.rapidfood.Activites.AddressActivity;
 import com.example.rapidfood.Activites.Authentication;
+import com.example.rapidfood.Activites.FAQActivity;
 import com.example.rapidfood.Activites.FeedbackActivity;
 import com.example.rapidfood.Activites.ProfileActivity;
 import com.example.rapidfood.Models.UserModel;
@@ -46,6 +47,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mUserName;
     private ImageButton mDeleteAddress;
     private TextView mAbout;
+    private TextView mFAQbtn;
 
     private TextView mUserCurrentBal;
     private LinearLayout mAddressContainer;
@@ -87,6 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mUserCurrentBal = view.findViewById(R.id.user_current_balance);
         mShareUS=view.findViewById(R.id.share_us);
         mAbout=view.findViewById(R.id.about_us);
+        mFAQbtn=view.findViewById(R.id.faq_about_us);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
@@ -94,6 +97,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mSendFeedback.setOnClickListener(this);
         mSignOut_btn.setOnClickListener(this);
         mShareUS.setOnClickListener(this);
+        mFAQbtn.setOnClickListener(this);
         mAbout.setOnClickListener(this);
 
     }
@@ -209,8 +213,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 v.setEnabled(false);
                 break;
             case R.id.faq_about_us:
-                break;
-            case R.id.credits:
+                startActivity(new Intent(mContext, FAQActivity.class));
                 break;
             case R.id.sign_out:
                 AlertDialog vDialog = new AlertDialog.Builder(mContext)

@@ -88,13 +88,15 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
 
             pCheckoutPlaceOrderModel.setOrderStatus("SUCCESS");
             pCheckoutPlaceOrderModel.setVerified(true);
-            notify.put("title", "Your order is confirmed");
-            notify.put("status", true);
+            notify.put("title", "Order confirmed");
+            notify.put("description","Your is confirmed by the vendor and will be on its way."+System.getProperty("line.separator")+"OTP :3333 ");
+            notify.put("status", "true");
         } else {
             pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
             pCheckoutPlaceOrderModel.setVerified(true);
-            notify.put("status", false);
-            notify.put("title", "Your order is cancelled");
+            notify.put("status", "false");
+            notify.put("title", "Order Cancelled");
+            notify.put("description","We are sorry but the vendor have cancelled your order.Money will be refunded to wallet within 24 hrs");
         }
         notify.put("note_type", "order");
         notify.put("timestamp", FieldValue.serverTimestamp());
@@ -111,6 +113,5 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
 
         // add updated order to orders database
         mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).set(pCheckoutPlaceOrderModel);
-
     }
 }

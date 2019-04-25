@@ -127,9 +127,11 @@ public class UserSubscriberActivity extends AppCompatActivity  {
     private void sendInAppNotification(String f_uid) {
         Map<String, Object> notify = new HashMap<>();
         notify.put("note_type", "subscription");
+        notify.put("description","Congratulations,you are now a subscribed customer of RapidFoods.");
         notify.put("timestamp", FieldValue.serverTimestamp());
         notify.put("head","Subscriptions");
-        notify.put("title", "Congratulations,you are now a subscribed customer of RapidFoods.");
+        notify.put("status","true");
+        notify.put("title", "Subscription Confirmed");
         mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
                 .document().set(notify);
     }

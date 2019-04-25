@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class TimingFragment extends Fragment {
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseAuth mFirebaseAuth;
     private Context mContext;
-    private ImageView mNotSubscribedLayout;
+    private LinearLayout mNotSubscribedLayout;
     private MaterialCalendarView mTimeCalendar;
     private TextView CalendarBreakfast;
     private TextView CalendarLunch;
@@ -142,9 +143,9 @@ public class TimingFragment extends Fragment {
         int vMonth = calendarDate.getMonth();
         if (realMonth <= vMonth) {
             if (realDay <= vDay) {
-                showBottomSheetDialog(calendarDate, realDate);
+                showBottomSheetDialog(calendarDate, realDate,true);
             } else {
-                Toast.makeText(mContext, "Invalid Date", Toast.LENGTH_SHORT).show();
+                showBottomSheetDialog(calendarDate, realDate,false);
             }
         } else {
             Toast.makeText(mContext, "Invalid Date", Toast.LENGTH_SHORT).show();
@@ -153,7 +154,7 @@ public class TimingFragment extends Fragment {
     }
 
 
-    private void showBottomSheetDialog(CalendarDay pDate, String pS) {
+    private void showBottomSheetDialog(CalendarDay pDate, String pS,boolean mClickPremission) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_bottom_time_sheet, null);
         TextView dateHead = view.findViewById(R.id.calendar_Choice_date);
         dateHead.setText(String.valueOf(pDate.getDate()));
@@ -185,66 +186,69 @@ public class TimingFragment extends Fragment {
                 }
             }
         });
-        CalendarBreakfast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                        .setIcon(R.drawable.ic_calendar)
-                        .setTitle("Cancel Delivery")
-                        .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
-                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                TextView vTextView = (TextView) v;
-                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
-                                setFirestoreDeliverTiming("breakfast", pDate.getDate().toString());
-                                CalendarBreakfast.setEnabled(false);
-                            }
-                        }).create();
-                vDialog.show();
-            }
-        });
-        CalendarLunch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                        .setIcon(R.drawable.ic_calendar)
-                        .setTitle("Cancel Delivery")
-                        .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
-                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                TextView vTextView = (TextView) v;
-                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
-                                setFirestoreDeliverTiming("lunch", pDate.getDate().toString());
-                                CalendarLunch.setEnabled(false);
-                            }
-                        }).create();
-                vDialog.show();
-            }
-        });
-        CalendarDinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                        .setIcon(R.drawable.ic_calendar)
-                        .setTitle("Cancel Delivery")
-                        .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
-                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                TextView vTextView = (TextView) v;
-                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
-                                CalendarDinner.setEnabled(false);
-                                setFirestoreDeliverTiming("dinner", pDate.getDate().toString());
-                            }
-                        }).create();
-                vDialog.show();
-            }
-        });
+
+        if(mClickPremission) {
+            CalendarBreakfast.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
+                            .setIcon(R.drawable.ic_calendar)
+                            .setTitle("Cancel Delivery")
+                            .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
+                            .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    TextView vTextView = (TextView) v;
+                                    vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                    vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
+                                    setFirestoreDeliverTiming("breakfast", pDate.getDate().toString());
+                                    CalendarBreakfast.setEnabled(false);
+                                }
+                            }).create();
+                    vDialog.show();
+                }
+            });
+            CalendarLunch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
+                            .setIcon(R.drawable.ic_calendar)
+                            .setTitle("Cancel Delivery")
+                            .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
+                            .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    TextView vTextView = (TextView) v;
+                                    vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                    vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
+                                    setFirestoreDeliverTiming("lunch", pDate.getDate().toString());
+                                    CalendarLunch.setEnabled(false);
+                                }
+                            }).create();
+                    vDialog.show();
+                }
+            });
+            CalendarDinner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog vDialog = new AlertDialog.Builder(mContext)
+                            .setIcon(R.drawable.ic_calendar)
+                            .setTitle("Cancel Delivery")
+                            .setMessage("Are you sure you don't want to receive food on this date and this meal time?\nONCE SET IT CANNOT BE CHANGED")
+                            .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    TextView vTextView = (TextView) v;
+                                    vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                    vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.red_500));
+                                    CalendarDinner.setEnabled(false);
+                                    setFirestoreDeliverTiming("dinner", pDate.getDate().toString());
+                                }
+                            }).create();
+                    vDialog.show();
+                }
+            });
+        }
         BottomSheetDialog dialog = new BottomSheetDialog(mContext);
         dialog.setContentView(view);
         dialog.show();

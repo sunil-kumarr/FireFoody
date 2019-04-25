@@ -3,6 +3,7 @@ package com.example.rapidfood.Activites;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,66 +51,83 @@ public class AddressActivity extends AppCompatActivity {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAddressData();
 
-                AlertDialog vDialog=new AlertDialog.Builder(AddressActivity.this)
-                        .setTitle("Update Address")
-                        .setMessage("Are you sure to add or update address!")
-                        .setCancelable(true)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(mFirebaseAuth.getCurrentUser()!=null)
-                                {
-                                    mFirebaseUser=mFirebaseAuth.getCurrentUser();
-                                    String uid=mFirebaseUser.getUid();
-                                    DocumentReference userData= mFirebaseFirestore.collection("users").document(uid);
+                if(getAddressData()) {
 
-                                    userData.update("address_first", mUserAddressModal);
-                                    mFirebaseFirestore.collection("subscribed_user").document(uid)
-                                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                                            if(documentSnapshot.exists()){
-                                                mFirebaseFirestore.collection("subscribed_user")
-                                                        .document(uid).update("address_first",mUserAddressModal);
-                                            }
-                                        }
-                                    });
-
-                                }
-                            }
-                        }).create();
-                vDialog.show();
-
+                    saveAddressToFirebase();
+                }
 
             }
         });
     }
 
+    private void saveAddressToFirebase() {
+        AlertDialog vDialog=new AlertDialog.Builder(AddressActivity.this)
+                .setTitle("Update Address")
+                .setMessage("Are you sure to add or update address!")
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(mFirebaseAuth.getCurrentUser()!=null)
+                        {
+                            mFirebaseUser=mFirebaseAuth.getCurrentUser();
+                            String uid=mFirebaseUser.getUid();
+                            DocumentReference userData= mFirebaseFirestore.collection("users").document(uid);
+
+                            userData.update("address_first", mUserAddressModal);
+                            mFirebaseFirestore.collection("subscribed_user").document(uid)
+                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                    if(documentSnapshot.exists()){
+                                        mFirebaseFirestore.collection("subscribed_user")
+                                                .document(uid).update("address_first",mUserAddressModal);
+                                    }
+                                }
+                            });
+
+                        }
+                    }
+                }).create();
+        vDialog.show();
+    }
+
+    private boolean MinLengthString(View v,int len) {
+        EditText localEditText = (EditText) v;
+        if (localEditText.getText().toString().length()< len ) {
+            localEditText.setError("Please enter valid address");
+            return false;
+        }
+        return true;
+    }
     @Override
     protected void onStart() {
         super.onStart();
         mFirebaseUser=mFirebaseAuth.getCurrentUser();
     }
 
-    private void getAddressData() {
-        if (mAddName.getText() != null) {
+    private boolean getAddressData() {
+
+        if (mAddName.getText() != null && MinLengthString(mAddName,4)) {
             mUserAddressModal.setAddressname(mAddName.getText().toString());
         } else {
-            mAddName.setError("required");
+            mAddName.setError("Length greater then 4");
+            return  false;
         }
-        if (mAddComplete.getText() != null) {
+        if (mAddComplete.getText() != null && MinLengthString(mAddComplete,15)) {
             mUserAddressModal.setAddresscomplete(Objects.requireNonNull(mAddComplete.getText()).toString());
         } else {
-            mAddComplete.setError("required");
+            mAddComplete.setError("Length greater than 15");
+            return  false;
         }
         if (mAddInstruct.getText() != null)
             mUserAddressModal.setAddressinstructions(mAddInstruct.getText().toString());
         else {
             mUserAddressModal.setAddressinstructions("no instruction");
         }
+        return true;
     }
 
 }

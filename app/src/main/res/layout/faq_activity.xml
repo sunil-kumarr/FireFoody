@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:background="#f4f4f4">
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:background="@color/white_1000"
@@ -12,19 +14,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Notifications"
+            android:text="Frequently Asked Questions"
             android:textColor="@color/black"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textAlignment="center"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="center"/>
     </com.google.android.material.card.MaterialCardView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notification_recycler_view"
-        android:layout_width="match_parent"
-        android:background="@color/grey_200"
-        android:padding="5dp"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+    <ExpandableListView
+        android:background="@color/white"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:id="@+id/listview"
+        android:layout_height="match_parent"
+        android:groupIndicator="@null"
+        android:layout_width="match_parent"/>
+
 </LinearLayout>

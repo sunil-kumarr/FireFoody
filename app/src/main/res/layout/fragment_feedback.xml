@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/snackbar_show"
         android:orientation="vertical">
 
         <LinearLayout
@@ -35,6 +36,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/send_feedback"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
