@@ -121,7 +121,7 @@ public class PayTMActivity extends AppCompatActivity {
         paramMap.put("MID", "QsZUBo16768499332071");
         paramMap.put("WEBSITE", "DEFAULT");
         paramMap.put("ORDER_ID", paymentSubDataModel.getOrder_id());
-        paramMap.put("TXN_AMOUNT", "1.0");
+        paramMap.put("TXN_AMOUNT", paymentSubDataModel.getAmount());
         return paramMap;
     }
 

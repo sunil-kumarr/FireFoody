@@ -70,14 +70,14 @@ public class GooglePayActivity extends AppCompatActivity {
         Uri uri = new Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", "par78vesh.kr@oksbi")
+                .appendQueryParameter("pa", "casrisaurav@okaxis")
                 .appendQueryParameter("pn", "sunil kumar")
-                .appendQueryParameter("mc", "1234")
+                .appendQueryParameter("mc", "12471")
                 .appendQueryParameter("tr", mPayLoad.getOrder_id())
                 .appendQueryParameter("tn", "Rapidfoods subscription")
                 .appendQueryParameter("am", mPayLoad.getAmount())
                 .appendQueryParameter("cu", "INR")
-                .appendQueryParameter("url", "https://test.merchant.website")
+                .appendQueryParameter("url", "https://techonogb.com")
                 .build();
         PackageManager packageManager = getApplication().getPackageManager();
         Intent intent = new Intent(Intent.ACTION_VIEW);
