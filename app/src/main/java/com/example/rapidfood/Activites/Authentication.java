@@ -14,10 +14,13 @@ import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.UtilClass;
 import com.example.rapidfood.VendorActivities.DashboardActivity;
+import com.example.rapidfood.VendorActivities.DeliveryBoyActivity;
 import com.example.rapidfood.VendorActivities.TermConActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -208,11 +212,37 @@ public class Authentication extends AppCompatActivity {
                             }
                         }
                         if (!user) {
-                            mProgressDialog.dismiss();
-                            startActivity(new Intent(Authentication.this, MainActivity.class));
-                            finish();
-                        }
+                            mFirebaseFirestore.collection("delivery_boy")
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
 
+                                            boolean boy = false;
+                                            if (e != null) {
+                                                Log.d("DownloadData", "Listen failed.", e);
+                                                return;
+                                            }
+                                            assert value != null;
+                                            for (QueryDocumentSnapshot doc : value) {
+                                                String vendorId = doc.getString("firebase_id");
+                                                assert vendorId != null;
+                                                if (mFirebaseUser.getUid().equals(vendorId)) {
+                                                    boy = true;
+                                                    mProgressDialog.dismiss();
+                                                    startActivity(new Intent(Authentication.this, DeliveryBoyActivity.class));
+                                                    finish();
+                                                }
+                                            }
+                                            if(!boy){
+
+                                                mProgressDialog.dismiss();
+                                                startActivity(new Intent(Authentication.this, MainActivity.class));
+                                                finish();
+                                            }
+
+                                        }
+                                    });
+                        }
                     }
                 });
     }

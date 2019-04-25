@@ -20,6 +20,16 @@ public class CheckoutPlaceOrderModel {
     String paymentstatus;
     String orderStatus;
     String deliverystatus;
+    String otp;
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
     boolean verified;
 
     public boolean isVerified() {

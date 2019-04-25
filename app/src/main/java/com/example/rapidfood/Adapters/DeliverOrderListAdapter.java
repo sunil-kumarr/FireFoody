@@ -7,56 +7,58 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
-import com.example.rapidfood.R;
-import com.example.rapidfood.VendorActivities.VendorShowOrderActivity;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrderModel, OrderListAdapter.ORDERLISTViewHolder> {
+import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
+import com.example.rapidfood.R;
+import com.example.rapidfood.VendorActivities.DeliveryCustomOrderActivity;
+import com.example.rapidfood.VendorActivities.VendorShowOrderActivity;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+public class DeliverOrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrderModel, DeliverOrderListAdapter.ORDERLISTViewHolder> {
 
     private RecyclerView mRecyclerview;
     private Context mContext;
-    private OrderListener mOrderListener;
+    private DeliverOrderListener mOrderListener;
     private static final String TAG = "OrderListAdapter";
 
-    public OrderListAdapter(@NonNull FirestoreRecyclerOptions<CheckoutPlaceOrderModel> options,
-                            RecyclerView pRecylerView, Context pContext) {
+    public DeliverOrderListAdapter(@NonNull FirestoreRecyclerOptions<CheckoutPlaceOrderModel> options,
+                                   RecyclerView pRecylerView, Context pContext) {
         super(options);
         Log.d(TAG, "OrderListAdapter: ");
         mContext = pContext;
         mRecyclerview = pRecylerView;
-        mOrderListener = (VendorShowOrderActivity) pContext;
+        mOrderListener = (DeliverOrderListener) pContext;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull final ORDERLISTViewHolder pSubscriptionViewHolder,
                                     int pI, @NonNull final CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
 
+        pSubscriptionViewHolder.transactionId.setVisibility(View.GONE);
         Log.d(TAG, "onBindViewHolder: " + pCheckoutPlaceOrderModel.getPackageordered());
         pSubscriptionViewHolder.paymentStatus.setText(pCheckoutPlaceOrderModel.getPaymentstatus());
         pSubscriptionViewHolder.transactiontime.setText(pCheckoutPlaceOrderModel.getOrdertimestamp().toString());
-        pSubscriptionViewHolder.transactionId.setText(pCheckoutPlaceOrderModel.getTrans_id());
         pSubscriptionViewHolder.userMobile.setText(pCheckoutPlaceOrderModel.getMobile());
         pSubscriptionViewHolder.mOrderName.setText(pCheckoutPlaceOrderModel.getPackageordered());
         pSubscriptionViewHolder.mOrderCost.setText(pCheckoutPlaceOrderModel.getPackageprice());
         pSubscriptionViewHolder.mOrderDeliveryAddress.setText(pCheckoutPlaceOrderModel.getDeliveryaddress());
         pSubscriptionViewHolder.mPaymentMethod.setText(pCheckoutPlaceOrderModel.getPaymentmethod());
         pSubscriptionViewHolder.orderConfirmStatus.setText(pCheckoutPlaceOrderModel.getOrderStatus());
-        pSubscriptionViewHolder.mDeliverstatus.setText(pCheckoutPlaceOrderModel.getDeliverystatus());
+        pSubscriptionViewHolder.mDeliverStatus.setText(pCheckoutPlaceOrderModel.getDeliverystatus());
         if(pCheckoutPlaceOrderModel.isCustom()) {
             pSubscriptionViewHolder.mOrderDetails.setText(String.valueOf(pCheckoutPlaceOrderModel.getSelecteditems()));
         }
         else{
             pSubscriptionViewHolder.mOrderDetails.setText("Default Order");
         }
-        if (!pCheckoutPlaceOrderModel.getOrderStatus().equals("pending")) {
+        if (!pCheckoutPlaceOrderModel.getDeliverystatus().equals("pending")) {
             pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
         } else {
             pSubscriptionViewHolder.confirmBTN.setVisibility(View.VISIBLE);
@@ -64,20 +66,18 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
                 @Override
                 public void onClick(View v) {
                     AlertDialog vDialog = new AlertDialog.Builder(mContext)
-                            .setTitle("CONFIRM ORDER")
+                            .setTitle("CONFIRM DELIVERY")
                             .setIcon(R.drawable.ic_check_circlce_button)
-                            .setMessage("Are you sure you want to confirm order?")
-                            .setPositiveButton("CONFIRM ORDER", new DialogInterface.OnClickListener() {
+                            .setMessage("Are you sure you want to confirm Delivery?")
+                            .setPositiveButton("CONFIRM Delivery", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
                                     mOrderListener.onClickVerify(v, pCheckoutPlaceOrderModel);
                                 }
                             })
-                            .setNegativeButton("CANCEL ORDER", new DialogInterface.OnClickListener() {
+                            .setNegativeButton("CANCEL Delivery", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    pSubscriptionViewHolder.confirmBTN.setVisibility(View.GONE);
                                     mOrderListener.onClickFailed(v, pCheckoutPlaceOrderModel);
                                 }
                             })
@@ -106,7 +106,7 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
     class ORDERLISTViewHolder extends RecyclerView.ViewHolder {
         private TextView mOrderName;
         private TextView mOrderCost;
-        private TextView transactionId;
+        private LinearLayout transactionId;
         private TextView transactiontime;
         private TextView userMobile;
         private TextView paymentStatus;
@@ -114,8 +114,8 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
         private TextView mOrderDetails;
         private TextView mPaymentMethod;
         private Button confirmBTN;
-        private TextView mDeliverstatus;
         private TextView orderConfirmStatus;
+        private TextView mDeliverStatus;
 
         private ORDERLISTViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,16 +125,16 @@ public class OrderListAdapter extends FirestoreRecyclerAdapter<CheckoutPlaceOrde
             mOrderName = itemView.findViewById(R.id.order_pack_name);
             mOrderCost = itemView.findViewById(R.id.order_cost);
             mPaymentMethod = itemView.findViewById(R.id.order_payment_method);
-            transactionId = itemView.findViewById(R.id.order_trans_id);
+            transactionId = itemView.findViewById(R.id.trans_id_Container);
             transactiontime = itemView.findViewById(R.id.order_Time);
             paymentStatus = itemView.findViewById(R.id.order_payment_Status);
             mOrderDeliveryAddress = itemView.findViewById(R.id.order_delivery_Address);
             mOrderDetails = itemView.findViewById(R.id.order_details);
-            mDeliverstatus=itemView.findViewById(R.id.order_delivery_Status);
+            mDeliverStatus=itemView.findViewById(R.id.order_delivery_Status);
         }
     }
 
-    public interface OrderListener {
+    public interface DeliverOrderListener {
         void onClickVerify(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel);
 
         void onClickFailed(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel);

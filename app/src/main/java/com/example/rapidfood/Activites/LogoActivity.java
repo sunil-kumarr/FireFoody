@@ -15,14 +15,18 @@ import com.example.rapidfood.Utils.FirebaseInstances;
 import com.example.rapidfood.Utils.PermissionUtils;
 import com.example.rapidfood.Utils.UtilClass;
 import com.example.rapidfood.VendorActivities.DashboardActivity;
+import com.example.rapidfood.VendorActivities.DeliveryBoyActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.karumi.dexter.Dexter;
@@ -188,6 +192,7 @@ public class LogoActivity extends AppCompatActivity {
         // Log.d(TAG, "identifyUserTypeMethod: ");
         mProgressDialog.setMessage("Validating...");
         mProgressDialog.show();
+
         CollectionReference vCollectionReference = mFirebaseFirestore.collection("vendors");
         vCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -205,9 +210,37 @@ public class LogoActivity extends AppCompatActivity {
                         }
                     }
                     if (!user) {
-                        startActivity(new Intent(LogoActivity.this, MainActivity.class));
-                        mProgressDialog.dismiss();
-                        finish();
+                        mFirebaseFirestore.collection("delivery_boy")
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+
+                                        boolean boy = false;
+                                        if (e != null) {
+                                            Log.d("DownloadData", "Listen failed.", e);
+                                            return;
+                                        }
+                                        assert value != null;
+                                        for (QueryDocumentSnapshot doc : value) {
+                                            String vendorId = doc.getString("firebase_id");
+                                            assert vendorId != null;
+                                            if (mFirebaseUser.getUid().equals(vendorId)) {
+                                                boy = true;
+                                                mProgressDialog.dismiss();
+                                                startActivity(new Intent(LogoActivity.this, DeliveryBoyActivity.class));
+                                                finish();
+                                            }
+                                        }
+                                        if(!boy){
+
+                                            mProgressDialog.dismiss();
+                                            startActivity(new Intent(LogoActivity.this, MainActivity.class));
+                                            finish();
+                                        }
+
+                                    }
+                                });
+
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", pTask.getException());

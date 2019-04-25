@@ -30,7 +30,7 @@ public class OrderDefaultListAdapter extends FirestoreRecyclerAdapter<Subscribed
         mContext = pContext;
         mRecyclerview = pRecylerView;
 
-        mListener=(VendorDefaultOrderActivity) pContext;
+        mListener=(UserDateListener) pContext;
     }
 
     @Override

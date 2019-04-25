@@ -5,6 +5,7 @@ import android.util.Log;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GenerateUUIDClass {
     static private StringBuilder crunchifyEncodeUsingHEX(byte[] crunchifyByte) {
@@ -46,6 +47,13 @@ public class GenerateUUIDClass {
         // Static factory to retrieve a type 4 (pseudo randomly generated) UUID
         String crunchifyUUID = UUID.randomUUID().toString();
         return crunchifyUUID;
+    }
+
+    public  String generateOrderOTP(){
+        int minNum =1000;
+        int maxNum =9999;
+        int randomNum = ThreadLocalRandom.current().nextInt(minNum, maxNum + 1);
+        return String.valueOf(randomNum);
     }
 
 }

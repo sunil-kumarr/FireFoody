@@ -1,34 +1,14 @@
 package com.example.rapidfood.VendorActivities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.rapidfood.Adapters.OrderDefaultListAdapter;
-import com.example.rapidfood.Adapters.SubscriberListAdapter;
-import com.example.rapidfood.Models.SubscribedUserModel;
-import com.example.rapidfood.Models.SubscriptionTransactionModel;
-import com.example.rapidfood.Models.UserModel;
-import com.example.rapidfood.R;
-import com.example.rapidfood.Utils.FirebaseInstances;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,13 +17,32 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rapidfood.Adapters.OrderDefaultListAdapter;
+import com.example.rapidfood.Adapters.OrderListAdapter;
+import com.example.rapidfood.Models.SubscribedUserModel;
+import com.example.rapidfood.R;
+import com.example.rapidfood.Utils.FirebaseInstances;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class VendorDefaultOrderActivity extends AppCompatActivity implements OrderDefaultListAdapter.UserDateListener {
+public class DeliverySubscribedOrderActivity extends AppCompatActivity implements OrderDefaultListAdapter.UserDateListener {
 
     private FirebaseInstances firebaseInstances;
     private FirebaseAuth firebaseAuth;
@@ -52,24 +51,26 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
     private FirestoreRecyclerAdapter mOrderListAdapter;
     private RecyclerView orderRecyclerView;
     private TextView mTotalCount;
-    private TextView mDinnerCount, mBreakfastCount, mLunchCount;
+    private MaterialCardView mStatContainer;
     private Calendar mCalendar;
+    private Context mContext;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vendor_default_order_activity);
 
+        mContext = getApplicationContext();
         firebaseInstances = new FirebaseInstances();
         firebaseFirestore = firebaseInstances.getFirebaseFirestore();
         firebaseAuth = firebaseInstances.getFirebaseAuth();
 
         mCalendar = Calendar.getInstance();
 
-        mTotalCount = findViewById(R.id.deliver_total_count);
-        mDinnerCount = findViewById(R.id.deliver_dinner_count);
-        mBreakfastCount = findViewById(R.id.deliver_breakfast_count);
-        mLunchCount = findViewById(R.id.deliver_lunch_count);
+        mStatContainer = findViewById(R.id.Statistics_Container);
+        mStatContainer.setVisibility(View.GONE);
+        findViewById(R.id.subscibed_text).setVisibility(View.GONE);
         orderRecyclerView = findViewById(R.id.vendor_default_recycler_view);
 
         Query query = firebaseFirestore.collection("subscribed_user")
@@ -79,7 +80,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
 
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        mOrderListAdapter = new OrderDefaultListAdapter(mOptions, orderRecyclerView, VendorDefaultOrderActivity.this);
+        mOrderListAdapter = new OrderDefaultListAdapter(mOptions, orderRecyclerView, DeliverySubscribedOrderActivity.this);
 
         orderRecyclerView.post(new Runnable() {
             @Override
@@ -88,8 +89,6 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
                 orderRecyclerView.setItemAnimator(new DefaultItemAnimator());
             }
         });
-
-
     }
 
     private String getMonth(String month) {
@@ -131,7 +130,7 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
         String monthS = getMonth(ar[1]);
         String yearS = ar[5];
         String day = ar[2];
-        // Toast.makeText(this, ""+monthS+" "+ar[2]+" "+ar.length, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+monthS+" "+ar[2]+" "+ar.length, Toast.LENGTH_SHORT).show();
         StringBuilder builder = new StringBuilder();
         builder.append(yearS).append("-").append(monthS).append("-").append(day);
         return String.valueOf(builder.toString());
@@ -141,59 +140,8 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
     protected void onStart() {
         super.onStart();
         mOrderListAdapter.startListening();
-        //Toast.makeText(this, ""+CalendarDay.today(), Toast.LENGTH_SHORT).show();
-        firebaseFirestore.collection("subscribed_user")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-
-                int count = queryDocumentSnapshots.getDocuments().size();
-                mTotalCount.setText(String.valueOf(count));
-
-
-                firebaseFirestore.collection("delivery_cancelled")
-                        .document(getCurrentDate())
-                        .collection("breakfast")
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
-
-                                int bre = queryDocumentSnapshots.size();
-                                bre = count - bre;
-                                mBreakfastCount.setText(String.valueOf(bre));
-
-
-                            }
-                        });
-                firebaseFirestore.collection("delivery_cancelled")
-                        .document(getCurrentDate())
-                        .collection("lunch")
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                                int lun = queryDocumentSnapshots.size();
-                                lun = count - lun;
-                                mLunchCount.setText(String.valueOf(lun));
-                            }
-                        });
-                firebaseFirestore.collection("delivery_cancelled")
-                        .document(getCurrentDate())
-                        .collection("dinner")
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
-
-                                int dinner=queryDocumentSnapshots.size();
-                                dinner=count-dinner;
-                                mDinnerCount.setText(String.valueOf(dinner));
-                            }
-                        });
-
-            }
-        });
     }
-
 
     @Override
     protected void onResume() {
@@ -206,7 +154,8 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
 
     @Override
     public void getUserDates(String userId) {
-        showBottomSheetDialog(userId);
+
+        showBottomSheetDialog(getCurrentDate(),userId);
     }
 
     @Override
@@ -215,8 +164,8 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
         mOrderListAdapter.stopListening();
     }
 
-    private void showBottomSheetDialog(String f_uid) {
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_bottom_time_sheet, null);
+    private void showBottomSheetDialog(String pDate,String f_uid) {
+        View view = LayoutInflater.from(DeliverySubscribedOrderActivity.this).inflate(R.layout.layout_bottom_time_sheet, null);
         TextView dateHead = view.findViewById(R.id.calendar_Choice_date);
         dateHead.setText(getCurrentDate());
         TextView CalendarBreakfast = view.findViewById(R.id.calendar_Choice_breakfast);
@@ -263,9 +212,83 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
             }
         });
 
+
+        CalendarBreakfast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog vDialog = new AlertDialog.Builder(DeliverySubscribedOrderActivity.this)
+                        .setTitle("CONFIRM DELIVERY")
+                        .setIcon(R.drawable.ic_check_circlce_button)
+                        .setMessage("Are you sure you want to confirm Delivery?")
+                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TextView vTextView = (TextView) v;
+                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+                                setUserDeliverTiming("breakfast",f_uid);
+                                CalendarBreakfast.setEnabled(false);
+                            }
+                        }).create();
+                vDialog.show();
+            }
+        });
+        CalendarLunch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog vDialog = new AlertDialog.Builder(DeliverySubscribedOrderActivity.this)
+                        .setTitle("CONFIRM DELIVERY")
+                        .setIcon(R.drawable.ic_check_circlce_button)
+                        .setMessage("Are you sure you want to confirm Delivery?")
+                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TextView vTextView = (TextView) v;
+                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+                                setUserDeliverTiming("lunch",f_uid);
+                                CalendarLunch.setEnabled(false);
+                            }
+                        }).create();
+                vDialog.show();
+            }
+        });
+        CalendarDinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog vDialog = new AlertDialog.Builder(DeliverySubscribedOrderActivity.this)
+                        .setTitle("CONFIRM DELIVERY")
+                        .setIcon(R.drawable.ic_check_circlce_button)
+                        .setMessage("Are you sure you want to confirm Delivery?")
+                        .setPositiveButton("YES,SURE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TextView vTextView = (TextView) v;
+                                vTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+                                vTextView.setBackgroundColor(mContext.getResources().getColor(R.color.green_500));
+                                setUserDeliverTiming("dinner",f_uid);
+                                CalendarDinner.setEnabled(false);
+
+                            }
+                        }).create();
+                vDialog.show();
+            }
+        });
         BottomSheetDialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(view);
         dialog.show();
+    }
+
+    private void setUserDeliverTiming(String timing,String f_uid){
+        Map<String,Object> deliver=new HashMap<>();
+        deliver.put(timing,"delivered");
+
+        firebaseFirestore.collection("subscribed_user")
+                .document(f_uid)
+                .collection("dates")
+                .document(getCurrentDate())
+                .update(deliver);
+
     }
 
 }

@@ -123,6 +123,11 @@
         <activity android:name=".Activites.AboutUsActivity" />
         <activity android:name=".Activites.SubscriptionCheckoutActivity" />
         <activity android:name=".Activites.PayTMActivity" />
+        <activity android:name=".VendorActivities.DeliveryBoyActivity" >
+        </activity>
+        <activity android:name=".VendorActivities.DeliveryCustomOrderActivity" />
+        <activity android:name=".VendorActivities.DeliverySubscribedOrderActivity" >
+        </activity>
 
         <!-- This element is required in order to use the PaymentsClient -->
         <meta-data

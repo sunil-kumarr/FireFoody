@@ -1,23 +1,11 @@
 package com.example.rapidfood.VendorActivities;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-
-import com.example.rapidfood.Adapters.OrderListAdapter;
-import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
-import com.example.rapidfood.R;
-import com.example.rapidfood.Utils.FirebaseInstances;
-import com.example.rapidfood.Utils.GenerateUUIDClass;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-
-import java.util.HashMap;
-import java.util.Map;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +13,22 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class VendorShowOrderActivity extends AppCompatActivity implements OrderListAdapter.OrderListener {
+import com.example.rapidfood.Adapters.DeliverOrderListAdapter;
+import com.example.rapidfood.Adapters.OrderListAdapter;
+import com.example.rapidfood.Models.CheckoutPlaceOrderModel;
+import com.example.rapidfood.R;
+import com.example.rapidfood.Utils.FirebaseInstances;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class DeliveryCustomOrderActivity extends AppCompatActivity implements DeliverOrderListAdapter.DeliverOrderListener {
     private FirestoreRecyclerOptions<CheckoutPlaceOrderModel> mOptions;
     private FirebaseInstances mFirebaseInstances;
     private FirebaseFirestore mFirebaseFirestore;
@@ -45,12 +48,17 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         mORderRecycleView = findViewById(R.id.order_recycler_view);
         mORderRecycleView.setItemAnimator(new DefaultItemAnimator());
         mORderRecycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+
         Query query = mFirebaseFirestore
                 .collection("delivery_orders")
                 .orderBy("ordertimestamp", Query.Direction.DESCENDING);
         mOptions = new FirestoreRecyclerOptions.Builder<CheckoutPlaceOrderModel>()
                 .setQuery(query, CheckoutPlaceOrderModel.class).build();
-        mOrderAdapter = new OrderListAdapter(mOptions, mORderRecycleView, this);
+
+
+        mOrderAdapter = new DeliverOrderListAdapter(mOptions, mORderRecycleView, this);
+
         mORderRecycleView.post(new Runnable() {
             @Override
             public void run() {
@@ -74,46 +82,53 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
 
     @Override
     public void onClickVerify(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
+
+
         changeVerificationStatus(pCheckoutPlaceOrderModel, true, pCheckoutPlaceOrderModel.getUid());
+        pView.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onClickFailed(View pView, CheckoutPlaceOrderModel pCheckoutPlaceOrderModel) {
-
-        changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
+        Toast.makeText(this, "Not Allowed call vendor", Toast.LENGTH_SHORT).show();
+//        changeVerificationStatus(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
+//        pView.setVisibility(View.GONE);
     }
 
     void changeVerificationStatus(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token, String f_uid) {
         Map<String, Object> notify = new HashMap<>();
-
+        Map<String, Object> deliver = new HashMap<>();
         if (token) {
 
-            pCheckoutPlaceOrderModel.setOrderStatus("SUCCESS");
-            pCheckoutPlaceOrderModel.setVerified(true);
-            notify.put("title", "Order confirmed");
-            notify.put("description","Your is confirmed by the vendor and will be on its way."+System.getProperty("line.separator")+"OTP: "+pCheckoutPlaceOrderModel.getOtp());
+            deliver.put("deliverystatus", "SUCCESS");
+            notify.put("title", "Order Delivered");
+            notify.put("description", "Your order was delivered successfully");
             notify.put("status", "true");
         } else {
-            pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
-            pCheckoutPlaceOrderModel.setVerified(true);
+            deliver.put("deliverystatus", "FAILURE");
             notify.put("status", "false");
-            notify.put("title", "Order Cancelled");
-            notify.put("description","We are sorry but the vendor have cancelled your order.Money will be refunded to wallet within 24 hrs");
+            notify.put("title", "Delivery unsuccessful");
+            notify.put("description", "We are sorry that your order delivery was unsuccessful.");
         }
-        notify.put("note_type", "order");
+        notify.put("note_type", "deliver");
         notify.put("timestamp", FieldValue.serverTimestamp());
 
         //Add notification to user database
-        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+        mFirebaseFirestore.collection("users")
+                .document(f_uid).collection("notifications")
                 .document().set(notify);
 
 
         //Add order in user database
         mFirebaseFirestore.collection("users").document(f_uid)
-                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
-                .set(pCheckoutPlaceOrderModel);
+                .collection("my_orders")
+                .document(pCheckoutPlaceOrderModel.getTrans_id())
+                .update(deliver);
 
         // add updated order to orders database
-        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).set(pCheckoutPlaceOrderModel);
+        mFirebaseFirestore.collection("delivery_orders")
+                .document(pCheckoutPlaceOrderModel.getTrans_id())
+                .update(deliver);
     }
 }

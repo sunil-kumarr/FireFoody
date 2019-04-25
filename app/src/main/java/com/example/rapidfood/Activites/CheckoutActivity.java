@@ -296,8 +296,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
             DeliveryAddress = mUserAddress.getText().toString();
             sCheckoutPlaceOrderModel.setDeliveryaddress(DeliveryAddress);
             tr = mUUIDGeneration.generateUniqueKeyUsingUUID();
-
+            String otp=mUUIDGeneration.generateOrderOTP();
+            sCheckoutPlaceOrderModel.setOtp(otp);
             sCheckoutPlaceOrderModel.setTrans_id(tr);
+            sCheckoutPlaceOrderModel.setDeliverystatus("pending");
             sCheckoutPlaceOrderModel.setUid(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid());
             sCheckoutPlaceOrderModel.setMobile(mFirebaseAuth.getCurrentUser().getPhoneNumber());
                 showPAymentOptions();
