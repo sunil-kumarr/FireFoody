@@ -42,7 +42,6 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/order_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="300dp"
@@ -239,7 +238,6 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/button_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/orange_500"
