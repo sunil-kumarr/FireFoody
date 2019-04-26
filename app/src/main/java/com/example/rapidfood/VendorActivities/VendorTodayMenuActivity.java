@@ -45,6 +45,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     private FirestoreRecyclerOptions<VendorDishModel> options;
     private FirestoreRecyclerAdapter TodayAdapter;
     private Button mPublishMenu;
+    ProgressDialog vProgressDialog;
     private AlertDialog publishDialog;
 
     @Override
@@ -92,7 +93,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     }
 
     private void uploadTodayMenu() {
-        final ProgressDialog vProgressDialog = new ProgressDialog(this);
+       vProgressDialog = new ProgressDialog(this);
         vProgressDialog.setCancelable(false);
         vProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         vProgressDialog.setMessage("Publishing menu....");
@@ -133,7 +134,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
                     }
                     mDishs.clear();
                 }
-                vProgressDialog.dismiss();
+
             }
         });
     }
@@ -189,6 +190,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         TodayAdapter.stopListening();
+        vProgressDialog.dismiss();
     }
 
     private interface MyDataCallBack {

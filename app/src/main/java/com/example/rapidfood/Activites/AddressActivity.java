@@ -11,6 +11,7 @@ import com.example.rapidfood.Models.UserAddressModal;
 import com.example.rapidfood.R;
 import com.example.rapidfood.Utils.FirebaseInstances;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +56,7 @@ public class AddressActivity extends AppCompatActivity {
                 if(getAddressData()) {
 
                     saveAddressToFirebase();
+
                 }
 
             }
@@ -84,6 +86,10 @@ public class AddressActivity extends AppCompatActivity {
                                     if(documentSnapshot.exists()){
                                         mFirebaseFirestore.collection("subscribed_user")
                                                 .document(uid).update("address_first",mUserAddressModal);
+
+                                        Toast.makeText(AddressActivity.this, "Address Updated", Toast.LENGTH_SHORT).show();
+                                            finish();
+
                                     }
                                 }
                             });
