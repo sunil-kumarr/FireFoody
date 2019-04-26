@@ -28,5 +28,5 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    appName = 'RapidFoods'
+    appName = 'RapdFoods'
 }

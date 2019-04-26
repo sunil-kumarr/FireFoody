@@ -8,18 +8,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:727217489810:android:90ca38399f71c002",
+        "mobilesdk_app_id": "1:727217489810:android:8eb5cd1e32d9fc92",
         "android_client_info": {
-          "package_name": "com.example.rapidfood"
+          "package_name": "com.rapdfoods"
         }
       },
       "oauth_client": [
         {
-          "client_id": "727217489810-2s9lgpjr2ogj563rk78k0dlgu8mvv6u1.apps.googleusercontent.com",
+          "client_id": "727217489810-c7rq33ap31hf7hrocvikv74r18q3h2gp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.rapidfood",
+            "package_name": "com.rapdfoods",
             "certificate_hash": "8e768d8027d37b57a2c5521ae6cd9a3d367d4d62"
+          }
+        },
+        {
+          "client_id": "727217489810-o3mtcvvtovtk127arajt101bo4fk43of.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rapdfoods",
+            "certificate_hash": "6a9aefb8561e9db6877f5898dba38ce07864a9d7"
           }
         },
         {
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "727217489810-0s7shqmvjlrjhsbmq0ipumg9eut9mg9b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

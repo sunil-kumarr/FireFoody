@@ -114,7 +114,7 @@ public class PayTMActivity extends AppCompatActivity {
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("CUST_ID", "CUSTOMER_" + paymentSubDataModel.getCust_id());
         paramMap.put("INDUSTRY_TYPE_ID","Retail");
-        paramMap.put("MID", "QsZUBo16768499332071");
+        paramMap.put("MID", Mid);
         paramMap.put("WEBSITE", "DEFAULT");
         paramMap.put("ORDER_ID", paymentSubDataModel.getOrder_id());
         paramMap.put("TXN_AMOUNT", paymentSubDataModel.getAmount());
