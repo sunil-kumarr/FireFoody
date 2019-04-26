@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,7 +67,7 @@ public class UserSubscriberActivity extends AppCompatActivity  {
                                     Map<String,Object> mp=new HashMap<>();
                                     mp.put("verified","SUCCESS");
                                     mFirebaseFirestore.collection("sub_transaction_data")
-                                            .document(x.getString("transaction_id"))
+                                            .document(Objects.requireNonNull(x.getString("transaction_id")))
                                             .update(mp);
                                 }
                             }

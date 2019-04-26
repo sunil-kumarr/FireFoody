@@ -5,7 +5,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.google.android.material.card.MaterialCardView;
 import com.rapdfoods.Models.PaymentSubDataModel;
 import com.rapdfoods.Models.SubscriptionTransactionModel;
 import com.rapdfoods.R;
@@ -27,11 +29,17 @@ public class GooglePayActivity extends AppCompatActivity {
     private FirebaseFirestore mFirebaseFirestore;
     private FirebaseInstances firebaseInstances;
     private PaymentSubDataModel mPayLoad;
+    private LinearLayout mProcessing;
+    private MaterialCardView mPAytmScreenLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_tm);
+//        mPAytmScreenLogin=findViewById(R.id.paytm_login_page);
+        mProcessing=findViewById(R.id.payment_processing);
+//        mPAytmScreenLogin.setVisibility(View.GONE);
+        mProcessing.setVisibility(View.VISIBLE);
         firebaseInstances = new FirebaseInstances();
         mFirebaseFirestore = firebaseInstances.getFirebaseFirestore();
         mPAymentSuccess = findViewById(R.id.payment_success);

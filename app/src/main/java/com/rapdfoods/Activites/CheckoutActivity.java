@@ -220,7 +220,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.checkout_google_option:
                 sCheckoutPlaceOrderModel.setPaymentmethod("google_pay");
-                payWithGooglePay();
+                payWithGooglePay(sCheckoutPlaceOrderModel.getPackageprice());
                 break;
 
             case R.id.checkout_paytm_option:
@@ -367,17 +367,17 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void payWithGooglePay() {
+    private void payWithGooglePay(String pay) {
         Log.d(TAG, tr);
         Uri uri = new Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", "par78vesh.kr@oksbi")
+                .appendQueryParameter("pa", "casrisaurav@okaxis")
                 .appendQueryParameter("pn", "sunil kumar")
                 .appendQueryParameter("mc", "1234")
                 .appendQueryParameter("tr", tr)
                 .appendQueryParameter("tn", "rapidfood subscription")
-                .appendQueryParameter("am", "1.0")
+                .appendQueryParameter("am", pay)
                 .appendQueryParameter("cu", "INR")
                 .appendQueryParameter("url", "https://test.merchant.website")
                 .build();
