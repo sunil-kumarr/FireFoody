@@ -149,13 +149,13 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
 
                 switch (paymentOption) {
                     case USE_GOOGLE_PAY:
-                        payUsingGooglePay(payment);
+                        payUsingGooglePay(getPaymentAmount());
                         break;
                     case USE_PAYTM:
-                        payUsingPayTM(payment);
+                        payUsingPayTM(getPaymentAmount());
                         break;
                     default:
-                        payUsingGooglePay(payment);
+                        payUsingGooglePay(getPaymentAmount());
                         break;
                 }
 
