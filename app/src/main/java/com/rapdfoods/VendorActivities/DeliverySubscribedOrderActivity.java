@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rapdfoods.Adapters.OrderDefaultListAdapter;
 import com.rapdfoods.Models.SubscribedUserModel;
+import com.rapdfoods.Models.SubscriptionTransactionModel;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -270,11 +271,21 @@ public class DeliverySubscribedOrderActivity extends AppCompatActivity implement
         dialog.setContentView(view);
         dialog.show();
     }
+    private void sendInAppNotification(String f_uid, String timing ){
+        Map<String, Object> notify = new HashMap<>();
+        notify.put("title", "Order Delivered");
+        notify.put("description", "Your order for "+timing+" delivered successfully");
+        notify.put("status", "true");
+        notify.put("note_type", "deliver");
+        notify.put("timestamp", FieldValue.serverTimestamp());
+       firebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                .document().set(notify);
+    }
 
     private void setUserDeliverTiming(String timing,String f_uid){
         Map<String,Object> deliver=new HashMap<>();
         deliver.put(timing,"delivered");
-
+        sendInAppNotification(f_uid,timing);
         firebaseFirestore.collection("subscribed_user")
                 .document(f_uid)
                 .collection("dates")

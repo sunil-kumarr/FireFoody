@@ -213,9 +213,8 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.checkout_wallet_option:
-                Toast.makeText(this, "pressed", Toast.LENGTH_SHORT).show();
                 sCheckoutPlaceOrderModel.setPaymentmethod("wallet");
-                verifySubscription();
+                payUsingWallet();
                 break;
 
             case R.id.checkout_google_option:
@@ -309,7 +308,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void verifySubscription() {
+    private void payUsingWallet() {
         if (mFirebaseAuth.getCurrentUser() != null) {
 
             mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid())
@@ -321,7 +320,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                         String curBal = vDocumentSnapshot.getString("balance");
                         assert curBal != null;
                         int curBalance = Integer.parseInt(curBal);
-                        if (curBalance > OrderCost) {
+                        if (curBalance >= OrderCost) {
                             Map<String, Object> mp = new HashMap<>();
                             int orderprice = Integer.parseInt(sCheckoutPlaceOrderModel.getPackageprice());
                             curBalance = curBalance - orderprice;
@@ -342,6 +341,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                                                     @Override
                                                     public void onSuccess(Void pVoid) {
                                                         //Toast.makeText(CheckoutActivity.this, "Confirmed order", Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(CheckoutActivity.this,StatusActivity.class));
                                                         finish();
                                                     }
                                                 });
@@ -434,6 +434,10 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "Error Occurred !!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    public void goBackHome(View view) {
+        startActivity(new Intent(CheckoutActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override

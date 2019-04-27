@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.rapdfoods.Adapters.HomeAdapter;
 import com.rapdfoods.Adapters.ShowSubscriptionAdapter;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     private FirestoreRecyclerOptions<SubscriptionModel> mSubscriptionModelFirestoreRecyclerOptions;
     private FirestoreRecyclerOptions<PackageModel> mPackageModelFirestoreRecyclerOptions;
     private FirestoreRecyclerAdapter mSubAdapter,mHomeAadapter;
+    private LinearLayout mLoadingPAge;
 
     private static final String TAG = "HomeFragment";
 
@@ -58,7 +60,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        mLoadingPAge=view.findViewById(R.id.loading_data_page);
         mHomeRecycler = view.findViewById(R.id.home_recyclerview);
         mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
 //        mHomeRecycler.setHasFixedSize(true);
@@ -74,6 +76,7 @@ public class HomeFragment extends Fragment {
 
     private void getAllDataFireStore() {
 
+
         Query query = mFirebaseFirestore
                 .collection("subscriptions");
 
@@ -85,6 +88,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 mSubscriptionRecycler.setAdapter(mSubAdapter);
                 mSubscriptionRecycler.setItemAnimator(new DefaultItemAnimator());
+
             }
         });
 
@@ -94,7 +98,7 @@ public class HomeFragment extends Fragment {
         mPackageModelFirestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<PackageModel>()
                 .setQuery(homequery, PackageModel.class).build();
 
-        mHomeAadapter = new HomeAdapter(mPackageModelFirestoreRecyclerOptions);
+        mHomeAadapter = new HomeAdapter(mPackageModelFirestoreRecyclerOptions,mLoadingPAge);
         mHomeRecycler.post(new Runnable() {
             @Override
             public void run() {
@@ -102,6 +106,7 @@ public class HomeFragment extends Fragment {
                 mHomeRecycler.setItemAnimator(new DefaultItemAnimator());
             }
         });
+
 
     }
 
@@ -114,6 +119,14 @@ public class HomeFragment extends Fragment {
        // Log.d(TAG,"FragmentHome: onStart ");
        // Toast.makeText(mContext, "Subs: "+mSubAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
         //Toast.makeText(mContext, "items: "+mHomeAadapter.getItemCount(), Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 
     @Override

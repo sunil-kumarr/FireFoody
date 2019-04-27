@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.rapdfoods.Models.UserModel;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
@@ -47,6 +49,8 @@ public class Authentication extends AppCompatActivity {
     private ConstraintLayout mMainConatainer;
     private ProgressDialog mProgressDialog;
     private Snackbar mSnackbar;
+    private CollectionReference vendorCol, boyCol;
+    private ListenerRegistration mVendorListenr, mBotListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -186,59 +190,71 @@ public class Authentication extends AppCompatActivity {
     private void identifyUserTypeMethod() {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        mFirebaseFirestore.collection("vendors")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        boolean user = false;
-                        if (e != null) {
-                            Log.d("DownloadData", "Listen failed.", e);
-                            return;
-                        }
-                        assert value != null;
-                        for (QueryDocumentSnapshot doc : value) {
-                            String vendorId = doc.getString("firebase_id");
-                            assert vendorId != null;
-                            if (mFirebaseUser.getUid().equals(vendorId)) {
-                                user = true;
+        vendorCol = mFirebaseFirestore.collection("vendors");
+        mVendorListenr = vendorCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                boolean user = false;
+                if (e != null) {
+                    Log.d("DownloadData", "Listen failed.", e);
+                    return;
+                }
+                assert value != null;
+                for (QueryDocumentSnapshot doc : value) {
+                    String vendorId = doc.getString("firebase_id");
+                    assert vendorId != null;
+                    if (mFirebaseUser.getUid().equals(vendorId)) {
+                        user = true;
+                        mProgressDialog.dismiss();
+                        startActivity(new Intent(Authentication.this, DashboardActivity.class));
+                        mVendorListenr.remove();
+                        finish();
+                    }
+                }
+                if (!user) {
+                    boyCol = mFirebaseFirestore.collection("delivery_boy");
+                    mBotListener = boyCol.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+
+                            boolean boy = false;
+                            if (e != null) {
+                                Log.d("DownloadData", "Listen failed.", e);
+                                return;
+                            }
+                            assert value != null;
+                            for (QueryDocumentSnapshot doc : value) {
+                                String vendorId = doc.getString("firebase_id");
+                                assert vendorId != null;
+                                if (mFirebaseUser.getUid().equals(vendorId)) {
+                                    boy = true;
+                                    mProgressDialog.dismiss();
+                                    mBotListener.remove();
+                                    mVendorListenr.remove();
+                                    startActivity(new Intent(Authentication.this, DeliveryBoyActivity.class));
+                                    finish();
+                                }
+                            }
+                            if (!boy) {
+
                                 mProgressDialog.dismiss();
-                                startActivity(new Intent(Authentication.this, DashboardActivity.class));
+                                mBotListener.remove();
+                                mVendorListenr.remove();
+                                startActivity(new Intent(Authentication.this, MainActivity.class));
                                 finish();
                             }
+
                         }
-                        if (!user) {
-                            mFirebaseFirestore.collection("delivery_boy")
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                    });
+                }
+            }
+        });
+    }
 
-                                            boolean boy = false;
-                                            if (e != null) {
-                                                Log.d("DownloadData", "Listen failed.", e);
-                                                return;
-                                            }
-                                            assert value != null;
-                                            for (QueryDocumentSnapshot doc : value) {
-                                                String vendorId = doc.getString("firebase_id");
-                                                assert vendorId != null;
-                                                if (mFirebaseUser.getUid().equals(vendorId)) {
-                                                    boy = true;
-                                                    mProgressDialog.dismiss();
-                                                    startActivity(new Intent(Authentication.this, DeliveryBoyActivity.class));
-                                                    finish();
-                                                }
-                                            }
-                                            if(!boy){
 
-                                                mProgressDialog.dismiss();
-                                                startActivity(new Intent(Authentication.this, MainActivity.class));
-                                                finish();
-                                            }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-                                        }
-                                    });
-                        }
-                    }
-                });
     }
 }

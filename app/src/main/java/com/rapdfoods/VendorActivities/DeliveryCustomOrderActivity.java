@@ -98,13 +98,13 @@ public class DeliveryCustomOrderActivity extends AppCompatActivity implements De
 
             deliver.put("deliverystatus", "SUCCESS");
             notify.put("title", "Order Delivered");
-            notify.put("description", "Your order was delivered successfully");
+            notify.put("description", "Your order for"+pCheckoutPlaceOrderModel.getPackageordered()+"delivered successfully");
             notify.put("status", "true");
         } else {
             deliver.put("deliverystatus", "FAILURE");
             notify.put("status", "false");
             notify.put("title", "Delivery unsuccessful");
-            notify.put("description", "We are sorry that your order delivery was unsuccessful.");
+            notify.put("description", "We are sorry that your order delivery for "+pCheckoutPlaceOrderModel.getPackageordered()+" was unsuccessful.");
         }
         notify.put("note_type", "deliver");
         notify.put("timestamp", FieldValue.serverTimestamp());

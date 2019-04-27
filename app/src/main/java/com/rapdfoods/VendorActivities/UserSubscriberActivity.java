@@ -113,7 +113,7 @@ public class UserSubscriberActivity extends AppCompatActivity  {
                             if (vUserModel != null) {
                                 vModel.setAddress_first(vUserModel.getAddress_first());
                                 mFirebaseFirestore.collection("subscribed_user").document(pModel.getUid()).set(vModel);
-                                sendInAppNotification(pModel.getUid());
+                                sendInAppNotification(pModel.getUid(),pModel);
                             }
                         }
                     }
@@ -122,10 +122,10 @@ public class UserSubscriberActivity extends AppCompatActivity  {
 
 
 
-    private void sendInAppNotification(String f_uid) {
+    private void sendInAppNotification(String f_uid,SubscriptionTransactionModel mpdel) {
         Map<String, Object> notify = new HashMap<>();
         notify.put("note_type", "subscription");
-        notify.put("description","Congratulations,you are now a subscribed customer of RapidFoods.");
+        notify.put("description","Congratulations,you are now "+mpdel.getSubname()+" customer of RapidFoods.");
         notify.put("timestamp", FieldValue.serverTimestamp());
         notify.put("head","Subscriptions");
         notify.put("status","true");

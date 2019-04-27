@@ -139,13 +139,18 @@ public class TimingFragment extends Fragment {
         int realDay = Integer.parseInt(getDate[2]);
         int vDay = calendarDate.getDay();
         int vMonth = calendarDate.getMonth();
-        if (realMonth <= vMonth) {
+        if (realMonth == vMonth) {
             if (realDay <= vDay) {
                 showBottomSheetDialog(calendarDate, realDate,true);
             } else {
                 showBottomSheetDialog(calendarDate, realDate,false);
+                Toast.makeText(mContext, ""+vMonth+vDay+" "+realMonth+realDay, Toast.LENGTH_SHORT).show();
             }
-        } else {
+        }
+        else  if(realMonth == vMonth-1){
+                showBottomSheetDialog(calendarDate, realDate,true);
+        }
+        else {
             Toast.makeText(mContext, "Invalid Date", Toast.LENGTH_SHORT).show();
         }
 

@@ -16,11 +16,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/item_Image"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/product_list_thumbnail"
-                android:scaleType="matrix" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_picture_placeholder"/>
+                <ImageView
+                    android:id="@+id/item_Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/product_list_thumbnail"
+                    android:scaleType="matrix" />
+
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/item_Name"

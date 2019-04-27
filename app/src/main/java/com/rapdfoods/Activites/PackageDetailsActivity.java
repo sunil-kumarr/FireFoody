@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
     private PackageDetailShowAdapter mShowAdapter;
     private Button mOrderBtn;
     private TextView mPackItemCount;
+    private LinearLayout mLoadingPAge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
         mPAckTypeImg=findViewById(R.id.pack_detail_type_img);
         mPackPRice=findViewById(R.id.package_total_cost);
         mOrderBtn.setOnClickListener(this);
+        mLoadingPAge=findViewById(R.id.loading_data_page);
 
         GridLayoutManager vLayoutManager = new GridLayoutManager(this, 2,RecyclerView.VERTICAL,false);
         vLayoutManager.setAutoMeasureEnabled(false);
@@ -130,7 +133,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                             .into(mPackageImage, new Callback() {
                                 @Override
                                 public void onSuccess() {
-
+                                    mLoadingPAge.setVisibility(View.GONE);
                                 }
 
                                 @Override

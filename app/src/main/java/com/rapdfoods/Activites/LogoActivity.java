@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.ListenerRegistration;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
 import com.rapdfoods.Utils.PermissionUtils;
@@ -54,6 +55,8 @@ public class LogoActivity extends AppCompatActivity {
     private ConstraintLayout mMAinContainter;
     private static final String TAG = "LogoActivity";
     ProgressDialog mProgressDialog;
+    private CollectionReference mVendorCol,mBoyCol;
+    private ListenerRegistration mVendorListner,mBotListener;
     private Snackbar mSnackbar;
 
     @Override
@@ -193,7 +196,7 @@ public class LogoActivity extends AppCompatActivity {
         mProgressDialog.show();
 
         CollectionReference vCollectionReference = mFirebaseFirestore.collection("vendors");
-        vCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+     vCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> pTask) {
                 if (pTask.isSuccessful()) {

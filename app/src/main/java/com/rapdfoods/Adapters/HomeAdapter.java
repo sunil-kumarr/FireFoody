@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.rapdfoods.Models.PackageModel;
 import com.rapdfoods.R;
@@ -24,8 +25,10 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
 
 
     private Context mContext;
-    public HomeAdapter(@NonNull FirestoreRecyclerOptions<PackageModel> options) {
+    private LinearLayout mLoadingPAge;
+    public HomeAdapter(@NonNull FirestoreRecyclerOptions<PackageModel> options,View mLoader) {
         super(options);
+        mLoadingPAge=(LinearLayout) mLoader;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -43,10 +46,11 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<PackageModel,HomeViewH
         Picasso.get()
                 .load(pPackageModel.getImage())
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .placeholder(R.drawable.ic_picture_placeholder)
                 .into(pHomeViewHolder.mPackageImage, new Callback() {
                     @Override
                     public void onSuccess() {
-
+                            mLoadingPAge.setVisibility(View.GONE);
                     }
                     @Override
                     public void onError(Exception e) {

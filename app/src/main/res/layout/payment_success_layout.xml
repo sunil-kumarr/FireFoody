@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="8dp"
-        android:text="Your order was successfully processed using Google Pay"
+        android:text="Your order was successfully processed."
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"

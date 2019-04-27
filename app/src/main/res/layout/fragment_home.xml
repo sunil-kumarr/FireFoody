@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:id="@+id/loading_data_page"
+        android:elevation="10dp"
+        android:gravity="center">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:indicatorColor="@color/red_500"
+            app:indicatorName="BallPulseIndicator" />
+    </LinearLayout>
+
     <!--<com.google.android.material.card.MaterialCardView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
@@ -95,6 +117,8 @@
             android:background="@color/grey_200"
             android:fitsSystemWindows="true"
             android:orientation="vertical">
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/subscription_recyclerview"

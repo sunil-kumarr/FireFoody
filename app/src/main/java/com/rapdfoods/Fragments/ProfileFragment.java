@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView mFAQbtn;
 
     private TextView mUserCurrentBal;
+    private ImageView mProfileSubscriptionImage;
     private LinearLayout mAddressContainer;
     private Context mContext;
     private FirebaseInstances mFirebaseInstances;
@@ -58,6 +59,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FirebaseUser mFirebaseUser;
     private TextView mSignOut_btn;
     private  TextView mShareUS;
+    private TextView mSubscribedHeader;
+    private LinearLayout mLoadingPAge;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,6 +78,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFirebaseInstances = new FirebaseInstances();
+        mLoadingPAge=view.findViewById(R.id.loading_data_page);
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         fetchUserData();
@@ -90,6 +94,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mShareUS=view.findViewById(R.id.share_us);
         mAbout=view.findViewById(R.id.about_us);
         mFAQbtn=view.findViewById(R.id.faq_about_us);
+        mProfileSubscriptionImage=view.findViewById(R.id.profile_subscribed_image);
+        mSubscribedHeader=view.findViewById(R.id.profile_user_sub_type_Text);
 
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
@@ -113,13 +119,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
                     if (pTask.isSuccessful() && pTask.getResult().exists()) {
                         DocumentSnapshot vDocumentSnapshot = pTask.getResult();
-                        mUserCurrentBal.setText(String.format("₹%s", pTask.getResult().getString("balance")));
-
+                        mUserCurrentBal.setText(String.format("₹%s", vDocumentSnapshot.getString("balance")));
+                        mSubscribedHeader.setTextColor(mContext.getResources().getColor(R.color.green_500));
+                        mProfileSubscriptionImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_subscribed_user_green));
+                        mSubscribedHeader.setText(vDocumentSnapshot.getString("subscriptionType"));
 
                     } else {
                         mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
-                        mUserCurrentBal.setText("Not Subscribed");
+                        mSubscribedHeader.setText("UnSubscribed");
                     }
+                    mLoadingPAge.setVisibility(View.GONE);
                 }
             });
 

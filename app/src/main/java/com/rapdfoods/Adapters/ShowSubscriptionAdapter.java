@@ -44,7 +44,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
                 .into(pSubscriptionViewHolder.mSubImage, new Callback() {
                     @Override
                     public void onSuccess() {
-
+                    pSubscriptionViewHolder.mSubName.setVisibility(View.VISIBLE);
                     }
                     @Override
                     public void onError(Exception e) {
@@ -65,7 +65,9 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
                                 });
                     }
                 });
+
         pSubscriptionViewHolder.mSubName.setText(pSubscriptionModel.getType());
+
         pSubscriptionViewHolder.mSubPrice.setText(pSubscriptionModel.getPrice());
         pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +82,7 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
     @Override
     public SubscriptionViewHolder onCreateViewHolder(ViewGroup group, int i) {
         View view = LayoutInflater.from(group.getContext())
-                .inflate(R.layout.subscription_image, group, false);
+                .inflate(R.layout.show_subscription_image, group, false);
         int width = mRecyclerview.getWidth();
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = (int) (width * 0.8);

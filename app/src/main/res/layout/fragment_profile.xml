@@ -10,6 +10,31 @@
         android:layout_height="match_parent"
         android:background="@color/grey_100">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:id="@+id/loading_data_page"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:indicatorColor="@color/red_500"
+                app:indicatorName="BallPulseIndicator" />
+        </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/header_profile"
@@ -29,8 +54,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
                     android:id="@+id/profile_user_name"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_weight="9"
@@ -52,6 +77,48 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/sub_type_name_profile"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/grey_200"
+            android:padding="4dp"
+            app:cardBackgroundColor="@color/grey_200"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_profile">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/profile_subscribed_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_subscribed_user" />
+
+                <TextView
+                    android:id="@+id/profile_user_sub_type_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/grey_200"
+                    android:gravity="center"
+                    android:text="Unsubscribed "
+                    android:textAlignment="center"
+                    android:textColor="@color/red_500"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <include
             android:id="@+id/wallet_details"
             layout="@layout/profile_wallet_layout"
@@ -62,7 +129,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_profile" />
+            app:layout_constraintTop_toBottomOf="@id/sub_type_name_profile" />
 
         <include
             android:id="@+id/address_details"
@@ -77,12 +144,13 @@
             app:layout_constraintTop_toBottomOf="@id/wallet_details" />
 
         <include
+            android:id="@+id/include2"
             layout="@layout/profile_extra_settings"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
 
             android:layout_marginTop="10dp"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_details" />
