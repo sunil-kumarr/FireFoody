@@ -35,7 +35,13 @@ public class NotificationAdapter extends FirestoreRecyclerAdapter<NotificationMo
        pNoteHolder.mNoteTitle.setText(pNotificationModel.getTitle());
        pNoteHolder.mNoteDesc.setText(pNotificationModel.getDescription());
        if(pNotificationModel.getNote_type().equals("subscription")){
+           if(pNotificationModel.getStatus().equals("true")) {
                pNoteHolder.mNoteImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_undraw_subscriber));
+           }
+           else{
+               pNoteHolder.mNoteImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_undraw_feeling_sad));
+           }
+
        }
        else if(pNotificationModel.getNote_type().equals("order")){
            if(pNotificationModel.getStatus().equals("true")) {

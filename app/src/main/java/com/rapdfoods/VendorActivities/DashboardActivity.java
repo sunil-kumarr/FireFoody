@@ -6,9 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.rapdfoods.Activites.Authentication;
+import com.rapdfoods.Models.TimeStamp;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
 import com.rapdfoods.Utils.UtilClass;
@@ -17,12 +24,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
@@ -74,15 +83,30 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mQRScanner.setOnClickListener(this);
         mDeliveryOrderBtn.setOnClickListener(this);
 
-
-
+//        mFirestore.collection("subscribed_user")
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//                        if(!queryDocumentSnapshots.isEmpty())
+//                        {
+//                            List<DocumentSnapshot> users=queryDocumentSnapshots.getDocuments();
+//                            for(DocumentSnapshot userD:users){
+//
+//                                String currentDuration=userD.getString("")
+//                            }
+//                        }
+//                    }
+//                });
     }
+
+
 
 
     @Override
     public void onClick(View v) {
-        MaterialCardView mTapped = (MaterialCardView) v;
-        switch (mTapped.getId()) {
+        switch (v.getId()) {
 
             case R.id.vendor_default_order:
                 startActivity(new Intent(DashboardActivity.this, VendorDefaultOrderActivity.class));
@@ -153,6 +177,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             mNoInternetLAyout.setVisibility(View.GONE);
         }
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
     }
 
     @Override
@@ -161,5 +186,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         Map<String, Object> mp = new HashMap<>();
         mp.put("timestamp", FieldValue.serverTimestamp());
         mFirebaseInstances.getFirebaseFirestore().collection("company_data").document("timestamp").update(mp);
+
+
     }
 }

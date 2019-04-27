@@ -142,7 +142,7 @@ public class SubscriptionCheckoutActivity extends AppCompatActivity {
                     mPaymentSubDataModel.setCust_id(mFirebaseAuth.getCurrentUser().getUid());
                     mPaymentSubDataModel.setDuration(String.valueOf(msubval.getText()));
                     mPaymentSubDataModel.setMobile(mFirebaseAuth.getCurrentUser().getPhoneNumber());
-                    mPaymentSubDataModel.setSubcost(newBal);
+                    mPaymentSubDataModel.setSubcost(payment);
                     mPaymentSubDataModel.setSubcoupon(String.valueOf(msubcoupon_Value.getText()));
                     mPaymentSubDataModel.setSubname(sub_name);
                 }

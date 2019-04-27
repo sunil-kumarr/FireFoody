@@ -84,6 +84,7 @@ public class TimingFragment extends Fragment {
                                         TimeStamp vTimeStamp = vSnapshot.toObject(TimeStamp.class);
                                         assert vTimeStamp != null;
                                         String realTimestamp = vTimeStamp.getTimestamp().toString();
+                                        Toast.makeText(mContext, ""+realTimestamp, Toast.LENGTH_SHORT).show();
                                         compareTimestamp(realTimestamp, date);
 
                                     }
@@ -144,7 +145,7 @@ public class TimingFragment extends Fragment {
                 showBottomSheetDialog(calendarDate, realDate,true);
             } else {
                 showBottomSheetDialog(calendarDate, realDate,false);
-                Toast.makeText(mContext, ""+vMonth+vDay+" "+realMonth+realDay, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, ""+vMonth+vDay+" "+realMonth+realDay, Toast.LENGTH_SHORT).show();
             }
         }
         else  if(realMonth == vMonth-1){

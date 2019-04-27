@@ -1,10 +1,14 @@
 package com.rapdfoods.VendorActivities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.rapdfoods.Adapters.SubscriberListAdapter;
 import com.rapdfoods.Models.SubscribedUserModel;
 import com.rapdfoods.Models.SubscriptionTransactionModel;
+import com.rapdfoods.Models.TimeStamp;
 import com.rapdfoods.Models.UserModel;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
@@ -77,6 +81,72 @@ public class UserSubscriberActivity extends AppCompatActivity  {
             }
         });
 
+        mFirebaseFirestore.collection("company_data")
+                .document("timestamp")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                        if (pTask.isSuccessful()) {
+                            DocumentSnapshot vSnapshot = pTask.getResult();
+                            if (vSnapshot != null) {
+                                TimeStamp vTimeStamp = vSnapshot.toObject(TimeStamp.class);
+                                assert vTimeStamp != null;
+                                String realTimestamp = String.valueOf(vTimeStamp.getTimestamp());
+                                //Toast.makeText(UserSubscriberActivity.this, ""+realTimestamp, Toast.LENGTH_SHORT).show();
+                              String current=  getCurrentDate(realTimestamp);
+                              mFirebaseFirestore.collection("subscribed_user")
+                                      .get()
+                                      .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                          @Override
+                                          public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                              if(!queryDocumentSnapshots.isEmpty())
+                                              {
+                                                  List<DocumentSnapshot> UserList=queryDocumentSnapshots.getDocuments();
+                                                  for(DocumentSnapshot user:UserList){
+                                                      Map<String,Object> update=new HashMap<>();
+                                                      if(user!=null)
+                                                      if(!Objects.equals(user.getString("updateData"), current)){
+
+                                                          int duration=Integer.parseInt(Objects.requireNonNull(user.getString("duration")));
+                                                          Toast.makeText(UserSubscriberActivity.this, ""+duration, Toast.LENGTH_SHORT).show();
+                                                          if(duration>0){
+                                                              duration--;
+                                                              update.put("updateData",current);
+                                                              update.put("duration",String.valueOf(duration));
+
+                                                          }
+                                                          if(Objects.equals(user.getString("duration"),"0")){
+                                                              Toast.makeText(UserSubscriberActivity.this, "expired", Toast.LENGTH_SHORT).show();
+                                                              update.put("updateData",current);
+                                                              update.put("duration",String.valueOf(duration));
+                                                              update.put("balance","0");
+                                                              sendInAppNotificationExpired(user.getString("uid"));
+                                                          }
+                                                          mFirebaseFirestore.collection("subscribed_user")
+                                                                  .document(Objects.requireNonNull(user.getString("uid")))
+                                                                  .update(update);
+
+                                                      }
+
+                                                  }
+                                              }
+
+                                          }
+                                      }).addOnFailureListener(new OnFailureListener() {
+                                  @Override
+                                  public void onFailure(@NonNull Exception e) {
+                                      Toast.makeText(UserSubscriberActivity.this, "update failed", Toast.LENGTH_SHORT).show();
+                                  }
+                              });
+                            }
+                        } else {
+                            Toast.makeText(UserSubscriberActivity.this, "Sorry something wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
 
         Query query=  mFirebaseFirestore.collection("subscribed_user")
                 .orderBy("start_date", Query.Direction.DESCENDING);
@@ -92,6 +162,35 @@ public class UserSubscriberActivity extends AppCompatActivity  {
             }
         });
     }
+
+
+    private void sendInAppNotificationExpired(String f_uid) {
+        Map<String, Object> notify = new HashMap<>();
+        notify.put("note_type", "subscription");
+        notify.put("description","Your Subscription is Expired,subscribe again to continue our awesome features.");
+        notify.put("timestamp", FieldValue.serverTimestamp());
+        notify.put("head","Subscriptions");
+        notify.put("status","false");
+        notify.put("title", "Subscription Expired");
+        Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                .document().set(notify);
+    }
+
+
+    private String getCurrentDate(String realDate) {
+
+        String[] getDate = realDate.split(" ",6);
+        String realMonth = getDate[1];
+        String realDay = getDate[2];
+        String realYear=getDate[5];
+        String currentDAte= realDay + "-" + realMonth + "-" + realYear;
+     //   Toast.makeText(this, "Date:"+" "+currentDAte, Toast.LENGTH_SHORT).show();
+        return currentDAte;
+    }
+
+
+
     void addToVerifiedSubscriber(SubscriptionTransactionModel  pModel ) {
         Map<String, Object> mp = new HashMap<>();
         SubscribedUserModel vModel=new SubscribedUserModel();
@@ -101,23 +200,43 @@ public class UserSubscriberActivity extends AppCompatActivity  {
         vModel.setMobile(pModel.getMobile());
         vModel.setSubscriptionType(pModel.getSubname());
         vModel.setUid(pModel.getUid());
-        mFirebaseFirestore.collection("users")
-                .document(pModel.getUid())
+        mFirebaseFirestore.collection("company_data")
+                .document("timestamp")
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
-                        if (pDocumentSnapshot.exists()) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                        if (pTask.isSuccessful()) {
+                            DocumentSnapshot vSnapshot = pTask.getResult();
+                            if (vSnapshot != null) {
+                                TimeStamp vTimeStamp = vSnapshot.toObject(TimeStamp.class);
+                                assert vTimeStamp != null;
+                                String realTimestamp = String.valueOf(vTimeStamp.getTimestamp());
+                                vModel.setUpdateData(getCurrentDate(realTimestamp));
+                                mFirebaseFirestore.collection("users")
+                                        .document(pModel.getUid())
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
+                                                if (pDocumentSnapshot.exists()) {
 
-                            UserModel vUserModel = pDocumentSnapshot.toObject(UserModel.class);
-                            if (vUserModel != null) {
-                                vModel.setAddress_first(vUserModel.getAddress_first());
-                                mFirebaseFirestore.collection("subscribed_user").document(pModel.getUid()).set(vModel);
-                                sendInAppNotification(pModel.getUid(),pModel);
+                                                    UserModel vUserModel = pDocumentSnapshot.toObject(UserModel.class);
+                                                    if (vUserModel != null) {
+                                                        vModel.setAddress_first(vUserModel.getAddress_first());
+                                                        mFirebaseFirestore.collection("subscribed_user").document(pModel.getUid()).set(vModel);
+                                                        sendInAppNotification(pModel.getUid(),pModel);
+                                                    }
+                                                }
+                                            }
+                                        });
                             }
+                        } else {
+                            Toast.makeText(UserSubscriberActivity.this, "Sorry something wrong!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
     }
 
 

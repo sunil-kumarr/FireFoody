@@ -14,6 +14,16 @@ public class SubscribedUserModel {
     private String mobile;
     private String uid;
     private UserAddressModal address_first;
+    private String updateData;
+
+
+    public String getUpdateData() {
+        return updateData;
+    }
+
+    public void setUpdateData(String updateData) {
+        this.updateData = updateData;
+    }
 
     public UserAddressModal getAddress_first() {
         return address_first;

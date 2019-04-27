@@ -63,7 +63,8 @@ public class VendorDefaultOrderActivity extends AppCompatActivity implements Ord
         orderRecyclerView = findViewById(R.id.vendor_default_recycler_view);
 
         Query query = firebaseFirestore.collection("subscribed_user")
-                .orderBy("start_date", Query.Direction.DESCENDING);
+                .orderBy("start_date", Query.Direction.DESCENDING)
+                .orderBy("balance", Query.Direction.DESCENDING);
         mOptions = new FirestoreRecyclerOptions.Builder<SubscribedUserModel>()
                 .setQuery(query, SubscribedUserModel.class).build();
 

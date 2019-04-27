@@ -61,7 +61,7 @@ public class QRFragment extends Fragment implements QRAdapter.qrListener {
         super.onViewCreated(view, savedInstanceState);
         mQRRecyceler = view.findViewById(R.id.qr_recycler_view);
 
-        mLoadingPAge=view.findViewById(R.id.loading_data_page);
+
         FirebaseInstances vInstances = new FirebaseInstances();
         mFirebaseFirestore = vInstances.getFirebaseFirestore();
         mFirebaseAuth=vInstances.getFirebaseAuth();
@@ -145,7 +145,7 @@ public class QRFragment extends Fragment implements QRAdapter.qrListener {
     @Override
     public void onResume() {
         super.onResume();
-        mLoadingPAge.setVisibility(View.GONE);
+
     }
 
     private void setImageBitmap(String pEncryptedString){
