@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.rapdfoods.Activites.Authentication;
 import com.rapdfoods.R;
 import com.rapdfoods.Utils.FirebaseInstances;
@@ -40,6 +41,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private LinearLayout mNoInternetLAyout;
+    private FirebaseFirestore mFirestore;
     private Button mCheckInternet;
 
     @Override
@@ -49,6 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         mFirebaseInstances = new FirebaseInstances();
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
+        mFirestore=mFirebaseInstances.getFirebaseFirestore();
 
         mCreateSubBtn = findViewById(R.id.vendor_create_subs);
         mCreatePackBtn = findViewById(R.id.vendor_create_packs);
@@ -70,6 +73,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mCheckInternet.setOnClickListener(this);
         mQRScanner.setOnClickListener(this);
         mDeliveryOrderBtn.setOnClickListener(this);
+
+
 
     }
 

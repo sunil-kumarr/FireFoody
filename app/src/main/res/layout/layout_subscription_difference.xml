@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="5dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:gravity="center"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_upgrade_cube"
+            android:drawableRight="@drawable/ic_upgrade_cube"
+            android:text="Upgrade Subscription"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Subscription"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Validity"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/grey_800"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/upgrade_sub_current"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Current"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$0"
+                android:id="@+id/upgrade_sub_current_price"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="20Days"
+                android:id="@+id/upgrade_sub_current_time"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="New"
+                android:id="@+id/upgrade_sub_new"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$0"
+                android:id="@+id/upgrade_sub_new_price"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="40Days"
+                android:id="@+id/upgrade_sub_new_time"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/grey_800"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Total"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="$0"
+                android:textColor="@color/black"
+                android:id="@+id/upgrade_total_price"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/upgrade_total_time"
+                android:text="40days"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/upgrade_sub_btn"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_red_plain"
+            android:text="Upgrade"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
