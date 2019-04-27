@@ -94,21 +94,22 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
         changeVerificationStatusFAILURE(pCheckoutPlaceOrderModel, false, pCheckoutPlaceOrderModel.getUid());
     }
 
-    private void showDialog(){
-        dialog=new ProgressDialog(this);
-         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-         dialog.setMessage("Processing..");
-         dialog.setCancelable(false);
-         dialog.setCanceledOnTouchOutside(false);
-         dialog.show();
+    private void showDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Processing..");
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
+
     private void changeVerificationStatusSUCCESS(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token, String f_uid) {
         Map<String, Object> notify = new HashMap<>();
 
         pCheckoutPlaceOrderModel.setOrderStatus("SUCCESS");
         pCheckoutPlaceOrderModel.setVerified(true);
         notify.put("title", "Order confirmed");
-        notify.put("description", "Your is confirmed by the vendor for "+pCheckoutPlaceOrderModel.getPackageordered()+"and will be on its way.");
+        notify.put("description", "Your is confirmed by the vendor for " + pCheckoutPlaceOrderModel.getPackageordered() + "and will be on its way.");
         notify.put("status", "true");
         notify.put("note_type", "order");
         notify.put("timestamp", FieldValue.serverTimestamp());
@@ -130,50 +131,32 @@ public class VendorShowOrderActivity extends AppCompatActivity implements OrderL
 
     private void changeVerificationStatusFAILURE(CheckoutPlaceOrderModel pCheckoutPlaceOrderModel, boolean token, String f_uid) {
 
-        Toast.makeText(this, "under construction", Toast.LENGTH_SHORT).show();
-        //        Map<String, Object> notify = new HashMap<>();
-//
-//
-//        pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
-//        pCheckoutPlaceOrderModel.setVerified(true);
-//        notify.put("status", "false");
-//        notify.put("title", "Order Cancelled");
-//        notify.put("description", "We are sorry but the vendor have cancelled your order for "
-//                +pCheckoutPlaceOrderModel.getPackageordered()+".Money will be refunded to wallet within 24 hrs");
-//        notify.put("note_type", "order");
-//        notify.put("timestamp", FieldValue.serverTimestamp());
-//
-//        //Add notification to user database
-//        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
-//                .document().set(notify);
-//
-//
-//        //Add order in user database
-//        mFirebaseFirestore.collection("users").document(f_uid)
-//                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
-//                .set(pCheckoutPlaceOrderModel);
-//
-//        // add updated order to orders database
-//        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).set(pCheckoutPlaceOrderModel);
-//
-//        Map<String,Object> refundS=new HashMap<>();
-//        mFirebaseFirestore.collection("subscribed_user")
-//                .document(f_uid)
-//                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-//                if (pTask.isSuccessful()) {
-//                   DocumentSnapshot doc=pTask.getResult();
-//                    assert doc != null;
-//                    if(doc.exists()){
-//
-//                   }
-//                    else{
-//
-//                    }
-//                }
-//            }
-//        });
+        Map<String, Object> notify = new HashMap<>();
+
+
+        pCheckoutPlaceOrderModel.setOrderStatus("FAILURE");
+        pCheckoutPlaceOrderModel.setVerified(true);
+        notify.put("status", "false");
+        notify.put("title", "Order Cancelled");
+        notify.put("description", "We are sorry but the vendor have cancelled your order for "
+                + pCheckoutPlaceOrderModel.getPackageordered() + ".Money will be refunded to you within 24 hrs");
+        notify.put("note_type", "order");
+        notify.put("timestamp", FieldValue.serverTimestamp());
+
+        //Add notification to user database
+        mFirebaseFirestore.collection("users").document(f_uid).collection("notifications")
+                .document().set(notify);
+
+
+        //Add order in user database
+        mFirebaseFirestore.collection("users").document(f_uid)
+                .collection("my_orders").document(pCheckoutPlaceOrderModel.getTrans_id())
+                .set(pCheckoutPlaceOrderModel);
+
+        // add updated order to orders database
+        mFirebaseFirestore.collection("delivery_orders").document(pCheckoutPlaceOrderModel.getTrans_id()).set(pCheckoutPlaceOrderModel);
+
+       dialog.dismiss();
 
 
     }
