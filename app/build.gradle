@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.rapdfoods"
+        applicationId "com.firefoody"
         minSdkVersion 21
         targetSdkVersion 28
         multiDexEnabled true

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/main_layout_holder"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey_200"
     android:orientation="vertical"
     tools:context=".Activites.ProfileActivity">
 
@@ -23,126 +23,137 @@
         app:title="My Profile"
         app:titleTextColor="@color/black" />
 
-    <FrameLayout
-        android:id="@+id/container_profile_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true"
-        android:background="@color/grey_200"
-        app:layout_constraintBottom_toTopOf="@id/profile_detail_container"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_profile">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="5dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/image_url_id"
-            android:visibility="gone"/>
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@color/grey_200"
-            android:src="@drawable/profile" />
-
-        <ImageView
-            android:id="@+id/profile_image_user"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/upload_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="20dp"
-            android:padding="5dp"
-            android:src="@drawable/ic_edit_black_24dp" />
-
-    </FrameLayout>
+            android:orientation="vertical">
 
 
-    <LinearLayout
-        android:id="@+id/profile_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
 
-        android:orientation="vertical"
-        android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_save_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_profile_image">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:textColorHint="@color/grey_900">
+            <FrameLayout
+                android:id="@+id/container_profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:layout_margin="5dp"
+                app:layout_constraintBottom_toTopOf="@id/profile_detail_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_profile">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtNameUser"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_overlay="true"
+                    app:civ_border_width="1dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/upload_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fabSize="mini"
+                    android:layout_gravity="end|bottom"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_edit_black_24dp"/>
+
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profile_detail_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey_900"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_save_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_profile_image">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Full Name"
+                    android:textColorHint="@color/grey_900">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNameUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey_900"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mobile Number"
-            android:textColorHint="@color/grey_900">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile Number"
+                    android:textColorHint="@color/grey_900">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtMobileUser"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtMobileUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey_900"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email Address"
+                    android:textColorHint="@color/grey_900">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtEmailUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey_900"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_save_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey_900"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_gravity="center"
+                android:background="@drawable/button_red_plain"
+                android:padding="5dp"
+                android:text="Update Profile"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email Address"
-            android:textColorHint="@color/grey_900">
+    </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtEmailUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey_900"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btn_save_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/button_red_background"
-        android:text="Update Profile"
-        android:textColor="@color/white"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

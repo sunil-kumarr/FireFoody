@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RapidFoods</string>
+    <string name="app_name">FireFoody</string>
     <string name="next">Next</string>
 
     <string name="googlepay_status_checking" translatable="false">Checking if Google Pay is available...</string>

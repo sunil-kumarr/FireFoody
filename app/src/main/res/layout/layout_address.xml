@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/itemListCardView"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    app:cardBackgroundColor="@color/grey_200"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/label_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:id="@+id/customerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sunil Kumar"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/customerAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="An address is a collection of information, presented in a mostly fixed format, used to give the location of a building, apartment, or other structure or a plot of land, generally using political boundaries "
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="normal"
+                    android:ellipsize="marquee"
+                    android:maxLines="4"
+                    app:layout_constraintTop_toBottomOf="@id/customerName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
