@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class VendorDishModel implements Parcelable {
+public class VendorDishModel  {
 
     String name;
     String description;
     String image;
-    List<String> packlist;
+//    List<String> packlist;
 
     public String getName() {
         return name;
@@ -37,21 +37,11 @@ public class VendorDishModel implements Parcelable {
     }
 
 
-    public List<String> getPacklist() {
-        return packlist;
-    }
+//    public List<String> getPacklist() {
+//        return packlist;
+//    }
 
-    public void setPacklist(List<String> pPacklist) {
-        packlist = pPacklist;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
+//    public void setPacklist(List<String> pPacklist) {
+//        packlist = pPacklist;
+//    }
 }

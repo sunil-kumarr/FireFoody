@@ -61,7 +61,7 @@ public class GooglePayActivity extends AppCompatActivity {
         Uri uri = new Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", "casrisaurav@okaxis")
+                .appendQueryParameter("pa", "sunindus.sk@oksbi")
                 .appendQueryParameter("pn", "sunil kumar")
                 .appendQueryParameter("mc", "12471")
                 .appendQueryParameter("tr", mPayLoad.getOrder_id())

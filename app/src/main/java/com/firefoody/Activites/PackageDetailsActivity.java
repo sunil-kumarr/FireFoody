@@ -17,11 +17,14 @@ import android.widget.Toast;
 
 import com.firefoody.Adapters.PackageDetailShowAdapter;
 import com.firefoody.Models.CheckoutOrderDataModel;
+import com.firefoody.Models.FoodOffered;
 import com.firefoody.Models.PackageContainerModel;
+import com.firefoody.Models.PackageModel;
 import com.firefoody.Models.VendorDishModel;
 import com.firefoody.R;
 import com.firefoody.Utils.FirebaseInstances;
 import com.firefoody.Utils.GridSpacingItemDecoration;
+import com.firefoody.VendorActivities.VendorAddDish;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +81,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
 //        mLoadingPAge=findViewById(R.id.loading_data_page);
 
         GridLayoutManager vLayoutManager = new GridLayoutManager(this, 2,RecyclerView.VERTICAL,false);
-        vLayoutManager.setAutoMeasureEnabled(false);
+//        vLayoutManager.setAutoMeasureEnabled(false);
         mPackageItemRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         mPackageItemRecyclerView.setLayoutManager(vLayoutManager);
         mPackageItemRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -88,9 +91,6 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
         mFirestore = mFirebaseInstances.getFirebaseFirestore();
         mFireAuth=mFirebaseInstances.getFirebaseAuth();
         mPackageImage = findViewById(R.id.package_image);
-
-        String s = getIntent().getStringExtra("package_name");
-
         if(mFireAuth.getCurrentUser()!=null){
             mFirestore.collection("subscribed_user")
                     .document(mFireAuth.getUid())
@@ -113,7 +113,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                             else{
                                 mOrderBtn.setVisibility(View.VISIBLE);
                             }
-                            getPackageDetail(s,isSubscribed);
+                            getPackageDetail(isSubscribed);
 
                         }
                     });
@@ -121,16 +121,20 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
 
     }
 
-    void getPackageDetail(String package_name,boolean isSubscribed) {
-        mFirestore.collection("today_menu").document(package_name).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    void getPackageDetail(boolean isSubscribed) {
+        mFirestore.collection("today_menu").document("today_menu")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
                 if (pTask.isSuccessful()) {
                     DocumentSnapshot q = pTask.getResult();
                     assert q != null;
-                    PackageContainerModel pack = q.toObject(PackageContainerModel.class);
+                    FoodOffered mFood = q.toObject(FoodOffered.class);
+                    PackageModel mPack = mFood.getFoodPack();
+                    List<VendorDishModel> mDishList = mFood.getmCurrentMenuList();
                     Picasso.get()
-                            .load(q.getString("image"))
+                            .load(mPack.getImage())
                             .networkPolicy(NetworkPolicy.OFFLINE)
                             .into(mPackageImage, new Callback() {
                                 @Override
@@ -142,7 +146,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                                 public void onError(Exception e) {
                                     //Try again online if cache failed
                                     Picasso.get()
-                                            .load(q.getString("image"))
+                                            .load(mPack.getImage())
                                             .error(R.drawable.ic_undraw_failure)
                                             .into(mPackageImage, new Callback() {
                                                 @Override
@@ -156,26 +160,21 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                                             });
                                 }
                             });
-                    if(pack.isBreakfast()){
+                    if(mPack.isBreakfast()){
                         mPAckTypeImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_coffee));
                     }
                     else{
                         mPAckTypeImg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_lunch));
                     }
-                    assert pack != null;
-                    mPackageDetails.setText(pack.getDescription());
-                    mPackItemCount.setText(String.format("**select any:%s dishs", pack.getItem_count()));
-                    mPackPRice.setText(pack.getPrice());
-                    List<VendorDishModel> items=pack.getDishlist();
+                    assert mPack != null;
+                    mPackageDetails.setText(mPack.getDescription());
+                    mPackItemCount.setText(String.format("**select upto any:%s dish's", mPack.getItem_count()));
+                    mPackPRice.setText(mPack.getPrice());
                     int count=0;
-                    try {
-                        count=Integer.parseInt(pack.getItem_count());
-                    }
-                    catch (Exception e){
-
-                    }
-                    mShowAdapter = new PackageDetailShowAdapter(items, PackageDetailsActivity.this,
-                            count,pack.getName(),isSubscribed);
+                    if(!mDishList.isEmpty())
+                        count=Integer.parseInt(String.valueOf(mDishList.size()));
+                    mShowAdapter = new PackageDetailShowAdapter(mDishList,PackageDetailsActivity.this,
+                            count,mPack.getName(),isSubscribed);
                     mPackageItemRecyclerView.setAdapter(mShowAdapter);
                 } else {
                     Toast.makeText(PackageDetailsActivity.this, "Error occurred", Toast.LENGTH_SHORT).show();

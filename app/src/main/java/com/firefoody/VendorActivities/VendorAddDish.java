@@ -87,7 +87,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
         mCreateBtn = findViewById(R.id.item_create_btn);
         mImageView = findViewById(R.id.item_image);
         mMaterialCardView = findViewById(R.id.image_container);
-        mListView = findViewById(R.id.pack_type_list);
+//        mListView = findViewById(R.id.pack_type_list);
         mName = findViewById(R.id.item_name);
         mDesc = findViewById(R.id.item_desc);
         mFrameLayout = findViewById(R.id.frame_layout);
@@ -100,7 +100,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
         mImageUtil = new ImageUtil();
 
         mVendorDishModel = new VendorDishModel();
-        getPackList();
+//        getPackList();
 
         mFrameLayout.setOnClickListener(this);
         mCreateBtn.setOnClickListener(this);
@@ -166,6 +166,7 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode) {
                 case 2973:
@@ -228,12 +229,11 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
 
     private void addItemToFireStore(String CollectionName, String imageId) {
         mVendorDishModel.setImage(imageId);
-        if (mAddDishPackHelpAdapter != null) {
-
-            mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
-        } else {
-           // Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
-        }
+//        if (mAddDishPackHelpAdapter != null) {
+//            mVendorDishModel.setPacklist(mAddDishPackHelpAdapter.getSelectedPacks());
+//        } else {
+//           // Toast.makeText(this, "Adapter NULL", Toast.LENGTH_SHORT).show();
+//        }
         mFirebaseFirestore.collection(CollectionName)
                 .document(mVendorDishModel.getName())
                 .set(mVendorDishModel)
@@ -246,19 +246,19 @@ public class VendorAddDish extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    private void getPackList() {
-        mFirebaseFirestore.collection("packages").orderBy("name").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
-                        final List<PackageModel> pack = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
-                            pack.add(doc.toObject(PackageModel.class));
-                        }
-                        mAddDishPackHelpAdapter = new AddDishPackHelpAdapter(VendorAddDish.this,
-                                R.layout.list_item_checkbox_style, pack);
-                        mListView.setAdapter(mAddDishPackHelpAdapter);
-                    }
-                });
-    }
+//    private void getPackList() {
+//        mFirebaseFirestore.collection("packages").orderBy("name").get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot pQueryDocumentSnapshots) {
+//                        final List<PackageModel> pack = new ArrayList<>();
+//                        for (QueryDocumentSnapshot doc : pQueryDocumentSnapshots) {
+//                            pack.add(doc.toObject(PackageModel.class));
+//                        }
+//                        mAddDishPackHelpAdapter = new AddDishPackHelpAdapter(VendorAddDish.this,
+//                                R.layout.list_item_checkbox_style, pack);
+//                        mListView.setAdapter(mAddDishPackHelpAdapter);
+//                    }
+//                });
+//    }
 }

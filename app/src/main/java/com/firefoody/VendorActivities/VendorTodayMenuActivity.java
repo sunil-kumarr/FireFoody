@@ -14,9 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.firefoody.Adapters.SelectTodayMenuAdapter;
+import com.firefoody.Models.FoodOffered;
 import com.firefoody.Models.PackageModel;
 import com.firefoody.Models.VendorDishModel;
 import com.firefoody.R;
@@ -32,6 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VendorTodayMenuActivity extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     private FirestoreRecyclerAdapter TodayAdapter;
     private Button mPublishMenu;
     ProgressDialog vProgressDialog;
+    private RadioGroup mFoodOffered;
     private AlertDialog publishDialog;
 
     @Override
@@ -64,6 +69,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
         mTodayRecycler = findViewById(R.id.today_recycler);
         mPublishMenu = findViewById(R.id.publish_menu);
+        mFoodOffered = findViewById(R.id.currentFoodType);
         getAllDataFireStore();
 
         mPublishMenu.setOnClickListener(new View.OnClickListener() {
@@ -93,48 +99,35 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     }
 
     private void uploadTodayMenu() {
-       vProgressDialog = new ProgressDialog(this);
+        vProgressDialog = new ProgressDialog(this);
         vProgressDialog.setCancelable(false);
         vProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         vProgressDialog.setMessage("Publishing menu....");
         vProgressDialog.show();
-
-
-        //Get selected dish items to upload
-        final List<VendorDishModel> vModels = ((SelectTodayMenuAdapter) TodayAdapter).getSelectedItems();
-
+        List<VendorDishModel> vModels = ((SelectTodayMenuAdapter) TodayAdapter).getSelectedItems();
+        FoodOffered mFood = new FoodOffered();
+        mFood.setmCurrentMenuList(vModels);
+        final int foodtypeId = mFoodOffered.getCheckedRadioButtonId();
         getPackList(new MyDataCallBack() {
             @Override
             public void onCallback(List<PackageModel> pPackageModels) {
-
+                RadioButton rb = findViewById(foodtypeId);
+                String type = (String) rb.getText();
                 CollectionReference vToday_menu = mFirebaseFirestore.collection("today_menu");
-                // get all packages
-                for (int i = 0; i < pPackageModels.size(); i++) {
-                    List<VendorDishModel> mDishs = new ArrayList<>();
-                    // traverse all dish items
-                    for (int j = 0; j < vModels.size(); j++) {
-                        // get the packages list for every each item
-                        List<String> vList = vModels.get(j).getPacklist();
-                        // traverse that package list and a that dish to
-                        for (int k = 0; k < vList.size(); k++) {
-                            if (vList.get(k).equals(pPackageModels.get(i).getName())) {
-                                mDishs.add(vModels.get(j));
-                                // Toast.makeText(VendorTodayMenuActivity.this, "Match", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                for(PackageModel x:pPackageModels)
+                {
+                    if(x.getName().equals(type)){
+                        mFood.setFoodPack(x);
+                        break;
                     }
-                    if (mDishs.size() > 0) {
-                        pPackageModels.get(i).setDishlist(mDishs);
-                        vToday_menu.document(pPackageModels.get(i).getName()).set(pPackageModels.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                }
+                vToday_menu.document("today_menu").set(mFood)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void pVoid) {
                                 Toast.makeText(VendorTodayMenuActivity.this, "Menu Updated", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    mDishs.clear();
-                }
-
             }
         });
     }
@@ -190,7 +183,7 @@ public class VendorTodayMenuActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         TodayAdapter.stopListening();
-        vProgressDialog.dismiss();
+//        vProgressDialog.dismiss();
     }
 
     private interface MyDataCallBack {
