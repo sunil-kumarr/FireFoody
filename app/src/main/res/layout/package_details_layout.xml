@@ -3,76 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
+    android:background="@color/grey_200"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:id="@+id/loading_data_page"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <LinearLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:orientation="vertical"-->
+<!--        android:id="@+id/loading_data_page"-->
+<!--        android:elevation="10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:indicatorColor="@color/red_500"
-            app:indicatorName="BallPulseIndicator" />
-    </LinearLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        app:cardBackgroundColor="@color/transparent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+<!--        <com.wang.avi.AVLoadingIndicatorView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            app:indicatorColor="@color/red_500"-->
+<!--            app:indicatorName="BallPulseIndicator" />-->
+<!--    </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/gradient"
             android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp"
             android:padding="5dp">
-
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:src="@drawable/ic_arrow_white_24dp" />
-
+                android:src="@drawable/ic_arrow_black_24dp" />
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/pack_detail_type_img"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/black"
                 android:layout_weight="1"
                 android:padding="2dp"
                 android:src="@drawable/ic_coffee" />
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -99,7 +89,7 @@
                     android:layout_height="250dp"
                     android:layout_gravity="top|center"
                     android:onClick="goBackHome"
-                    android:background="@color/grey_100"
+                    android:background="@color/grey_200"
                     android:scaleType="fitXY" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -191,7 +181,7 @@
     <Button
         android:id="@+id/order_now_package"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_gravity="bottom|center"
         android:background="@drawable/button_red_plain"
         android:gravity="center"

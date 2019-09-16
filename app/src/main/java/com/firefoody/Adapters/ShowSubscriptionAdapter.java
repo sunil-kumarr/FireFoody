@@ -14,6 +14,7 @@ import com.firefoody.Models.SubscriptionModel;
 import com.firefoody.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -59,7 +60,8 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         pSubscriptionViewHolder.mSubName.setText(pSubscriptionModel.getType());
         pSubscriptionViewHolder.mSubPrice.setText(pSubscriptionModel.getPrice());
         pSubscriptionViewHolder.mSubDiscount.setText(pSubscriptionModel.getCoupon()+"% OFF");
-        pSubscriptionViewHolder.mSubImage.setOnClickListener(new View.OnClickListener() {
+        pSubscriptionViewHolder.mSubDesc.setText(pSubscriptionModel.getDetails());
+        pSubscriptionViewHolder.OpenSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(mContext, SubscriptionCheckoutActivity.class);
@@ -86,12 +88,16 @@ public class ShowSubscriptionAdapter extends FirestoreRecyclerAdapter<Subscripti
         private TextView mSubName;
         private TextView mSubPrice;
         private TextView mSubDiscount;
+        private TextView mSubDesc;
+        private MaterialCardView OpenSub;
         SubscriptionViewHolder(View itemView) {
             super(itemView);
+            OpenSub = itemView.findViewById(R.id.image_container);
             mSubImage= itemView.findViewById(R.id.sub_image);
             mSubName=itemView.findViewById(R.id.sub_name);
             mSubPrice=itemView.findViewById(R.id.sub_total_cost);
             mSubDiscount=itemView.findViewById(R.id.sub_discount);
+            mSubDesc = itemView.findViewById(R.id.sub_description);
         }
 
     }

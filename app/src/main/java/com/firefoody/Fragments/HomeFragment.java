@@ -2,13 +2,16 @@ package com.firefoody.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.firefoody.Activites.PackageDetailsActivity;
 import com.firefoody.Adapters.HomeAdapter;
+import com.firefoody.Adapters.HomeViewHolder;
 import com.firefoody.Adapters.ShowSubscriptionAdapter;
 import com.firefoody.Models.PackageModel;
 import com.firefoody.Models.SubscriptionModel;
@@ -16,6 +19,7 @@ import com.firefoody.R;
 import com.firefoody.Utils.FirebaseInstances;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -34,6 +38,7 @@ public class HomeFragment extends Fragment {
     private FirestoreRecyclerOptions<PackageModel> mPackageModelFirestoreRecyclerOptions;
     private FirestoreRecyclerAdapter mSubAdapter,mHomeAadapter;
     private LinearLayout mLoadingPAge;
+    private MaterialCardView OpenCurrenMEnu;
     private static final String TAG = "HomeFragment";
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,12 +58,21 @@ public class HomeFragment extends Fragment {
 
 //        mLoadingPAge=view.findViewById(R.id.loading_data_page);
 //        mHomeRecycler = view.findViewById(R.id.home_recyclerview);
+        OpenCurrenMEnu = view.findViewById(R.id.CurrentMenuItem);
         mSubscriptionRecycler = view.findViewById(R.id.subscription_recyclerview);
 //        mHomeRecycler.setHasFixedSize(true);
 //        LinearLayoutManager llm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         LinearLayoutManager sbm = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
 //        mHomeRecycler.setLayoutManager(llm);
         mSubscriptionRecycler.setLayoutManager(sbm);
+        OpenCurrenMEnu.setOnClickListener( new View.OnClickListener() {
+                                               @Override
+                                               public void onClick(View v) {
+                                                   Intent i=new Intent(mContext, PackageDetailsActivity.class);
+                                                   i.putExtra("package_name","Lunch");
+                                                   mContext.startActivity(i);
+                                               }
+                                           });
         getAllDataFireStore();
     }
     private void getAllDataFireStore() {

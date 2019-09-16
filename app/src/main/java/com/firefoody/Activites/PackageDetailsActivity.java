@@ -42,6 +42,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PackageDetailsActivity extends AppCompatActivity implements View.OnClickListener , PackageDetailShowAdapter.ShowButtonListener {
 
     private FirebaseInstances mFirebaseInstances;
@@ -49,7 +51,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
     private FirebaseAuth mFireAuth;
     private ImageView mPackageImage;
     private TextView mPackageDetails;
-    private ImageView mPAckTypeImg;
+    private CircleImageView mPAckTypeImg;
     private RecyclerView mPackageItemRecyclerView;
     private Toolbar mToolbar;
     private FrameLayout mImageContainer;
@@ -58,7 +60,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
     private PackageDetailShowAdapter mShowAdapter;
     private Button mOrderBtn;
     private TextView mPackItemCount;
-    private LinearLayout mLoadingPAge;
+//    private LinearLayout mLoadingPAge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
         mPAckTypeImg=findViewById(R.id.pack_detail_type_img);
         mPackPRice=findViewById(R.id.package_total_cost);
         mOrderBtn.setOnClickListener(this);
-        mLoadingPAge=findViewById(R.id.loading_data_page);
+//        mLoadingPAge=findViewById(R.id.loading_data_page);
 
         GridLayoutManager vLayoutManager = new GridLayoutManager(this, 2,RecyclerView.VERTICAL,false);
         vLayoutManager.setAutoMeasureEnabled(false);
@@ -133,7 +135,7 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                             .into(mPackageImage, new Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    mLoadingPAge.setVisibility(View.GONE);
+//                                    mLoadingPAge.setVisibility(View.GONE);
                                 }
 
                                 @Override
@@ -194,17 +196,10 @@ public class PackageDetailsActivity extends AppCompatActivity implements View.On
                 vModel.setPackageName(mShowAdapter.getPackName());
                 if(vList.size()==0){
                     AlertDialog vDialog=new AlertDialog.Builder(this)
-                            .setMessage("No Dish selected,order default Menu!")
-                            .setTitle("Order Default Menu")
+                            .setMessage("No Item Selected!Please select atleast 1 item to order.")
+                            .setTitle("Empty Food Cart!!")
                             .setIcon(getResources().getDrawable(R.drawable.ic_lunch))
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent vIntent=new Intent(PackageDetailsActivity.this, CheckoutActivity.class);
-                                    vIntent.putExtra("orderdata",vModel);
-                                    startActivity(vIntent);
-                                }
-                            }).create();
+                            .create();
                     vDialog.show();
                 }
                 else{

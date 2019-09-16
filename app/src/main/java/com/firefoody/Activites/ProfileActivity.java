@@ -81,7 +81,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             vActionBar.setDisplayHomeAsUpEnabled(true);
             vActionBar.setDisplayShowHomeEnabled(true);
         }
-
         mUserEmailEDt = findViewById(R.id.edtEmailUser);
         mUserNameEDT = findViewById(R.id.edtNameUser);
         mUpadteProfileBtn = findViewById(R.id.btn_save_profile);
@@ -168,13 +167,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         mUserModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
                         if (mUserModel != null) {
                             mUserImage.setVisibility(View.VISIBLE);
-                            if (!mUserModel.getProfileimage().equals("")) {
+                            if (mUserModel.getProfileimage()!=null && !mUserModel.getProfileimage().equals("")) {
                                 Picasso.get()
                                         .load(mUserModel.getProfileimage())
                                         .into(mUserImage);
                             }
-                            mImageUrl.setText(mUserModel.getProfileimage());
-                            mUploadImage.setVisibility(View.GONE);
+//                            mImageUrl.setText(mUserModel.getProfileimage());
+//                            mUploadImage.setVisibility(View.GONE);
                             mUserNameEDT.setText(mUserModel.getUsername());
                             mUserEmailEDt.setText(mUserModel.getEmailAddress());
                         }

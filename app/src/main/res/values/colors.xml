@@ -50,7 +50,6 @@
 
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
-    <color name="ic_launcher_background">#3358c0</color>
     <color name="material_blue_grey_800">#ff37474f</color>
     <color name="material_blue_grey_900">#ff263238</color>
     <color name="material_blue_grey_950">#ff21272b</color>
@@ -96,7 +95,6 @@
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
     <color name="tooltip_background_dark">#e6616161</color>
     <color name="tooltip_background_light">#e6ffffff</color>
-    <color name="transparent">#00000000</color>
     <color name="lightgray">#ededed</color>
     <color name="deeppurple">#7c4dff</color>
     <color name="yello">#ffb300</color>
@@ -105,7 +103,6 @@
     <color name="white_1000">#ffffff</color>
     <color name="DimGray">#696969</color>
     <color name="Black">#000000</color>
-    <color name="red_400">#EF5350</color>
     <color name="red_500">#F44336</color>
     <color name="red_700">#D32F2F</color>
 

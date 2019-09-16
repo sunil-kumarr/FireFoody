@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.firefoody.Models.UserAddressModal;
 import com.firefoody.R;
 import com.firefoody.Utils.FirebaseInstances;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,9 +58,7 @@ public class AddressActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(getAddressData()) {
-
                     saveAddressToFirebase();
-
                 }
 
             }
@@ -78,21 +78,25 @@ public class AddressActivity extends AppCompatActivity {
                             mFirebaseUser=mFirebaseAuth.getCurrentUser();
                             String uid=mFirebaseUser.getUid();
                             DocumentReference userData= mFirebaseFirestore.collection("users").document(uid);
-
                             userData.update("address_first", mUserAddressModal);
+
                             mFirebaseFirestore.collection("subscribed_user").document(uid)
                                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-
                                     if(documentSnapshot.exists()){
                                         mFirebaseFirestore.collection("subscribed_user")
                                                 .document(uid).update("address_first",mUserAddressModal);
-
                                         Toast.makeText(AddressActivity.this, "Address Updated", Toast.LENGTH_SHORT).show();
-                                            finish();
-
+                                        finish();
                                     }
+                                }
+
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AddressActivity.this, "Address Updated", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             });
 

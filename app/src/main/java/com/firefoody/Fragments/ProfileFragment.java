@@ -78,10 +78,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFirebaseInstances = new FirebaseInstances();
-        mLoadingPAge=view.findViewById(R.id.loading_data_page);
         mFirebaseAuth = mFirebaseInstances.getFirebaseAuth();
         mFirebaseFirestore = mFirebaseInstances.getFirebaseFirestore();
-        fetchUserData();
+        mLoadingPAge=view.findViewById(R.id.loading_data_page);
         mProfilePage = view.findViewById(R.id.goto_profile_page_btn);
         mAddAddressButton = view.findViewById(R.id.add_address_profile_button);
         mUserAddress = view.findViewById(R.id.profile_address_first);
@@ -96,7 +95,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mFAQbtn=view.findViewById(R.id.faq_about_us);
         mProfileSubscriptionImage=view.findViewById(R.id.profile_subscribed_image);
         mSubscribedHeader=view.findViewById(R.id.profile_user_sub_type_Text);
-
+        fetchUserData();
         mDeleteAddress.setOnClickListener(this);
         mProfilePage.setOnClickListener(this);
         mAddAddressButton.setOnClickListener(this);
@@ -109,81 +108,88 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fetchUserData() {
-        final UserModel[] currecntUser = {new UserModel()};
         if (mFirebaseAuth.getCurrentUser() != null) {
             String uid = mFirebaseAuth.getCurrentUser().getUid();
             DocumentReference vUSerData = mFirebaseFirestore.collection("users").document(uid);
             DocumentReference vSubData = mFirebaseFirestore.collection("subscribed_user").document(mFirebaseAuth.getCurrentUser().getUid());
-            vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
-                    if (pTask.isSuccessful() && pTask.getResult().exists()) {
-                        DocumentSnapshot vDocumentSnapshot = pTask.getResult();
-                        mUserCurrentBal.setText(String.format("₹%s", vDocumentSnapshot.getString("balance")));
-                        mSubscribedHeader.setTextColor(mContext.getResources().getColor(R.color.green_500));
-                        mProfileSubscriptionImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_subscribed_user_green));
-                        mSubscribedHeader.setText(vDocumentSnapshot.getString("subscriptionType"));
-
-                    } else {
-                        mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
-                        mSubscribedHeader.setText("UnSubscribed");
-                    }
-                    mLoadingPAge.setVisibility(View.GONE);
-                }
-            });
-
-            mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
-                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
-                    if (pDocumentSnapshot.exists()) {
-                        UserProfileModel vModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
-                        if (vModel != null) {
-                            if (vModel.getProfileimage()!=null && !vModel.getProfileimage().equals("")) {
-                                Picasso.get().
-                                        load(vModel.getProfileimage()).
-                                        fit().
-                                        placeholder(R.drawable.profile).into(mProfilePage);
-                            }
-                            if (vModel.getUsername() != null) {
-                                mUserName.setText(vModel.getUsername());
-                            }
-                        } else {
-                            mUserName.setText(mFirebaseAuth.getCurrentUser().getPhoneNumber());
-                        }
-                    }
-                }
-            });
-
-            vUSerData.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
-                    if (pDocumentSnapshot.exists()) {
-                        UserModel vUserModel = pDocumentSnapshot.toObject(UserModel.class);
-                        if (vUserModel != null) {
-                            if (vUserModel.getAddress_first() != null) {
-                                mAddAddressButton.setVisibility(View.GONE);
-                                mUserAddress.setText(vUserModel.getAddress_first().getAddresscomplete());
-                                mAddressContainer.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                }
-            });
+            getSubscriptionData(vSubData);
+            getUserData();
+            getUserAddress(vUSerData);
         }
+    }
 
+    private void getSubscriptionData(DocumentReference vSubData) {
+        vSubData.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> pTask) {
+                if (pTask.isSuccessful() && pTask.getResult().exists()) {
+                    DocumentSnapshot vDocumentSnapshot = pTask.getResult();
+                    mUserCurrentBal.setText(String.format("₹%s", vDocumentSnapshot.getString("balance")));
+                    mSubscribedHeader.setTextColor(mContext.getResources().getColor(R.color.green_500));
+                    mProfileSubscriptionImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_subscribed_user_green));
+                    mSubscribedHeader.setText(vDocumentSnapshot.getString("subscriptionType"));
+
+                } else {
+                    mUserCurrentBal.setTextColor(mContext.getResources().getColor(R.color.red_500));
+                    mSubscribedHeader.setText("UnSubscribed");
+                }
+                mLoadingPAge.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void getUserData() {
+        mFirebaseFirestore.collection("users").document(mFirebaseAuth.getCurrentUser().getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
+                if (pDocumentSnapshot.exists()) {
+                    UserProfileModel vModel = pDocumentSnapshot.get("user_profile_data", UserProfileModel.class);
+                    if (vModel != null) {
+                        if (vModel.getProfileimage()!=null && !vModel.getProfileimage().equals("")) {
+                            Picasso.get().
+                                    load(vModel.getProfileimage()).
+                                    fit().
+                                    placeholder(R.drawable.profile).into(mProfilePage);
+                        }
+                        if (vModel.getUsername() != null) {
+                            mUserName.setText(vModel.getUsername());
+                        }
+                    } else {
+                        mUserName.setText(mFirebaseAuth.getCurrentUser().getPhoneNumber());
+                    }
+                }
+            }
+        });
+    }
+
+    private void getUserAddress(DocumentReference vUSerData) {
+        vUSerData.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot pDocumentSnapshot) {
+                if (pDocumentSnapshot.exists()) {
+                    UserModel vUserModel = pDocumentSnapshot.toObject(UserModel.class);
+                    if (vUserModel != null) {
+                        if (vUserModel.getAddress_first() != null) {
+                            mAddAddressButton.setVisibility(View.GONE);
+                            mUserAddress.setText(vUserModel.getAddress_first().getAddresscomplete());
+                            mAddressContainer.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        fetchUserData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        fetchUserData();
         mProfilePage.setEnabled(true);
         mAddAddressButton.setEnabled(true);
         mSendFeedback.setEnabled(true);

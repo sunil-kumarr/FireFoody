@@ -44,14 +44,13 @@ public class FAQActivity extends AppCompatActivity {
                                 question.setQuestion(x.getString("question"));
                                 question.setAnswer(x.getString("answer"));
                                 list_faq.add(question);
-                                Toast.makeText(FAQActivity.this, "", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(FAQActivity.this, "", Toast.LENGTH_SHORT).show();
                             }
                         }
                         mListView.post(new Runnable() {
                             @Override
                             public void run() {
                                 mListView.setAdapter(new AdapterListExpand(FAQActivity.this,list_faq));
-
                             }
                         });
 
