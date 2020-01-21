@@ -1,17 +1,14 @@
-# NoteKeeper
+# FireFoody
 
-NoteKeeper is platform for all university and college students to upload and download notes or study material for academic purposes only , ask doubts with other students or faculties  of college or unviersities across the world ,sell or buy books or other old materials from each other , help each other in finding lost items of friends like iCards , wallets or anything else ,lastly but not least take exam or small quiz to prepare for placements created by faculties registered on platform.</br>
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Login%20Screen.png" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/profile.jpg" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Discuss.jpg" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/home.jpg" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Question%20layout.png" width="180">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Quiz%20Home%20layout.png" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Quiz%20results%20layout.png" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/books%20list.jpg" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/pdf%20details.jpg" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/Chat%20layouts.png" width="150">
-<img src="https://github.com/sunil-kumarr/NoteKeeper/blob/master/Screenshots/feedback.jpg" width="150">
+FireFoody is a SUBSCRIPTION based Food delivery app.Using Firefoody users can take a subscription that they like and we will deliver the food on correct time to their working place or doorstep at breakfast,lunch and dinner time.
+Their is also a Admin and delivery boy planel in this app which the admin can use to track subscriptions and orders from different customers and notifications are send by admin system also.However this project needs some improvement please help and contibute.</br>
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/home.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/profile.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/menu.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/feedback.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/orders.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/Special%20feature.jpg" width="150">
+<img src="https://github.com/sunil-kumarr/FireFoody/blob/master/Screenshots/payment.jpg" width="150">
 
 
 
